@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DI_WK_TEMPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MEM_Activity">
+          <Key>
+            <PropertyRef Name="ACT_PK" />
+          </Key>
+          <Property Name="ACT_PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ACT_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ACT_Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ACT_Category" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ACT_Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ACT_FromDate" Type="datetime" />
+          <Property Name="ACT_ToDate" Type="datetime" />
+          <Property Name="ACT_Location" Type="nvarchar" MaxLength="10" />
+          <Property Name="ACT_Address" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACT_Current" Type="nvarchar" MaxLength="10" />
+          <Property Name="ACT_Fee" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="ACT_Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="ACT_MaxSeat" Type="int" />
+          <Property Name="ACT_Remarks" Type="nvarchar" MaxLength="2000" />
+          <Property Name="ACT_MemberTypeReq" Type="int" Nullable="false" />
+          <Property Name="ACT_InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="ACT_InsertUser" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACT_UpdateDate" Type="datetime" />
+          <Property Name="ACT_UpdateUser" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACT_DOC_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="ACT_Flex1" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACT_Flex2" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACT_Flex3" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACT_Flex4" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACT_Flex5" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="MEM_Membership">
+          <Key>
+            <PropertyRef Name="MBR_PK" />
+          </Key>
+          <Property Name="MBR_PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MBR_ID" Type="int" Nullable="false" />
+          <Property Name="MBR_Type" Type="int" Nullable="false" />
+          <Property Name="MBR_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MBR_ChineseName" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Phone1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MBR_Phone2" Type="nvarchar" MaxLength="50" />
+          <Property Name="MBR_Address1" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Address2" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_CountryCode" Type="nvarchar" MaxLength="5" />
+          <Property Name="MBR_CountryName" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Age" Type="int" />
+          <Property Name="MBR_CompanyName" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Occupations" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Skillset" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MBR_Professional" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MBR_Valuable" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MBR_Networking" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MBR_Parhnership" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MBR_SupportInGroup" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MBR_Agreement" Type="bit" Nullable="false" />
+          <Property Name="MBR_ReferBy" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_MemberID" Type="nvarchar" MaxLength="10" />
+          <Property Name="MBR_GroupID" Type="nvarchar" MaxLength="10" />
+          <Property Name="MBR_EffectiveDate" Type="datetime" />
+          <Property Name="MBR_ExpiredDate" Type="datetime" />
+          <Property Name="MBR_Remarks" Type="nvarchar" MaxLength="2000" />
+          <Property Name="MBR_IsEnable" Type="bit" Nullable="false" />
+          <Property Name="MBR_InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="MBR_InsertUser" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_UpdateDate" Type="datetime" />
+          <Property Name="MBR_UpdateUser" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_QRCode" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MBR_Photo" Type="varbinary(max)" />
+          <Property Name="MBR_WeChatNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="MBR_DOC_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="MBR_Flex1" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Flex2" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Flex3" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Flex4" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Flex5" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MEM_SysLog">
+          <Key>
+            <PropertyRef Name="SYS_PK" />
+            <PropertyRef Name="SYS_LOG_Account" />
+            <PropertyRef Name="SYS_InsertDate" />
+          </Key>
+          <Property Name="SYS_PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SYS_LOG_Account" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SYS_Host" Type="nvarchar" MaxLength="255" />
+          <Property Name="SYS_Address" Type="nvarchar" MaxLength="100" />
+          <Property Name="SYS_Action" Type="nvarchar" MaxLength="100" />
+          <Property Name="SYS_Remarks" Type="nvarchar(max)" />
+          <Property Name="SYS_InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="SYS_InsertUser" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="MEM_UserActivity">
+          <Key>
+            <PropertyRef Name="UAC_PK" />
+          </Key>
+          <Property Name="UAC_PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UAC_ID" Type="int" Nullable="false" />
+          <Property Name="UAC_MBR_PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UAC_ACT_PK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UAC_ACT_Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="UAC_ACT_Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UAC_ACT_From_Date" Type="datetime" />
+          <Property Name="UAC_ACT_To_Date" Type="datetime" />
+          <Property Name="UAC_ACT_Remarks" Type="nvarchar" MaxLength="2000" />
+          <Property Name="UAC_RegDate" Type="datetime" Nullable="false" />
+          <Property Name="UAC_AttDate" Type="datetime" />
+          <Property Name="UAC_Current" Type="nvarchar" MaxLength="10" />
+          <Property Name="UAC_Fee" Type="decimal" Precision="10" Scale="5" />
+          <Property Name="UAC_Remarks" Type="nvarchar" MaxLength="2000" />
+          <Property Name="UAC_InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="UAC_InsertUser" Type="nvarchar" MaxLength="100" />
+          <Property Name="UAC_UpdateDate" Type="datetime" />
+          <Property Name="UAC_UpdateUser" Type="nvarchar" MaxLength="100" />
+          <Property Name="UAC_DOC_ID" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="DI_WK_TEMPModelStoreContainer">
+          <EntitySet Name="MEM_Activity" EntityType="Self.MEM_Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEM_Membership" EntityType="Self.MEM_Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEM_UserActivity" EntityType="Self.MEM_UserActivity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEM_SysLog" EntityType="Self.MEM_SysLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MEM_SysLog].[SYS_PK] AS [SYS_PK], 
+    [MEM_SysLog].[SYS_LOG_Account] AS [SYS_LOG_Account], 
+    [MEM_SysLog].[SYS_Host] AS [SYS_Host], 
+    [MEM_SysLog].[SYS_Address] AS [SYS_Address], 
+    [MEM_SysLog].[SYS_Action] AS [SYS_Action], 
+    [MEM_SysLog].[SYS_Remarks] AS [SYS_Remarks], 
+    [MEM_SysLog].[SYS_InsertDate] AS [SYS_InsertDate], 
+    [MEM_SysLog].[SYS_InsertUser] AS [SYS_InsertUser]
+    FROM [dbo].[MEM_SysLog] AS [MEM_SysLog]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DI_WK_TEMPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DI_WK_TEMPEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="MEM_Activity" EntityType="DI_WK_TEMPModel.MEM_Activity" />
+          <EntitySet Name="MEM_SysLog" EntityType="DI_WK_TEMPModel.MEM_SysLog" />
+          <EntitySet Name="MEM_Membership" EntityType="DI_WK_TEMPModel.MEM_Membership" />
+          <EntitySet Name="MEM_UserActivity" EntityType="DI_WK_TEMPModel.MEM_UserActivity" />
+        </EntityContainer>
+        <EntityType Name="MEM_Activity">
+          <Key>
+            <PropertyRef Name="ACT_PK" />
+          </Key>
+          <Property Name="ACT_PK" Type="Guid" Nullable="false" />
+          <Property Name="ACT_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Category" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_FromDate" Type="DateTime" Precision="3" />
+          <Property Name="ACT_ToDate" Type="DateTime" Precision="3" />
+          <Property Name="ACT_Location" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Current" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Fee" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="ACT_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_MaxSeat" Type="Int32" />
+          <Property Name="ACT_Remarks" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_MemberTypeReq" Type="Int32" Nullable="false" />
+          <Property Name="ACT_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ACT_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="ACT_UpdateUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_DOC_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Flex1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Flex2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Flex3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Flex4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACT_Flex5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MEM_SysLog">
+          <Key>
+            <PropertyRef Name="SYS_PK" />
+            <PropertyRef Name="SYS_LOG_Account" />
+            <PropertyRef Name="SYS_InsertDate" />
+          </Key>
+          <Property Name="SYS_PK" Type="Guid" Nullable="false" />
+          <Property Name="SYS_LOG_Account" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Host" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Action" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SYS_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MEM_Membership">
+          <Key>
+            <PropertyRef Name="MBR_PK" />
+          </Key>
+          <Property Name="MBR_PK" Type="Guid" Nullable="false" />
+          <Property Name="MBR_ID" Type="Int32" Nullable="false" />
+          <Property Name="MBR_Type" Type="Int32" Nullable="false" />
+          <Property Name="MBR_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_ChineseName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Phone1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Phone2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_CountryCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_CountryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Age" Type="Int32" />
+          <Property Name="MBR_CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Occupations" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Skillset" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Professional" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Valuable" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Networking" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Parhnership" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_SupportInGroup" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Agreement" Type="Boolean" Nullable="false" />
+          <Property Name="MBR_ReferBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_MemberID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_GroupID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_EffectiveDate" Type="DateTime" Precision="3" />
+          <Property Name="MBR_ExpiredDate" Type="DateTime" Precision="3" />
+          <Property Name="MBR_Remarks" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_IsEnable" Type="Boolean" Nullable="false" />
+          <Property Name="MBR_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MBR_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="MBR_UpdateUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_QRCode" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="MBR_WeChatNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_DOC_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Flex1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Flex2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Flex3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Flex4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Flex5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MEM_UserActivity">
+          <Key>
+            <PropertyRef Name="UAC_PK" />
+          </Key>
+          <Property Name="UAC_PK" Type="Guid" Nullable="false" />
+          <Property Name="UAC_ID" Type="Int32" Nullable="false" />
+          <Property Name="UAC_MBR_PK" Type="Guid" Nullable="false" />
+          <Property Name="UAC_ACT_PK" Type="Guid" Nullable="false" />
+          <Property Name="UAC_ACT_Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UAC_ACT_Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UAC_ACT_From_Date" Type="DateTime" Precision="3" />
+          <Property Name="UAC_ACT_To_Date" Type="DateTime" Precision="3" />
+          <Property Name="UAC_ACT_Remarks" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="UAC_RegDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UAC_AttDate" Type="DateTime" Precision="3" />
+          <Property Name="UAC_Current" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UAC_Fee" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="UAC_Remarks" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="UAC_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UAC_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UAC_UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="UAC_UpdateUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UAC_DOC_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DI_WK_TEMPModelStoreContainer" CdmEntityContainer="DI_WK_TEMPEntities" >
+          <EntitySetMapping Name="MEM_Activity">
+            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_Activity">
+              <MappingFragment StoreEntitySet="MEM_Activity">
+                <ScalarProperty Name="ACT_Flex5" ColumnName="ACT_Flex5" />
+                <ScalarProperty Name="ACT_Flex4" ColumnName="ACT_Flex4" />
+                <ScalarProperty Name="ACT_Flex3" ColumnName="ACT_Flex3" />
+                <ScalarProperty Name="ACT_Flex2" ColumnName="ACT_Flex2" />
+                <ScalarProperty Name="ACT_Flex1" ColumnName="ACT_Flex1" />
+                <ScalarProperty Name="ACT_DOC_ID" ColumnName="ACT_DOC_ID" />
+                <ScalarProperty Name="ACT_UpdateUser" ColumnName="ACT_UpdateUser" />
+                <ScalarProperty Name="ACT_UpdateDate" ColumnName="ACT_UpdateDate" />
+                <ScalarProperty Name="ACT_InsertUser" ColumnName="ACT_InsertUser" />
+                <ScalarProperty Name="ACT_InsertDate" ColumnName="ACT_InsertDate" />
+                <ScalarProperty Name="ACT_MemberTypeReq" ColumnName="ACT_MemberTypeReq" />
+                <ScalarProperty Name="ACT_Remarks" ColumnName="ACT_Remarks" />
+                <ScalarProperty Name="ACT_MaxSeat" ColumnName="ACT_MaxSeat" />
+                <ScalarProperty Name="ACT_Status" ColumnName="ACT_Status" />
+                <ScalarProperty Name="ACT_Fee" ColumnName="ACT_Fee" />
+                <ScalarProperty Name="ACT_Current" ColumnName="ACT_Current" />
+                <ScalarProperty Name="ACT_Address" ColumnName="ACT_Address" />
+                <ScalarProperty Name="ACT_Location" ColumnName="ACT_Location" />
+                <ScalarProperty Name="ACT_ToDate" ColumnName="ACT_ToDate" />
+                <ScalarProperty Name="ACT_FromDate" ColumnName="ACT_FromDate" />
+                <ScalarProperty Name="ACT_Name" ColumnName="ACT_Name" />
+                <ScalarProperty Name="ACT_Category" ColumnName="ACT_Category" />
+                <ScalarProperty Name="ACT_Type" ColumnName="ACT_Type" />
+                <ScalarProperty Name="ACT_ID" ColumnName="ACT_ID" />
+                <ScalarProperty Name="ACT_PK" ColumnName="ACT_PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEM_SysLog">
+            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_SysLog">
+              <MappingFragment StoreEntitySet="MEM_SysLog">
+                <ScalarProperty Name="SYS_InsertUser" ColumnName="SYS_InsertUser" />
+                <ScalarProperty Name="SYS_InsertDate" ColumnName="SYS_InsertDate" />
+                <ScalarProperty Name="SYS_Remarks" ColumnName="SYS_Remarks" />
+                <ScalarProperty Name="SYS_Action" ColumnName="SYS_Action" />
+                <ScalarProperty Name="SYS_Address" ColumnName="SYS_Address" />
+                <ScalarProperty Name="SYS_Host" ColumnName="SYS_Host" />
+                <ScalarProperty Name="SYS_LOG_Account" ColumnName="SYS_LOG_Account" />
+                <ScalarProperty Name="SYS_PK" ColumnName="SYS_PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEM_Membership">
+            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_Membership">
+              <MappingFragment StoreEntitySet="MEM_Membership">
+                <ScalarProperty Name="MBR_Flex5" ColumnName="MBR_Flex5" />
+                <ScalarProperty Name="MBR_Flex4" ColumnName="MBR_Flex4" />
+                <ScalarProperty Name="MBR_Flex3" ColumnName="MBR_Flex3" />
+                <ScalarProperty Name="MBR_Flex2" ColumnName="MBR_Flex2" />
+                <ScalarProperty Name="MBR_Flex1" ColumnName="MBR_Flex1" />
+                <ScalarProperty Name="MBR_DOC_ID" ColumnName="MBR_DOC_ID" />
+                <ScalarProperty Name="MBR_WeChatNo" ColumnName="MBR_WeChatNo" />
+                <ScalarProperty Name="MBR_Photo" ColumnName="MBR_Photo" />
+                <ScalarProperty Name="MBR_QRCode" ColumnName="MBR_QRCode" />
+                <ScalarProperty Name="MBR_UpdateUser" ColumnName="MBR_UpdateUser" />
+                <ScalarProperty Name="MBR_UpdateDate" ColumnName="MBR_UpdateDate" />
+                <ScalarProperty Name="MBR_InsertUser" ColumnName="MBR_InsertUser" />
+                <ScalarProperty Name="MBR_InsertDate" ColumnName="MBR_InsertDate" />
+                <ScalarProperty Name="MBR_IsEnable" ColumnName="MBR_IsEnable" />
+                <ScalarProperty Name="MBR_Remarks" ColumnName="MBR_Remarks" />
+                <ScalarProperty Name="MBR_ExpiredDate" ColumnName="MBR_ExpiredDate" />
+                <ScalarProperty Name="MBR_EffectiveDate" ColumnName="MBR_EffectiveDate" />
+                <ScalarProperty Name="MBR_GroupID" ColumnName="MBR_GroupID" />
+                <ScalarProperty Name="MBR_MemberID" ColumnName="MBR_MemberID" />
+                <ScalarProperty Name="MBR_ReferBy" ColumnName="MBR_ReferBy" />
+                <ScalarProperty Name="MBR_Agreement" ColumnName="MBR_Agreement" />
+                <ScalarProperty Name="MBR_SupportInGroup" ColumnName="MBR_SupportInGroup" />
+                <ScalarProperty Name="MBR_Parhnership" ColumnName="MBR_Parhnership" />
+                <ScalarProperty Name="MBR_Networking" ColumnName="MBR_Networking" />
+                <ScalarProperty Name="MBR_Valuable" ColumnName="MBR_Valuable" />
+                <ScalarProperty Name="MBR_Professional" ColumnName="MBR_Professional" />
+                <ScalarProperty Name="MBR_Skillset" ColumnName="MBR_Skillset" />
+                <ScalarProperty Name="MBR_Occupations" ColumnName="MBR_Occupations" />
+                <ScalarProperty Name="MBR_CompanyName" ColumnName="MBR_CompanyName" />
+                <ScalarProperty Name="MBR_Age" ColumnName="MBR_Age" />
+                <ScalarProperty Name="MBR_CountryName" ColumnName="MBR_CountryName" />
+                <ScalarProperty Name="MBR_CountryCode" ColumnName="MBR_CountryCode" />
+                <ScalarProperty Name="MBR_Address2" ColumnName="MBR_Address2" />
+                <ScalarProperty Name="MBR_Address1" ColumnName="MBR_Address1" />
+                <ScalarProperty Name="MBR_Phone2" ColumnName="MBR_Phone2" />
+                <ScalarProperty Name="MBR_Phone1" ColumnName="MBR_Phone1" />
+                <ScalarProperty Name="MBR_ChineseName" ColumnName="MBR_ChineseName" />
+                <ScalarProperty Name="MBR_Name" ColumnName="MBR_Name" />
+                <ScalarProperty Name="MBR_Type" ColumnName="MBR_Type" />
+                <ScalarProperty Name="MBR_ID" ColumnName="MBR_ID" />
+                <ScalarProperty Name="MBR_PK" ColumnName="MBR_PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEM_UserActivity">
+            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_UserActivity">
+              <MappingFragment StoreEntitySet="MEM_UserActivity">
+                <ScalarProperty Name="UAC_DOC_ID" ColumnName="UAC_DOC_ID" />
+                <ScalarProperty Name="UAC_UpdateUser" ColumnName="UAC_UpdateUser" />
+                <ScalarProperty Name="UAC_UpdateDate" ColumnName="UAC_UpdateDate" />
+                <ScalarProperty Name="UAC_InsertUser" ColumnName="UAC_InsertUser" />
+                <ScalarProperty Name="UAC_InsertDate" ColumnName="UAC_InsertDate" />
+                <ScalarProperty Name="UAC_Remarks" ColumnName="UAC_Remarks" />
+                <ScalarProperty Name="UAC_Fee" ColumnName="UAC_Fee" />
+                <ScalarProperty Name="UAC_Current" ColumnName="UAC_Current" />
+                <ScalarProperty Name="UAC_AttDate" ColumnName="UAC_AttDate" />
+                <ScalarProperty Name="UAC_RegDate" ColumnName="UAC_RegDate" />
+                <ScalarProperty Name="UAC_ACT_Remarks" ColumnName="UAC_ACT_Remarks" />
+                <ScalarProperty Name="UAC_ACT_To_Date" ColumnName="UAC_ACT_To_Date" />
+                <ScalarProperty Name="UAC_ACT_From_Date" ColumnName="UAC_ACT_From_Date" />
+                <ScalarProperty Name="UAC_ACT_Type" ColumnName="UAC_ACT_Type" />
+                <ScalarProperty Name="UAC_ACT_Name" ColumnName="UAC_ACT_Name" />
+                <ScalarProperty Name="UAC_ACT_PK" ColumnName="UAC_ACT_PK" />
+                <ScalarProperty Name="UAC_MBR_PK" ColumnName="UAC_MBR_PK" />
+                <ScalarProperty Name="UAC_ID" ColumnName="UAC_ID" />
+                <ScalarProperty Name="UAC_PK" ColumnName="UAC_PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,144 @@
+﻿@model WebControlTower.Areas.SystemPage.Models.TokenStatusPageModel
+@{
+    ViewBag.Title = "TokenStatus";
+    Layout = "~/Views/Shared/_LayoutDatatable.cshtml";
+}
+@section styles
+{
+    <style>
+        .portlet :last-child .dashboard-stat {
+            margin-bottom: 15px;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Dashboard
+                </div>
+                <div class="tools">
+                    <a href="" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a id="dashboard_reload" href="" class="reload" data-url='@Url.Action("Index", "TokenStatus", new { area = "SystemPage", type = "dashboard" })' data-original-title="" title="">
+                    </a>
+                    <a href="" class="fullscreen" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                @Html.Partial("_TokenSettingDashboard", Model.DashBoards)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="clearfix">
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>Token Status
+                </div>
+                <div class="tools">
+                    <a href="" class="collapse" data-original-title="" title="">
+                    </a>
+                    <a id="details_reload" href="" class="reload" data-url='@Url.Action("Index", "TokenStatus", new { area = "SystemPage", type = "details" })' data-original-title="" title="">
+                    </a>
+                    <a href="" class="fullscreen" data-original-title="" title="">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                @Html.Partial("_TokenStatusDataTable", Model.Details)
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        function BindTable() {
+           var table = $('#myTable').dataTable({
+                responsive: true,
+                colReorder: true,
+                //dom: '<"top">rt<"bottom"lip><"clear">',
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]]
+            });
+        }
+
+        function ViewMore(value)
+        {
+            $('#myTable').DataTable().column(2).search(
+              value,
+               false,
+               false
+           ).draw();
+        }
+
+        $(document).ready(function () {
+            BindTable();
+            $('.portlet > .portlet-title > .tools > a.reload').click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var el = $(this).closest(".portlet").children(".portlet-body");
+                var url = $(this).attr("data-url");
+                var error = $(this).attr("data-error-display");
+                var id = $(this).attr("id");
+                if (url) {
+                    dctglobal.blockUI({
+                        target: el,
+                        animate: true,
+                        overlayColor: 'none'
+                    });
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: url,
+                        dataType: "html",
+                        success: function (res) {
+                            dctglobal.unblockUI(el);
+                            el.html(res);
+                            if (id == "details_reload")
+                            {
+                                BindTable();
+                            }
+                            else if (id == "dashboard_reload") {
+                                $("#details_reload").click();
+                            }
+                            },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            dctglobal.unblockUI(el);
+                            var msg = 'Error on reloading the content. Please check your connection and try again.';
+                            if (error == "toastr" && toastr) {
+                                toastr.error(msg);
+                            } else if (error == "notific8" && $.notific8) {
+                                $.notific8('zindex', 11500);
+                                $.notific8(msg, {
+                                    theme: 'ruby',
+                                    life: 3000
+                                });
+                            } else {
+                                alert(msg);
+                            }
+                        }
+                    });
+                } else {
+                    // for demo purpose
+                    dctglobal.blockUI({
+                        target: el,
+                        animate: true,
+                        overlayColor: 'none'
+                    });
+                    window.setTimeout(function () {
+                        dctglobal.unblockUI(el);
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+}

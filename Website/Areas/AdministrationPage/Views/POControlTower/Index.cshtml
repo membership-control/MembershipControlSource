@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "PO Control Tower";
+    Layout = ViewBag.Layout;
+}
+@section styles{
+    <style>
+        .dx-popup-content > .dx-fieldset {
+            margin: 1px 15px;
+            padding: 0;
+        }
+
+        .label-info {
+            background-color: #a5b3ab;
+        }
+    </style>
+}
+<div id="log-popup"></div>
+<div id="reprocess-popup"></div>
+<div class="loadpanel"></div>
+<div id="ContextPage">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <div class="dx-datagrid-title">
+                            <i class="fa fa-table"></i> PO Control Tower
+                        </div>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse" data-original-title="" title="">
+                        </a>
+                    </div>
+                    <div class="range-select">
+                        <div id="dtRange"></div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row" style="margin-bottom: -40px">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="portlet">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze"> Customer Order</span>
+                                    </div>
+                                </div>
+                                <div id="chart1container">
+                                    <div id="chart_7" class="chart" style="height: 300px;"></div>
+                                    <!--
+                                    <div class="well margin-top-20">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Top Radius:</label>
+                                                <input class="chart_7_chart_input" data-property="topRadius" type="range" min="0" max="1.5" value="1" step="0.01" />
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Angle:</label>
+                                                <input class="chart_7_chart_input" data-property="angle" type="range" min="0" max="89" value="30" step="1" />
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Depth:</label>
+                                                <input class="chart_7_chart_input" data-property="depth3D" type="range" min="1" max="120" value="40" step="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="portlet">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze"> FTP Processing</span>
+                                    </div>
+                                </div>
+                                <div id="chart2container">
+                                    <div id="chart_8" class="chart" style="height: 300px;"></div>
+                                    <!--
+                                    <div class="well margin-top-20">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Top Radius:</label>
+                                                <input class="chart_8_chart_input" data-property="topRadius" type="range" min="0" max="1.5" value="1" step="0.01" />
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Angle:</label>
+                                                <input class="chart_8_chart_input" data-property="angle" type="range" min="0" max="89" value="30" step="1" />
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Depth:</label>
+                                                <input class="chart_8_chart_input" data-property="depth3D" type="range" min="1" max="120" value="40" step="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="portlet">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze"> Order Status</span>
+                                    </div>
+                                </div>
+                                <div id="chart3container">
+                                    <div id="chart_9" class="chart" style="height: 300px;"></div>
+                                    <!--
+                                    <div class="well margin-top-20">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Top Radius:</label>
+                                                <input class="chart_9_chart_input" data-property="topRadius" type="range" min="0" max="1.5" value="1" step="0.01" />
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Angle:</label>
+                                                <input class="chart_9_chart_input" data-property="angle" type="range" min="0" max="89" value="30" step="1" />
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="text-left">Depth:</label>
+                                                <input class="chart_9_chart_input" data-property="depth3D" type="range" min="1" max="120" value="40" step="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="Grid1"></div>
+    </div>
+</div>
+@Html.Hidden("chart7url", Url.Action("LoadChartDataByCustomer", "POControlTower", new { range = "{PARAM1}" }))
+@Html.Hidden("chart8url", Url.Action("LoadChartDataFTPVsProcessing", "POControlTower", new { range = "{PARAM1}" }))
+@Html.Hidden("chart9url", Url.Action("LoadChartDataOrderStatus", "POControlTower", new { range = "{PARAM1}" }))
+@Html.Hidden("loadlogurl", Url.Action("LoadLog", "POControlTower", new {}))
+@Html.Hidden("reprocessUrl", Url.Action("ReprocessFile", "POControlTower", new { area = "VisibilityPage" }))
+@Html.Hidden("loadDetailsUrl", Url.Action("LoadDetails", "POControlTower", new { }))
+@section scripts{
+    <link href="~/Content/assets/admin/layout/css/custom-visibilitypage.css" rel="stylesheet" />
+    <script src="~/Scripts/global/DevDataGrid.js"></script>
+    <script src="~/Scripts/amcharts/amcharts.js" type="text/javascript"></script>
+    <script src="~/Scripts/amcharts/pie.js" type="text/javascript"></script>
+    <script src="~/Scripts/amcharts/themes/light.js" type="text/javascript"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js"></script>
+    <script src="~/Areas/VisibilityPage/Scripts/jquery-POControlTower.js"></script>
+    <script>
+        var selectableRange = ["24 Hours", "7 Days", "30 Days"];
+        var selectedRange = "";
+        var traceFile, sendToFolder, bReprocess;
+        var logPopup;
+        var reprocessPopup;
+        var reprocessClientData = ko.observable(null);
+    </script>
+    <script>
+    function refreshData() {
+            var url_reload = "@Url.Action("LoadAll", "POControlTower", new { area = "VisibilityPage", range = "{PARAM1}" })";
+            url_reload = url_reload.replace('@Url.Encode("{param1}")'.toUpperCase(), selectedRange);
+        ChartsAmcharts.InitGrid(url_reload);
+            ChartsAmcharts.init();
+        }
+    </script>
+    <script>
+    $(document).ready(
+        function () {
+            selectedRange = selectableRange[1];
+            var url = "@Url.Action("LoadAll", "POControlTower", new { area = "VisibilityPage", range = "{PARAM1}" })";
+            url = url.replace('@Url.Encode("{param1}")'.toUpperCase(), selectedRange);
+                ChartsAmcharts.InitGrid(url);
+
+                var dateRangeSelectBox = $("#dtRange").dxSelectBox({
+                    items: selectableRange,
+                    value: selectedRange,
+                    onValueChanged: function (e) {
+                        selectedRange = e.value;
+                        refreshData();
+                    }
+                }).dxSelectBox("instance");
+
+                ChartsAmcharts.init();
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadSelectBoxClientData", "POControlTower", new { area = "VisibilityPage" })",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                            reprocessClientData(data);
+                        },
+                    failure: function (errMsg) {
+                            alert(errMsg);
+                        }
+                });
+
+                logPopup = $("#log-popup").dxPopup({
+                    width: "80%",
+                    height: "80%",
+                    contentTemplate: function (contentElement) {
+                        $("<div />")
+                            .addClass("read-only-textarea")
+                            .dxTextArea({
+                                width: "100%",
+                                height: "100%",
+                                readOnly: true
+                            })
+                            .appendTo(contentElement);
+                    },
+                    onShowing: function () {
+                        ChartsAmcharts.submitLog(traceFile);
+                    },
+                    onHiding: function () {
+                        $(".read-only-textarea")
+                            .dxTextArea("instance")
+                            .option("value", "");
+                    }
+                }).dxPopup("instance");
+
+                reprocessPopup = $("#reprocess-popup").dxPopup({
+                    width: "38%",
+                    height: "21%",
+                    contentTemplate: function (contentElement) {
+                        //$("<div />")
+                        //    .addClass("read-only-textarea")
+                        //    .dxTextArea({
+                        //        width: "100%",
+                        //        height: "100%",
+                        //        readOnly: true
+                        //    })
+                        //    .appendTo(contentElement);
+                        $("<div />")
+                            .addClass("dx-fieldset")
+                            .appendTo(contentElement)
+                            .prepend($('<div />').addClass('dx-field'));
+                        $(".dx-popup-content > .dx-fieldset > .dx-field").prepend($('<div />').addClass('dx-field-label').text('$Clientname: '));
+                        $(".dx-popup-content > .dx-fieldset > .dx-field").append($('<div />').addClass('dx-field-value'));
+                        $(".dx-popup-content > .dx-fieldset > .dx-field > .dx-field-value").prepend(
+                                $("<div />")
+                                .attr("id", "txtClientname")
+                                .dxSelectBox({
+                                    items: reprocessClientData,
+                                    displayExpr: "Display",
+                                    valueExpr: "Folderpath",
+                                    searchEnabled: true
+                                }));
+                        $(".dx-popup-content > .dx-fieldset").append($('<div />').addClass('dx-field'));
+                        $(".dx-popup-content > .dx-fieldset > .dx-field:eq(1)").prepend($('<div />').addClass('dx-field-value'));
+                        $("<div />")
+                            .attr("id", "reprocess_btn")
+                            .dxButton({
+                                icon: "revert",
+                                type: "success",
+                                text: "Reprocess Now",
+                                onClick: ChartsAmcharts.ReprocessOnClicked
+                            }).appendTo($(".dx-popup-content > .dx-fieldset > .dx-field:eq(1) > .dx-field-value"));
+                    },
+                    onShowing: function () {
+
+                    },
+                    onHiding: function () {
+                        //$("#txtClientname").dxTextBox('instance').option('value', '');
+                    }
+                }).dxPopup("instance");
+        }
+       );
+    </script>
+}

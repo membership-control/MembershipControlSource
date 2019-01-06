@@ -1,0 +1,43 @@
+﻿@model List<Core.Services.DTO.AdminPage.ImportListenerSettingDTO>
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+        <div class="dashboard-stat blue-madison">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    ALL
+                </div>
+                <div class="desc">
+                    ALL
+                </div>
+            </div>
+            <a class="more" onclick="ViewMore('')">
+                View more<i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+            <div class="dashboard-stat @i.ToClassName("blue-madison" ,"green-haze" ,"red-intense" ,"purple-plum")">
+                <div class="visual">
+                    <i class="fa fa-comments"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        @Model[i].CurrentToken/@Model[i].MaxToken
+                    </div>
+                    <div class="desc">
+                        @Model[i].description
+                    </div>
+                </div>
+                <a class="more" onclick="ViewMore('@Model[i].description')">
+                    View more <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+    }
+
+</div>

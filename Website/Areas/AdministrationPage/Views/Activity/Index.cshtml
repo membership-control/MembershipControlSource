@@ -1,0 +1,59 @@
+﻿@model WebMembership.Areas.AdministrationPage.Models.ActivityLogModel
+@{
+    ViewBag.Title = "Activity";
+    Layout = ViewBag.Layout;
+}
+
+@section styles{
+    <style>
+        .first-group,
+        .second-group {
+            padding: 20px;
+        }
+
+        .second-group {
+            background-color: rgba(191, 191, 191, 0.15);
+        }
+    </style>
+}
+
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="@ViewData["Icon"]"></i> <a>Activity</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-fit-height grey-salt dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                Actions <i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li>
+                    <a href="#" onclick="activityUtils.fnew()" class="btn default">New</a>
+                </li>
+                <li class="divider">
+                </li>
+                <li>
+                    <a href="#" id="form_submit" onclick="activityUtils.fsubmit()" class="btn default">Submit</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="Context">
+    <div class="row">
+        <div>Select Activity</div>
+        <div id="activity-list"></div>
+    </div>
+    <div class="row">
+        <div id="form" class="dx-form" style="margin-bottom: 10px;"></div>
+    </div>
+</div>
+
+@Html.Hidden("forminit", Url.Action("LoadData", "Activity"))
+@Html.Hidden("checkid", Url.Action("IsIDAvailable", "Activity"))
+@section scripts{
+    <script src="~/Scripts/global/DevDXForm.js"></script>
+    <script src="~/Areas/AdministrationPage/Scripts/activity.js"></script>
+}

@@ -1,0 +1,39 @@
+﻿.dx-header-row {
+    background: #4CBAB4;
+}
+
+.dx-datagrid-title { 
+    border-color: #4CBAB4; 
+}
+.dx-datagrid
+{
+       border-radius: 10px !important;
+ 
+}
+
+.dx-datagrid-headers .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+
+.dx-datagrid-headers .dx-datagrid-nowrap .dx-datagrid-content .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+.dx-datagrid-headers  .dx-datagrid-content .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+.dx-datagrid-headers .dx-datagrid-nowrap  .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+
+.dx-datagrid-rowsview {
+    border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}

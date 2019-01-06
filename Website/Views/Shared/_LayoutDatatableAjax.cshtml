@@ -1,0 +1,79 @@
+﻿<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/colReorder.bootstrap.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/buttons.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/select.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/edit/editor.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/dataTables.tableTools.css" rel="stylesheet" />
+@*<link href="~/Content/DataTables/edit/scss/editor.envelope.min.css" rel="stylesheet" />*@
+<style type="text/css" class="init">
+    div.DTE_Body div.DTE_Body_Content div.DTE_Field {
+        float: left;
+        width: 50%;
+        padding: 5px 20px;
+        clear: none;
+        box-sizing: border-box;
+    }
+
+    div.DTE_Field_InputControl input {
+        width: 100%;
+    }
+
+    div.DTE_Body div.DTE_Form_Content:after {
+        content: ' ';
+        display: block;
+        clear: both;
+    }
+
+    div.modal-dialog {
+        width: 80%;
+    }
+</style>
+
+@RenderSection("styles", required: false)
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.colReorder.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.responsive.min.js"></script>
+<script src="~/Scripts/DataTables/responsive.bootstrap.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+<script src="~/Scripts/DataTables/buttons.bootstrap.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.select.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.tableTools.min.js"></script>
+<script src="~/Scripts/DataTables/edit/dataTables.editor.min.js"></script>
+<script src="~/Scripts/DataTables/edit/editor.bootstrap.min.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.fn.dataTable.defaults.oLanguage.sProcessing = '<img src="' + dctglobal.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + 'Toll Processing...' + '</span>';
+    });
+</script>
+
+@RenderSection("scripts", required: false)
+
+<script>
+    $(document).ready(function () {
+        //$.fn.dataTable.ext.errMode = 'throw';
+        //$('.dataTables_wrapper').on('preXhr.dt', function (e, settings, data) {
+        //    dctglobal.blockUI({
+        //        target: $(e.target),
+        //        overlayColor: 'none',
+        //        message: "Toll Processing..."
+        //    });
+        //});
+
+        //$('.dataTables_wrapper').on('xhr.dt', function (e, settings, data) {
+        //    dctglobal.unblockUI($(e.target));
+        //});
+
+        //dctglobal.blockUI({
+        //    target: $('#myTable'),
+        //    overlayColor: 'none',
+        //    message: "Toll Processing..."
+        //});
+
+    });
+</script>
+
+
+@RenderBody()

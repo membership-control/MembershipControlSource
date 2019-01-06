@@ -1,0 +1,61 @@
+﻿.dx-header-row {
+    background: #007f7b;
+}
+
+.dx-datagrid-title { 
+    border-color: #007f7b; 
+}
+
+.dx-datagrid
+{
+       border-radius: 10px !important;
+ 
+}
+
+.dx-datagrid-headers .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+
+.dx-datagrid-headers .dx-datagrid-nowrap .dx-datagrid-content .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+.dx-datagrid-headers  .dx-datagrid-content .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+.dx-datagrid-headers .dx-datagrid-nowrap  .dx-datagrid-scroll-container
+{
+    border-top-left-radius: 10px  !important;
+    border-top-right-radius: 10px  !important;
+}
+
+.dx-datagrid-rowsview {
+    border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.portlet > .portlet-title > .range-select {
+    float: right;
+    display: inline-block;
+    margin: 2px 0 0 0;
+    border: 0;
+    padding: 4px 0;
+}
+
+.internal-grid-container {
+    padding: 10px 0 10px 0;
+}
+
+.internal-grid-container > div:first-child {
+    padding: 0 0 5px 10px;
+    font-size: 14px;
+}
+
+.internal-grid-container > .internal-grid {
+    border: 1px solid #d2d2d2;
+}

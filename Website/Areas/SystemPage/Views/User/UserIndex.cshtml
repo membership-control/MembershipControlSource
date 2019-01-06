@@ -1,0 +1,539 @@
+﻿
+@{
+    ViewBag.Title = "UserManagement";
+    Layout = ViewBag.Layout;
+}
+@section styles
+{
+    <style>
+        .dx-datagrid-save-button{  
+            width: 0px !important;
+            height: 0px !important;
+            padding: 0px !important;
+            visibility: hidden !important;
+        }
+    </style>
+}
+<div id="ContextPage">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet box">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <div class="pagerheader">
+                            <i class="fa fa-user"></i> User Management
+                        </div>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse" data-original-title="" title="">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="editPopup" class="dx-popup" data-bind="dxPopup:
+                        {
+                            visible: popupVisible,
+                            contentTemplate: 'popupcontent1',
+                            height: '85%',
+                            onShowing: popupShowing,
+                            onHiding: popupHiding
+                        }
+                        ">
+                        <div data-options="dxTemplate: { name: 'popupcontent1' }" style="overflow-y: auto">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div id="editorForm" class="dx-form" style="margin-bottom: 10px;" data-bind="        dxForm:
+                                        {
+                                            formData: currentRow,
+                                            onContentReady: formContentReady,
+                                            colCount: 3,
+                                            items: [
+                                                { dataField: 'UserName', label: { text: 'User Name' }, editorOptions: { disabled: $root.IsAdmin }, isRequired: true },
+                                                { dataField: 'EmailAddress', label: { text: 'Email Address' }, editorOptions: { disabled: $root.IsAdmin }, isRequired: true },
+                                                { editorType: 'dxButton', editorOptions: { text: 'Reset Password', visible: $root.isedituser, onClick: function (e) { reserPassword() } } },
+                                                { dataField: 'RoleID', label: { text: 'Role Name' }, editorType: 'dxSelectBox', editorOptions: { dataSource: rolelookuplist, displayExpr: 'rolename', valueExpr: 'roleid', disabled: $root.IsAdmin }, isRequired: true },
+                                                { colSpan: 2, dataField: 'EnableUserSecrity', label: { text: 'UserSecurity' }, editorType: 'dxCheckBox', editorOptions: { disabled: $root.IsAdmin } }]
+                                }
+                                ">
+                                    </div>
+                                </div>
+                                  <div class="row">
+                                  <div class="dx-datagrid" id="GridPermission" data-bind="dxDataGrid:
+                                {
+                                    dataSource: PermissionsDataSource,
+                                    onContentReady: permissionGridContentReady,
+                                    columns: [
+                                         { dataField: 'Area', caption: 'Area', dataType: 'string', width: '200px', allowEditing: false },
+                                          { dataField: 'Description', caption: 'Description', dataType: 'string', width: '260px', allowEditing: false },
+                                           { dataField: 'Level', caption: 'Access Level', lookup: { dataSource: permissionLookup, valueExpr: 'level', displayExpr: 'permission' }, allowEditing: true}
+                                    ],
+                                    showColumnLines: true,
+                                    showRowLines: false,
+                                    scrolling: {
+                                        showScrollbar: 'always'
+                                    },
+                                    height: 310,
+                                    rowAlternationEnabled: true,
+                                    showBorders: true,
+                                    filterRow: { visible: false },
+                                    searchPanel: { visible: false },
+                                    allowColumnReordering: false,
+                                    allowColumnResizing: false,
+                                    pager: { visible: false },
+                                    paging: { enabled: false },
+                                    sorting: { mode: 'none' },
+                                    remoteOperations: {
+                                                filtering: true,
+                                                grouping: false,
+                                                paging: true,
+                                                sorting: true,
+                                                summary: false
+                                            },
+                                    editing: {
+                                        editEnabled: true,
+                                        editMode: 'batch',
+                                        insertEnabled: false,
+                                        removeEnabled: false
+                                    }
+                                }
+                                ">
+
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                  <div id ="gridUsersecurity" class="dx-datagrid" data-bind="dxDataGrid:
+                                {
+                                    dataSource: DBFilterSource,
+                                    onContentReady: usersettingGridContentReady ,
+                                    columns: [
+                                         { dataField: 'Type', caption: 'Type', lookup: { dataSource:TypeLookup, valueExpr: 'type', displayExpr: 'type' }, allowEditing: true },
+                                          { dataField: 'DataType', caption: 'Data Type', lookup: { dataSource: DataTypeLookup, valueExpr: 'datatype', displayExpr: 'datatype' }, allowEditing: true },
+                                           { dataField: 'Value', caption: 'Value', allowEditing: true }
+                                    ],
+                                    showColumnLines: true,
+                                    showRowLines: false,
+                                    scrolling: {
+                                         mode: 'virtual'
+                                    },
+                                    height: 310,
+                                    rowAlternationEnabled: true,
+                                    showBorders: true,
+                                    filterRow: { visible: false },
+                                    searchPanel: { visible: false },
+                                    allowColumnReordering: false,
+                                    allowColumnResizing: false,
+                                    pager: { visible: false },
+                                    paging: { enabled: false },
+                                    sorting: { mode: 'none' },
+                                    
+                                    remoteOperations: {
+                                                filtering: true,
+                                                grouping: false,
+                                                paging: false,
+                                                sorting: true,
+                                                summary: false
+                                            },
+                                    editing: {
+                                        editEnabled: true,
+                                        editMode: 'batch',
+                                        insertEnabled: true,
+                                        removeEnabled: true
+                                    }
+                                }
+                                ">
+
+                                    </div>
+                                </div>
+                                   <div class="col-md-2">
+                                    <div class="row" style="padding-top: 20px">
+                                        <div class="dx-button" data-bind="dxButton:
+                                {
+                                    text: 'Save',
+                                    onClick: saveEvent,
+                                    disabled: IsAdmin
+                                }
+                                ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id ="gridUser" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <link href="~/Content/assets/admin/layout/css/custom-systempage.css" rel="stylesheet" />
+        <script src="~/Scripts/global/DevDataGrid.js"></script>
+   @*    <script src="~/Areas/VisibilityPage/Scripts/ExportListenerLog.js"></script>*@
+        <script>
+            var _viewModel;
+            var urlperfix ;
+            var logPopup, filecontent,exportPopup, getexportdetail;
+            var selectedStatus = ko.observable("ALL");
+            var Data = null;
+            var rolelookuplist;
+            function reserPassword()
+            {
+                jQuery.ajax({
+                     type: 'POST',
+                     url: '@Url.Action("ResetPassword", "User", new { area = "SystemPage" })',
+                     dataType: 'json',
+                     data: JSON.stringify({ Id: self.currentRow().Id() }),
+                     contentType: 'application/json; charset=utf-8',
+                     success: function (data) {
+                         if (data== true)
+                             alert("Password changed to default password");
+                         else
+                             alert("Password cannot be changed");
+                     },
+                     failure: function (errMsg) {
+                         alert(errMsg);
+                     }
+                 })
+            }
+            var viewModel = function () {
+                self = this;
+                self.arraydatasource = null;
+                self.gridInstance = null;
+                self.gridContentReady = function (e) {
+                    if (!self.gridInstance)
+                        self.gridInstance = e.component;
+                };
+                self.formContentReady = function (e) {
+                };
+  
+                self.usersettingGridContentReady = function (e) {
+                    if (!self.usersettingGridInstance)
+                        self.usersettingGridInstance = e.component;
+                    var btn = document.querySelector('[aria-label="edit-button-cancel"]');
+                    btn.onclick = function () {
+                        self.usersecurityList = [];
+                    };
+                };
+                self.popupVisible = ko.observable(false);
+                self.currentRow = ko.observable(null);
+                self.IsAdmin = ko.observable(false);
+                self.permissionList = [];
+                self.usersecurityList = [];
+                self.isedituser = ko.observable(false);
+                self.saveEvent = function (e) {
+                    var deferred = $.Deferred();
+                    var dataGrid = $('#GridPermission').dxDataGrid('instance');
+                    dataGrid.saveEditData();
+                    dataGrid = $('#gridUsersecurity').dxDataGrid('instance');
+                    dataGrid.saveEditData();
+
+                    var data =
+                        {
+                            id: self.currentRow().Id(),
+                    name: self.currentRow().UserName(),
+                    email:self.currentRow().EmailAddress(),
+                    EnableUserSecrity:self.currentRow().EnableUserSecrity(),
+                    roleid: self.currentRow().RoleID(),
+                    action:'modify',
+                    jsonObjus: JSON.stringify(self.usersecurityList),
+                    jsonObjp: JSON.stringify(self.permissionList)
+                        };
+                       var url =  '@Url.Action("DevPageData", "User", new { area = "SystemPage" })';
+                    $.post(url, data)
+                        .done(function (result) {
+                            self.popupVisible(false);
+                            $("#gridUser").dxDataGrid("instance").refresh();
+                        }).fail(function (error) {
+                            deferred.reject(error.statusText)
+                        });
+                    return deferred.promise();
+                }
+                self.permissionGridContentReady = function (e) {
+                    if (!self.permissionGridInstance)
+                        self.permissionGridInstance = e.component;
+                    var btn = document.querySelector('[aria-label="edit-button-cancel"]');
+                    btn.onclick = function () {
+                        self.permissionList = [];
+                    };
+                };
+         
+                self.popupHiding = function (e) {
+                    if (self.permissionGridInstance != null) {
+                        self.permissionGridInstance.cancelEditData();
+                        self.permissionList = [];
+                    }
+                    if (self.usersettingGridInstance != null) {
+                        self.usersettingGridInstance.cancelEditData();
+                        self.usersecurityList = [];
+                    }
+                };
+                self.popupShowing = function (e) {
+                    if (self.permissionGridInstance != null) {
+                        self.permissionGridInstance.refresh();
+                    }
+
+                    if (self.usersettingGridInstance != null){
+                        self.usersettingGridInstance .refresh();
+                    }
+                };
+                self.permissionLookup = [
+              { level: 0, permission: 'None' },
+              { level: 1, permission: 'Read' },
+              { level: 3, permission: 'Read + Create' },
+              { level: 7, permission: 'Read + Create + Update' },
+              { level: 15, permission: 'Read + Create + Update + Delete' },
+              { level: 31, permission: 'Full Control' },
+                ];
+
+             self.TypeLookup = [
+            { type: 'DBFILTER' }
+                ];
+                self.DataTypeLookup = [
+            { datatype: 'TGF_PO_CONTROL_TABLE.CUSTOMERID' }
+                ];
+                self.PermissionsDataSource = new DevExpress.data.DataSource({
+                store: new DevExpress.data.CustomStore({
+                    key: 'PermissionId',
+                    load: function (loadOptions) {
+                        var def = $.Deferred();
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DevUserPermissions", "User", new { area = "SystemPage" })',
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify({ Id: self.currentRow().Id() }),
+                            success: function (data) {
+                                if (loadOptions.requireTotalCount === true)
+                                    def.resolve(data.data, { totalCount: data.totalCount });
+                                else
+                                    def.resolve(data.data);
+                                //dctglobal.unblockUI($('#ContextPage'));
+                            },
+                            failure: function (errMsg) {
+                                alert(errMsg);
+                            }
+                        });
+                        return def.promise();
+                    },
+                    update: function (key, values) {
+                        var d = new $.Deferred();
+                        var data_object = {
+                            'Key': key,
+                            'Data': values,
+                            'Action':''
+                        };
+                        self.permissionList.push(data_object);
+                        return d.promise();
+                    }
+                })
+            });
+
+                self.rolelookup = new DevExpress.data.DataSource({
+                store: new DevExpress.data.CustomStore({
+                    key: 'roleid',
+                    load: function (loadOptions) {
+                        var def = $.Deferred();
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("RoleLookup", "User", new { area = "SystemPage" })',
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (data) {
+                                if (loadOptions.requireTotalCount === true)
+                                    def.resolve(data.data, { totalCount: 0 });
+                                else
+                                    def.resolve(data.data);
+                                //dctglobal.unblockUI($('#ContextPage'));
+                            },
+                            failure: function (errMsg) {
+                                alert(errMsg);
+                            }
+                        });
+                        return def.promise();
+                    }                    
+                })
+            });
+
+                self.DBFilterSource = new DevExpress.data.DataSource({
+                store: new DevExpress.data.CustomStore({
+                    key: 'SettingID',
+                    load: function (loadOptions) {
+                        var def = $.Deferred();
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DevDBFilter", "User", new { area = "SystemPage" })',
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify({ Id: self.currentRow().Id() }),
+                            success: function (data) {
+                                if (loadOptions.requireTotalCount === true)
+                                    def.resolve(data.data, { totalCount: data.totalCount });
+                                else
+                                    def.resolve(data.data);
+                                //dctglobal.unblockUI($('#ContextPage'));
+                            },
+                            failure: function (errMsg) {
+                                alert(errMsg);
+                            }
+                        });
+                        return def.promise();
+                    },
+                    insert:function(values){
+                        var d = new $.Deferred();
+                        var data_object = {
+                            'key': null,
+                            'Data': values,
+                            'Action': 'insert'
+                        };
+                        self.usersecurityList.push(data_object);
+                        return d.promise();
+                    },
+                    update: function (key, values) {
+                        var d = new $.Deferred();
+                        var data_object = {
+                            'key': key,
+                            'Data': values,
+                            'Action': 'update'
+                        };
+                        self.usersecurityList.push(data_object);
+                        return d.promise();
+                    },
+                    remove: function (key, values) {
+                        var d = new $.Deferred();
+                        var data_object = {
+                            'key': key,
+                            'Data': values,
+                            'Action': 'remove'
+                        };
+                        self.usersecurityList.push(data_object);
+                        return d.promise();
+                    }
+                })
+            });
+            };
+
+            var gridContentReady = function (e) {
+                if (!self.gridInstance)
+                    self.gridInstance = e.component;
+            };
+            function clickAction(type, id, roleid, rolename, username, securityenable, email) {
+                if (type == 'EDIT') {
+                    var sec = true;
+                    if (securityenable == "false")
+                        sec = false;
+                    self.isedituser = ko.observable("true");
+                    var Data = { Id: ko.observable(id),RoleID: ko.observable(roleid), UserName: ko.observable(username), EmailAddress: ko.observable(email), EnableUserSecrity: ko.observable(sec), RoleName: ko.observable(rolename) };
+
+                    self.currentRow(Data);
+                    self.popupVisible(true);
+                }
+                if (type == 'INSERT') {
+                    self.isedituser= ko.observable("false");
+                    self.isedituser = ko.observable("true"); var Data = { Id: ko.observable(null), RoleID: ko.observable(null), UserName: ko.observable(""), EmailAddress: ko.observable(""), EnableUserSecrity: ko.observable(false), RoleName: ko.observable(null) };
+                    self.currentRow(Data);
+                    self.popupVisible(true);
+                }
+                if (type == 'DELETE') {
+                    var r = confirm("Are you confrim to delete user" + username);
+                    $("#gridUser").dxDataGrid("instance").refresh();
+                    if (r == true) {
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DeleteUser", "User", new { area = "SystemPage" })',
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify({ Id: id }),
+                            success: function (data) {
+                                $("#gridUser").dxDataGrid("instance").refresh();
+                                alert('User Deleted');
+                            },
+                            failure: function (errMsg) {
+                                alert('Fail to delete');
+                            }
+                        })
+                    }
+                }
+            }
+            $(document).ready(function () {
+                _viewModel = new viewModel();
+                ko.applyBindings(_viewModel, document.getElementById('ContextPage'));
+                 var gridoprtion = new $.DevDataGrid({
+                     url: "@Url.Action("GetAllUsers", "User", new { area = "SystemPage"})",
+                     key: "Id",
+                     columns: [
+                           {
+                               cellTemplate: function (cellElement, cellInfo) {                                   
+                                       $('<a>' + 'Edit'+ '</a>')
+                                        .attr('onclick', 'clickAction("EDIT","' + cellInfo.data['Id'] + '", "' + cellInfo.data['RoleID'] + '", "' + cellInfo.data['RoleName'] + '","' + cellInfo.data['Name'] + '","' + cellInfo.data['UserSec'] + '","' + cellInfo.data['EmailAddress'] + '");')
+                                       .appendTo(cellElement);
+                                   },width: '65px'
+                           },
+                        {
+                            cellTemplate: function (cellElement, cellInfo) {
+                                $('<a>' + 'New' + '</a>')
+                                 .attr('onclick', 'clickAction("INSERT","' + cellInfo.data['Id'] + '", "' + cellInfo.data['RoleID'] + '", "' + cellInfo.data['RoleName'] + '","' + cellInfo.data['Name'] + '","' + cellInfo.data['UserSec'] + '","' + cellInfo.data['EmailAddress'] + '");')
+                                .appendTo(cellElement);
+                            }, width: '65px'
+
+                        },
+                        {
+                            cellTemplate: function (cellElement, cellInfo) {
+                                $('<a>' + 'Delete' + '</a>')
+                                 .attr('onclick', 'clickAction("DELETE","' + cellInfo.data['Id'] + '", "' + cellInfo.data['RoleID'] + '", "' + cellInfo.data['RoleName'] + '","' + cellInfo.data['Name'] + '","' + cellInfo.data['UserSec'] + '","' + cellInfo.data['EmailAddress'] + '");')
+                                .appendTo(cellElement);
+                            }, width: '65px'
+
+                        },
+                          { dataField: 'Name', caption: 'Name', dataType: 'string' },
+                            { dataField: 'RoleName', caption: 'RoleName', dataType: 'string' },
+                     { dataField: 'UserSec', caption: 'UserSecurity', editorType: 'dxCheckBox'},
+                  { dataField: 'DBFil', caption: 'DBFilter', editorType: 'dxCheckBox' }
+                     ],
+                     showColumnLines: true,
+                     showRowLines: true,
+                     rowAlternationEnabled: true,
+                     showBorders: true,
+                     filterRow: { visible: true },
+                     searchPanel: { visible: false },
+                     allowColumnReordering: true,
+                     allowColumnResizing: true,
+                     pager: { visible: false },
+                     paging: { pageSize: 20 },
+                     pager: {
+                         showPageSizeSelector: true,
+                         allowedPageSizes: [20, 50, 100],
+                         showInfo: true,
+                         showNavigationButtons: true
+                     },
+                     remoteOperations: {
+                         filtering: true,
+                         grouping: false,
+                         paging: false,
+                         sorting: true,
+                         summary: false
+                     }
+                 });
+
+                 var gridContainer = $("#gridUser").dxDataGrid(gridoprtion.gridOptions);
+
+                 var loadlookup = jQuery.ajax({
+                     type: 'POST',
+                     url: '@Url.Action("RoleLookup", "User", new { area = "SystemPage" })',
+                     dataType: 'json',
+                     contentType: 'application/json; charset=utf-8',
+                     success: function (data) {
+                         rolelookuplist = data.data
+                     },
+                     failure: function (errMsg) {
+                         alert(errMsg);
+                     }
+                 })
+@*                 _viewModel = new viewModel();
+                 var url_reload = "@Url.Action("GetAllUsers", "User", new { area = "SystemPage", range = "{PARAM1}" })";
+                 url_reload = url_reload.replace('@Url.Encode("{param1}")'.toUpperCase(), selectedRange);
+                 $("#gridUser").dxDataGrid("instance").filter(["insert_date", ">", "getdate() - 1"]);*@
+
+    })
+        </script>
+}

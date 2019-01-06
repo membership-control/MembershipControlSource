@@ -1,0 +1,140 @@
+﻿@using Owin;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
+@model WebMembership.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage your account";
+    var manager = Request.GetOwinContext().GetUserManager<Core.Identity.ApplicationUserManager>();
+    var user = manager.FindById(User.Identity.GetUserId());
+    Layout = ViewBag.Layout;
+}
+
+<h2>@ViewBag.Title.</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="row">
+    <div class="col-md-8">
+        <p>
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("Change your password", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("Pick a password", "SetPassword")
+            }
+        </p>
+        @*<p>
+                Phone Number: @(Model.PhoneNumber ?? "None") [
+                @if (Model.PhoneNumber != null)
+                {
+                    @Html.ActionLink("Change", "AddPhoneNumber")
+                    @: &nbsp;|&nbsp;
+                    @Html.ActionLink("Remove", "RemovePhoneNumber")
+                }
+                else
+                {
+                    @Html.ActionLink("Add", "AddPhoneNumber")
+                }
+                ]
+            </p>
+            <p>
+                External Logins: @Model.Logins.Count
+                @Html.ActionLink("[Manage]", "ManageLogins")
+            </p>*@
+        @if (Model.EmailConfirmation)
+        {
+            if (Model.TwoFactor)
+            {
+                <form method="post" action="~/Manage/DisableTFA">
+                    <p>
+                        Two factor is currently enabled:
+                        <input type="submit" value="Disable" class="btn btn-default" />
+                    </p>
+                </form>
+            }
+            else
+            {
+                <form method="post" action="~/Manage/EnableTFA">
+                    <p>
+                        Two factor is currently disabled:
+                        <input type="submit" value="Enable" class="btn btn-default" />
+                    </p>
+                </form>
+            }
+
+            if (Model.BrowserRemembered)
+            {
+                <form method="post" action="~/Manage/ForgetBrowser">
+                    <p>
+                        Browser is curently remembered for two factor:
+                        <input type="submit" value="Forget Browser" class="btn btn-default" />
+                    </p>
+                </form>
+            }
+            else
+            {
+                <form method="post" action="~/Manage/RememberBrowser">
+                    <p>
+                        Browser is curently not remembered for two factor:
+                        <input type="submit" value="Remember Browser" class="btn btn-default" />
+                    </p>
+                </form>
+            }
+        }
+        else
+        {
+            <form method="post" action="~/Manage/EmailConfirm">
+                <p>
+                    you email not confirmed, please click below button.
+                    <input type="submit" value="Send Email" class="btn btn-default" />
+                </p>
+            </form>
+        }
+    </div>
+</div>
+<div class="row">
+    <form id="manageRolesForm" method="post" action="~/Manage/RoleIndex">
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Manage Roles" class="btn btn-default" />
+    </form>
+</div>
+<div class="row">
+    <form id="signOutEverywhereForm" method="post" action="~/Manage/SignOutEverywhere">
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Sign Out Everywhere" class="btn btn-default" />
+    </form>
+</div>
+<div class="row">
+    <form id="signOutClientForm" method="post" action="~/Manage/SignOutClient">
+        @Html.AntiForgeryToken()
+         <input type="hidden" id="clientId" name="clientId" />
+    </form>
+    <table>
+        <tr>
+            <th>
+                Client Key
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var client in user.Clients)
+        {
+            <tr>
+                <td>
+                    @client.ClientKey
+                </td>
+                <td>
+                    <input type="button" value="Sign Out" onclick="SignOutClient(@client.Id);" class="btn btn-default">
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        function SignOutClient(clientId)
+        {
+            $("#clientId").val(clientId);
+            $("#signOutClientForm").submit();
+        }
+    </script>
+}

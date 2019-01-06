@@ -1,0 +1,21 @@
+/* here you can put your own css to customize and override the theme */
+
+.header-navigation-membership a {
+  display: block;
+  color: #e6400c;
+  border: solid 2px;
+  border-radius: 10px !important; 
+  border-color: #e6400c;
+  padding: 0px 8px 0px 8px;
+}
+
+.header-navigation-membership a:hover {
+  color: #7bd8e5;
+}
+
+@media (max-width: 1024px) {
+  .header-mobi-ext .header-navigation a:hover{
+    background-color: #7bd8e5;
+    color: #fff !important;
+  }
+}

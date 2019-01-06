@@ -1,0 +1,321 @@
+﻿@model WebControlTower.Areas.SystemPage.Models.TokenStatusPageModel
+@{
+    ViewBag.Title = "Token Status";
+    Layout = ViewBag.Layout;
+}
+@section styles
+{
+    <style>
+        .portlet :last-child .dashboard-stat {
+            margin-bottom: 15px;
+        }
+
+        .dashboard-stat .details .number {
+            font-size: 24px;
+        }
+
+        .dashboard-stat .details .desc {
+            font-size: 12px;
+        }
+
+        @@media (min-width: 1200px) {
+            .col-lg-2 {
+                width: 12.444445%;
+            }
+        }
+        
+        @@media (min-width: 992px) {
+            .col-md-2 {
+                width: 12.444445%;
+            }
+        }
+    </style>
+}
+
+
+<div id="ContextPage">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <div class="pagerheader">
+                        <i class="fa fa-circle-o-notch"></i> Token Status
+                            </div>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse" data-original-title="" title="">
+                        </a>
+                        <a id="dashboard_reload" href="" class="reload" data-url='@Url.Action("DevPageData", "TokenStatus", new { area = "SystemPage", type = "dashboard" })' data-original-title="" title="">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row" data-bind='foreach: arraydatasource.DashBoards()'>
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                            <div data-bind="attr: { class: 'dashboard-stat ' + Css() }">
+                                <div class="visual">
+                                    <i class="fa fa-comments"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number">
+                                        <span class="text" data-bind="text: description() == null ? 'ALL' : CurrentToken() + '/' + MaxToken()"></span>
+                                    </div>
+                                    <div class="desc" >
+                                        <span class="text"  data-bind="text: description() == null ? 'ALL' : description()"></span>
+                                    </div>
+                                </div>
+                                <a class="more" data-bind="click: $root.ViewMore">
+                                    View more <i class="m-icon-swapright m-icon-white"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-table"></i>Token Details - <span data-bind="text: selectedToken"></span>
+                    </div>
+                    <div class="tools">
+                        <button id="btn_ResetTokens" class="btn btn-sm green-soft" style="display:inline-grid"> Reset Tokens</button>
+                        <button id="btn_Refresh" class="btn btn-sm blue-madison" data-url='@Url.Action("DevPageData", "TokenStatus", new { area = "SystemPage", type = "details" })' style="display:inline-grid"> Refresh</button>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="dx-datagrid" data-bind="dxDataGrid:
+    {
+        dataSource: {
+            store: {
+                data: arraydatasource.Details(),
+                type: 'array',
+                key: 'PK'
+            }
+        },
+        onContentReady: gridContentReady,
+        columns: [
+             { dataField: 'Setting_PK', caption: 'Setting_PK', dataType: 'string' },
+              { dataField: 'batch_id', caption: 'batch_id', dataType: 'string' },
+               { dataField: 'Status', caption: 'Status', dataType: 'string' },
+                { dataField: 'FileFullName', caption: 'FileFullName', dataType: 'string' },
+                 { dataField: 'REFERENCE', caption: 'REFERENCE', dataType: 'string' },
+                  { dataField: 'insert_date', caption: 'FLEX1', dataType: 'strdateing' },
+                   { dataField: 'update_date', caption: 'FLEX2', dataType: 'date' },
+                   { dataField: 'description', caption: 'description', dataType: 'string' }
+        ],
+        showColumnLines: true,
+        showRowLines: true,
+        rowAlternationEnabled: true,
+        showBorders: true,
+        filterRow: { visible: true },
+        searchPanel: { visible: true },
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        pager: { visible: true },
+        paging: { pageSize: 20 },
+        pager: {
+                    showPageSizeSelector: true,
+                    allowedPageSizes: [20, 50, 100],
+                    showInfo: true,
+                    showNavigationButtons: true
+                },
+        remoteOperations: {
+                    filtering: true,
+                    grouping: false,
+                    paging: true,
+                    sorting: true,
+                    summary: false
+                },
+        selection: {
+            mode: 'multiple',
+            allowSelectAll: true,
+            showCheckBoxesMode: 'always'
+        }
+    }
+    ">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+           <link href="~/Content/assets/admin/layout/css/custom-systempage.css" rel="stylesheet" />
+
+    <script>
+    var _viewModel;
+    var selectedToken = ko.observable("ALL");
+
+    var viewModel = function () {
+        self = this;
+        self.selectedToken = selectedToken;
+        self.arraydatasource = null;
+        self.gridInstance = null;
+        self.gridContentReady = function (e) {
+            if (!self.gridInstance)
+                self.gridInstance = e.component;
+        };
+        self.ViewMore = function (ko) {
+            if (ko.Setting_PK() == null) {
+                _viewModel.gridInstance.clearFilter('dataSource');
+                selectedToken('ALL');
+            }
+            else {
+                _viewModel.gridInstance.filter(["Setting_PK", "=", ko.Setting_PK()]);
+                selectedToken(ko.description());
+            }
+        };
+
+    };
+
+    $(document).ready(function () {
+        ko.cleanNode(document.getElementById('ContextPage'));
+        dctglobal.blockUI({
+            target: $('#ContextPage'),
+            animate: true,
+            overlayColor: 'none'
+        });
+        _viewModel = new viewModel();
+        $.get('@Url.Action("DevPageData", "TokenStatus", new { area = "SystemPage", type = "details" })', Math.random())
+            .done(function (data) {
+                dctglobal.unblockUI($('#ContextPage'));
+                _viewModel.arraydatasource = ko.mapping.fromJS(data);
+                ko.applyBindings(_viewModel, document.getElementById('ContextPage'));
+            }).error(
+            function (xhr, ajaxOptions, thrownError) {
+                dctglobal.unblockUI($('#ContextPage'));
+            });
+
+        $('#btn_ResetTokens').click(function (e) {
+            var keys = _viewModel.gridInstance.getSelectedRowKeys();
+            if (keys == null || keys == "") {
+                alert("please choosen at least one item ");
+                return;
+            }
+            //alert('selectedkeys:' + JSON.stringify(keys));
+            e.preventDefault();
+            var el = $(this).closest(".portlet").children(".portlet-body");
+            var error = $(this).attr("data-error-display");
+            //var url=
+            dctglobal.blockUI({
+                target: el,
+                animate: true,
+                overlayColor: 'none'
+            });
+
+            $.ajax({
+                type: "POST",
+                data: { keys: keys },
+                dataType: "json",
+                url: '@Url.Action("DevResetToken", "TokenStatus", new { area = "SystemPage" })',
+                success: function (data) {
+                        dctglobal.unblockUI(el);
+                        if (data)
+                            if (data.Code == "0") {
+                                alert("Reset success");
+                                $.ajax({
+                                    type: "POST",
+                                    cache: false,
+                                    url: '@Url.Action("DevPageData", "TokenStatus", new { area = "SystemPage", type = "details" })',
+                                    success: function (data) {
+                                        dctglobal.unblockUI(el);
+                                        _viewModel.arraydatasource = ko.mapping.fromJS(data, {}, _viewModel.arraydatasource);
+                                        _viewModel.gridInstance.refresh();
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        dctglobal.unblockUI(el);
+                                    }
+                                });
+                            }
+                            else
+                                alert(data.ErrMsg)
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        dctglobal.unblockUI(el);
+                    }
+                });
+
+            });
+
+        //sdfds
+        $('#btn_Refresh').click(function (e) {
+            e.preventDefault();
+            var el = $(this).closest(".portlet").children(".portlet-body");
+            var error = $(this).attr("data-error-display");
+            //var url=
+            dctglobal.blockUI({
+                target: el,
+                animate: true,
+                overlayColor: 'none'
+            });
+
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '@Url.Action("DevPageData", "TokenStatus", new { area = "SystemPage", type = "details" })',
+                success: function (data) {
+                    dctglobal.unblockUI(el);
+                    _viewModel.arraydatasource = ko.mapping.fromJS(data, {}, _viewModel.arraydatasource);
+                    _viewModel.gridInstance.refresh();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    dctglobal.unblockUI(el);
+                }
+            });
+        });
+
+            $('.portlet > .portlet-title > .tools > a.reload').click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var el = $(this).closest(".portlet").children(".portlet-body");
+                var url = $(this).attr("data-url");
+                var error = $(this).attr("data-error-display");
+                var id = $(this).attr("id");
+
+                if (url) {
+                    dctglobal.blockUI({
+                        target: el,
+                        animate: true,
+                        overlayColor: 'none'
+                    });
+
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: url,
+                        success: function (data) {
+                            dctglobal.unblockUI(el);
+                            _viewModel.arraydatasource = ko.mapping.fromJS(data, {}, _viewModel.arraydatasource);
+                            _viewModel.gridInstance.refresh();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            dctglobal.unblockUI(el);
+                        }
+                    });
+                } else {
+                    dctglobal.blockUI({
+                        target: el,
+                        animate: true,
+                        overlayColor: 'none'
+                    });
+                    window.setTimeout(function () {
+                        dctglobal.unblockUI(el);
+                    }, 1000);
+                }
+            });
+
+        });
+
+    </script>
+}
+

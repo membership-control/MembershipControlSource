@@ -1,0 +1,168 @@
+﻿@model WebControlTower.Areas.SystemPage.Models.FolderStatusPageModel
+@{
+    ViewBag.Title = "FolderStatus";
+    Layout = ViewBag.Layout;
+}
+<div id="ContextPage">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <div class="pagerheader">
+                            <i class="fa fa-folder-open-o"></i> Listener Folder Status
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="dx-datagrid"  data-bind="dxDataGrid:
+    {
+        dataSource: {
+            store: {
+                data: arraydatasource.Details(),
+                type: 'array',
+                key: 'TGF_GI_ControlTower_Server_Status_Setting_PK'
+            }
+        }
+
+,    
+                                allowColumnResizing: true,
+                sorting: { mode: 'multiple' },
+         
+          rowAlternationEnabled: true,
+        onContentReady: gridContentReady,
+           columns: [
+                    { dataField: 'Server_Name', caption: 'Server Name', width: 200,dataType: 'string' },
+                    { dataField: 'Setting_Detail', caption: 'Folder Path', width: 600,dataType: 'string' },
+                {
+                        dataField: 'UniqueKey', 
+                        width: 150,
+                        allowFiltering: false,
+                        caption: 'Number of file',
+                        allowSorting: false,
+                        cellTemplate: function (cellElement, cellInfo) {
+                            $('<div>Waiting for update..</div>')
+                    .attr('id', cellInfo.value.toString().replace(' ','').replace(':','').replace(/\\/g,'')+'1')                    
+                    .appendTo(cellElement);
+                                 }
+                        }@*,
+                                 {
+                        dataField: 'Setting_Detail', 
+                        width: 150,
+                        allowFiltering: false,
+                         caption: '',
+                        allowSorting: false,
+                        cellTemplate: function (cellElement, cellInfo) {
+                            $('<button ></button>').text('Turn ON').click(function () {
+                                alert(this.id);
+                                 }).attr('id', cellInfo.value.toString().replace(' ','')+'2')
+                                 .attr('disabled', true)
+                                 .appendTo(cellElement);
+                        }
+                    }*@
+        ]
+    }">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <link href="~/Content/assets/admin/layout/css/custom-systempage.css" rel="stylesheet" />
+    <script>
+        var _viewModel;
+        var viewModel = function () {
+            self = this;
+            self.arraydatasource = null;
+            self.gridInstance = null;
+            self.gridContentReady = function (e) {
+                if (!self.gridInstance)
+                    self.gridInstance = e.component;
+            };
+        };
+        $(document).ready(function () {
+
+            _viewModel = new viewModel();
+            $.get('@Url.Action("FolderStatusLoad", "FolderStatus", new { area = "SystemPage" })')
+             .done(function (data) {
+                 _viewModel.arraydatasource = ko.mapping.fromJS(data);
+                 //              _viewModel.gridInstance.refresh();
+                 ko.applyBindings(_viewModel, document.getElementById('ContextPage'));
+
+             }).error(
+              function (xhr, ajaxOptions, thrownError) {
+              })
+        }
+         );
+        $(function () {
+            var connection = dctglobal.getGlobalHubConnection();
+            $('#chartscroller').slimScroll({
+                color: '#00f',
+                size: '10px',
+                height: '250px',
+                alwaysVisible: true
+            });
+            var ChatHubProxy = connection.createHubProxy('ChatHub');
+            ChatHubProxy.on('addNewMessageToPage', function (name, message) {
+                var cname = '@User.Identity.Name';
+                                        var liclass;
+                                        if (cname == name)
+                                            liclass = "out";
+                                        else
+                                            liclass = "in";
+                                        $('#discussion').append('<li class="' + liclass + '"><div class="message"><span class="arrow"></span><a href="#" class="name">' + htmlEncode(name)
+                                            + '</a><span class="datetime">' + htmlEncode(message.datetime) + '</span><span class="body">' + htmlEncode(message.message) + '</span></div></li>');
+                                        $('#chartscroller').slimScroll({
+                                            scrollTo: '250px'
+                                        });
+
+                                    });
+                                    ChatHubProxy.on('addServerStatus', function (message) {
+                                        var Foldertemp = htmlEncode(message.Folder); 
+                                        var servername = htmlEncode(message.ServerName); 
+                                        var b = Foldertemp.split('|');
+                                        var i = 0;
+                                        while (i < b.length) {
+                                            var d =  b[i].split('=');
+                                            if (d.length > 1)
+                                            {
+                                                var name  = d[0].replace('Number of file in ','');
+                                                var numberoffile = d[1].replace(' ','');
+                                                name = name.replace(' ','').replace(':','').replace(/\\/g,'') + servername;
+                                                $('#'+name+'1').html('<span>'+numberoffile+'</span>');                        
+                                            }
+                                            i += 1;
+                                        }
+
+                
+                
+                                    });
+                                    connection.start().done(function () {
+                                        $('#sendmessage').click(function () {
+                                            ChatHubProxy.invoke('Send', $('#message').val());
+                                            $('#message').val('').focus();
+
+                                        });
+                                    });
+
+                                    connection.disconnected(function () {
+                                        ChatHubProxy.off('addNewMessageToPage');
+                                        ChatHubProxy.off('addServerStatus');
+                                    });
+                                });
+
+                                    function htmlEncode(value) {
+                                        var encodedValue = $('<div />').text(value).html();
+                                        return encodedValue;
+                                    }
+ 
+
+    </script>
+
+}

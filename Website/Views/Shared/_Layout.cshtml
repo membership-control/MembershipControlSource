@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Membership Control" name="description" />
+    <meta content="Codermatic Team" name="author" />
+    <title>Membership Control - @ViewBag.Title</title>
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/simple-line-icons.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Themes/uniformjs/default/css/uniform.default.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-switch/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/global/css/components.css" rel="stylesheet" />
+    <link href="~/Content/assets/global/css/plugins.css" rel="stylesheet" />
+    <link href="~/Content/assets/admin/layout/css/layout.css" rel="stylesheet" />
+    <link href="~/Content/assets/admin/layout/css/themes/light.css" rel="stylesheet" />
+    <link href="~/Content/assets/admin/layout/css/custom.css" rel="stylesheet" />
+    <link href="~/Content/jquery-notific8/jquery.notific8.min.css" rel="stylesheet" />
+
+    <link rel="shortcut icon" href="~/favicon.ico" />
+
+    <link href="~/Content/dx.common.css" rel="stylesheet" />
+    <link href="~/Content/dx.light.css" rel="stylesheet" />
+    @RenderSection("styles", required: false)
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-hover-dropdown.min.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/jquery.blockUI.min.js"></script>
+    <script src="~/Scripts/jquery.uniform.min.js"></script>
+    <script src="~/Scripts/jquery.cookie.min.js"></script>
+    <script src="~/Scripts/bootstrap-switch.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.notific8.min.js"></script>
+
+    <script src="~/Scripts/global/dctglobal.js"></script>
+    <script src="~/Scripts/global/CustomAjaxHandler.js"></script>
+    <script src="~/Scripts/admin/layout/layout.js"></script>
+    <script src="~/Scripts/admin/layout/quick-sidebar.js"></script>
+
+    <script src="~/Scripts/jquery.globalize/globalize.js"></script>
+    <script src="~/Scripts/knockout-3.4.0.js"></script>
+    <script src="~/Scripts/dx.chartjs.js"></script>
+    <script src="~/Scripts/dx.webappjs.js"></script>
+    <script src="~/Scripts/DataTables/jszip.js"></script>
+    <script src="~/Scripts/DataTables/jszip.min.js"></script>
+    <script src="~/Scripts/knockout.mapping-latest.js"></script>
+    <script src="~/Scripts/knockout.viewmodel.2.0.3.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <!-- BEGIN PACE PLUGIN FILES
+    <script src="~/Scripts/pace/pace.min.js" type="text/javascript"></script>
+    <link href="~/Scripts/pace/themes/pace-theme-barber-shop.css" rel="stylesheet" type="text/css" />
+    <!-- END PACE PLUGIN FILES -->
+
+    <script>
+        $(document).ready(function () {
+            dctglobal.setAssetsPath("@Url.Content("~/Content/assets/")");
+            dctglobal.setGlobalHubConnection("@Url.Content("~/signalr")");
+            dctglobal.init(); // init metronic core components
+            Layout.init(); // init current layout
+            QuickSidebar.init(); // init quick sidebar
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-style-square page-sidebar-closed page-sidebar-closed-hide-logo">
+    <div class="page-header navbar navbar-fixed-top">
+        <!-- BEGIN HEADER INNER -->
+        <div class="page-header-inner">
+            <!-- BEGIN LOGO -->
+            <div class="page-logo">
+                    <a href="#">
+                    <!--<a href="@Url.Action("Index", "Register", new { area = "AdministrationPage" })">-->
+                    <img src="~/Content/assets/global/img/membership_logo_default.png" class="logo-default" />
+                    <div class="menu-toggler sidebar-toggler hide">
+                        <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+                    </div>
+                </a>
+            </div>
+            <!-- END LOGO -->
+            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            </a>
+            <!-- END RESPONSIVE MENU TOGGLER -->
+            <!-- BEGIN TOP NAVIGATION MENU -->
+            <div class="top-menu">
+                @Html.Partial("_HeaderPartial")
+            </div>
+            <!-- END TOP NAVIGATION MENU -->
+        </div>
+        <!-- END HEADER INNER -->
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                @Html.Action("NavBarIndex", "Navbar", new { area = "" })
+            </div>
+        </div>
+        <!-- END SIDEBAR -->
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <div class="page-footer ">
+        <div class="page-footer-inner">
+            2018 &copy;  Membership Control System
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+</body>
+</html>

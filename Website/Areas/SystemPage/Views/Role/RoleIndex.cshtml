@@ -1,0 +1,520 @@
+﻿
+@{
+    ViewBag.Title = "Role Management";
+    Layout = ViewBag.Layout;
+}
+@section styles
+{
+    <style>
+        .dx-datagrid-save-button{  
+            width: 0px !important;
+            height: 0px !important;
+            padding: 0px !important;
+            visibility: hidden !important;
+        }
+    </style>
+}
+<div id="ContextPage">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet box">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <div class="pagerheader">
+                            <i class="fa fa-user"></i> Role Management
+                        </div>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse" data-original-title="" title="">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="dx-popup" data-bind="dxPopup:
+                    {
+                        visible: popupVisible,
+                        contentTemplate: 'popupcontent1',
+                        onShowing: popupShowing,
+                        onHiding: popupHiding,
+                        height: '85%'
+                    }
+                    ">
+                        <div data-options="dxTemplate: { name: 'popupcontent1' }" style="overflow-y: auto">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div id="editorForm" class="dx-form" style="margin-bottom: 10px;" data-bind="dxForm:
+                                {
+                                    formData: currentRow,
+                                    onContentReady: formContentReady,
+                                    items: [
+                                        {dataField: 'Name', label: {text: 'Role Name'}, editorOptions: {disabled: $root.IsAdmin}, isRequired: true},
+                                        {dataField: 'Description', label: {text: 'Role Description'}, editorOptions: {disabled: $root.IsAdmin}},
+                                        {dataField: 'Discriminator', label: {text: 'Discriminator'}, editorOptions: {disabled: true}}]
+                                }
+                                ">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="dx-datagrid" data-bind="dxDataGrid:
+                                {
+                                    dataSource: PermissionsDataSource,
+                                    onContentReady: permissionGridContentReady,
+                                    columns: [
+                                         { dataField: 'Area', caption: 'Area', dataType: 'string', width: '200px', allowEditing: false },
+                                          { dataField: 'Description', caption: 'Description', dataType: 'string', width: '260px', allowEditing: false },
+                                           { dataField: 'Level', caption: 'Access Level', lookup: { dataSource: permissionLookup, valueExpr: 'level', displayExpr: 'permission' }, allowEditing: true}
+                                    ],
+                                    showColumnLines: true,
+                                    showRowLines: false,
+                                    scrolling: {
+                                        showScrollbar: 'always'
+                                    },
+                                    height: 310,
+                                    rowAlternationEnabled: true,
+                                    showBorders: true,
+                                    filterRow: { visible: false },
+                                    searchPanel: { visible: false },
+                                    allowColumnReordering: false,
+                                    allowColumnResizing: false,
+                                    pager: { visible: false },
+                                    paging: { enabled: false },
+                                    sorting: { mode: 'none' },
+                                    onEditorPrepared: permissionEditorPrepared,
+                                    remoteOperations: {
+                                                filtering: true,
+                                                grouping: false,
+                                                paging: true,
+                                                sorting: true,
+                                                summary: false
+                                            },
+                                    editing: {
+                                        editEnabled: true,
+                                        editMode: 'batch',
+                                        insertEnabled: false,
+                                        removeEnabled: false
+                                    }
+                                }
+                                ">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="row" style="padding-top: 20px">
+                                        <div class="dx-button" data-bind="dxButton:
+                                {
+                                    text: saveButtonText,
+                                    onClick: saveEvent,
+                                    disabled: IsAdmin
+                                }
+                                ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dx-datagrid" data-bind="dxDataGrid:
+    {
+        dataSource: CustomDataSource,
+        onContentReady: gridContentReady,
+        columns: [
+            {
+                    cellTemplate: 'editColumn',
+                    width: '65px'
+            },
+            {
+                    cellTemplate: 'insertColumn', width: '60px'
+            },
+            {
+                    cellTemplate: 'deleteColumn', width: '70px'
+            },
+             { dataField: 'Name', caption: 'Name', dataType: 'string' },
+              { dataField: 'Description', caption: 'Description', dataType: 'string' },
+               { dataField: 'Discriminator', caption: 'Discriminator', dataType: 'string' }
+        ],
+        showColumnLines: true,
+        showRowLines: true,
+        rowAlternationEnabled: true,
+        showBorders: true,
+        filterRow: { visible: false },
+        searchPanel: { visible: false },
+        allowColumnReordering: true,
+        allowColumnResizing: true,
+        pager: { visible: false },
+        paging: { pageSize: 20 },
+        pager: {
+                    showPageSizeSelector: true,
+                    allowedPageSizes: [20, 50, 100],
+                    showInfo: true,
+                    showNavigationButtons: true
+                },
+        remoteOperations: {
+                    filtering: true,
+                    grouping: false,
+                    paging: true,
+                    sorting: true,
+                    summary: false
+                },
+        onContextMenuPreparing: contextMenuPreparing,
+        masterDetail: {
+            enabled: true,
+            template: 'detailUsers'
+        }
+    }
+    ">
+                        <div data-options="dxTemplate: {name: 'detailUsers'}">
+                            <div class="internal-grid-container">
+                                <div class="internal-grid" data-bind="dxList: {
+            			            dataSource: data.Users,
+                                    height: 'auto',
+                                    noDataText: 'No user for this role'
+            			        }">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div data-options="dxTemplate: { name: 'editColumn' }">
+                            <a class="dx-link" data-bind="click: $root.clickEdit">Edit</a>
+                        </div>
+                        <div data-options="dxTemplate: { name: 'insertColumn' }">
+                            <a class="dx-link" data-bind="click: $root.clickEdit">New</a>
+                        </div>
+                        <div data-options="dxTemplate: { name: 'deleteColumn' }">
+                            <a class="dx-link" data-bind="click: $root.clickEdit">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <link href="~/Content/assets/admin/layout/css/custom-systempage.css" rel="stylesheet" />
+    <script>
+        var _viewModel;
+        var url = '@Url.Action("DevPageData", "Role", new { area = "SystemPage" })';
+        var viewModel = function () {
+            self = this;
+            self.arraydatasource = null;
+            self.gridInstance = null;
+            self.permissionGridInstance = null;
+            self.formInstance = null;
+            self.IsAdmin = ko.observable(false);
+            self.currentRow = ko.observable(null);
+            self.popupVisible = ko.observable(false);
+            self.saveButtonText = ko.observable('Save');
+            self.permissionList = [];
+            self.gridContentReady = function (e) {
+                if (!self.gridInstance)
+                    self.gridInstance = e.component;
+            };
+            self.permissionGridContentReady = function (e) {
+                if (!self.permissionGridInstance)
+                    self.permissionGridInstance = e.component;
+                var btn = document.querySelector('[aria-label="edit-button-cancel"]');
+                btn.onclick = function () {
+                    self.permissionList = [];
+                };
+            };
+
+            self.permissionEditorPrepared = function (options) {
+                if (options.parentType == 'dataRow' && options.dataField == "Level") {
+                    options.editorElement.dxSelectBox('instance').option('onValueChanged', function (e) {
+                        self.permissionList = $.grep(self.permissionList, function (el, idx) { return el.PermissionID === options.row.key }, true);
+                        var data_object = {
+                            'PermissionID': options.row.key,
+                            'PermissionLevel': e.value
+                        };
+                        self.permissionList.push(data_object);
+                        options.setValue(e.value);
+                        ////alert(JSON.stringify(self.permissionList));
+                    });
+                }
+            };
+            self.popupShowing = function (e) {
+                if (self.permissionGridInstance != null)
+                {
+                    self.permissionGridInstance.refresh();
+                }
+            };
+            self.popupHiding = function (e) {
+                if (self.permissionGridInstance != null)
+                {
+                    self.permissionGridInstance.cancelEditData();
+                    self.permissionList = [];
+                }
+            };
+            self.permissionLookup = [
+                { level: 0, permission: 'None' },
+                { level: 1, permission: 'Read' },
+                { level: 3, permission: 'Read + Create' },
+                { level: 7, permission: 'Read + Create + Update' },
+                { level: 15, permission: 'Read + Create + Update + Delete' },
+                { level: 31, permission: 'Full Control' },
+            ];
+            self.formContentReady = function (e) {
+                //alert(e.component.formData);
+                //if (!self.formInstance)
+                //    self.formInstance = e.component;
+                //var ops = self.saveButtonText();
+                //if (ops === 'Insert')
+                //{
+                //    self.formInstance.updateData('Name', '');
+                //    self.formInstance.updateData('Description', '');
+                //}
+                //setTimeout(function () {
+                //    var form = e.element;
+                //    var btn = form.find(".dx-button[aria-label=edit-button-cancel]");
+                //    btn.dxButton("instance").option("onClick", function () {
+                //        //self.permissionGridInstance.cancelEditData();
+                //        //self.permissionList = [];
+                //        //alert(self.permissionList);
+                //    });
+                //}, 3);
+            };
+            self.contextMenuPreparing = function (e) {
+                if (e.row.rowType === "data") {
+                    e.items = [{
+                        text: "Edit role permissions",
+                        onItemClick: function () {
+                            //self.gridInstance.editRow(e.row.rowIndex);
+                            alert('Not Implemented yet' + e.row.rowIndex);
+                        }
+                    }];
+                }
+            };
+
+            self.CustomDataSource = new DevExpress.data.DataSource({
+                store: new DevExpress.data.CustomStore({
+                    key: 'Id',
+                    byKey: function (key) {
+                        var d = new $.Deferred();
+                        var url = url;
+                        var data = {
+                            action: "seachsingle",
+                            key: key
+                        }
+                        $.post(url, data)
+                            .done(function (result) {
+                                d.resolve(result[i]);
+                            }).fail(function (error) {
+                                d.reject(error.statusText)
+                            });
+                        return d.promise();
+                    },
+                    errorHandler: function (error) {
+                        console.log(error.message);
+                    },
+                    load: function (loadOptions) {
+                        var deferred = $.Deferred();
+                        loadOptions.action = "search"
+                        $.post(url, loadOptions)
+                                .done(function (result) {
+                                    if (loadOptions.requireTotalCount === true)
+                                        deferred.resolve(result.data, { totalCount: result.totalCount });
+                                    else
+                                        deferred.resolve(result.data);
+
+                                }).fail(function (error) {
+                                    deferred.reject(error.statusText)
+                                });
+                        return deferred.promise();
+                    },
+                    insert: function (values) {
+                        var role_permissions_object = {
+                            'RolePermissions': self.permissionList
+                        };
+                        var deferred = $.Deferred();
+                        var data =
+                            {
+                                action: "create",
+                                values: values,
+                                jsonObj: JSON.stringify(role_permissions_object)
+                            };
+                        $.post(url, data)
+                            .done(function (result) {
+                                if (result.haveError)
+                                    deferred.reject(result.error);
+                                else
+                                    deferred.resolve(result);
+                            }).fail(function (error) {
+                                deferred.reject(error.statusText)
+                            });
+                        return deferred.promise();
+                    },
+                    update: function (key, values) {
+                        var role_permissions_object = {
+                            'RolePermissions': self.permissionList
+                        };
+                        var deferred = $.Deferred();
+                        var data =
+                            {
+                                action: "update",
+                                key: key,
+                                values: values,
+                                jsonObj: JSON.stringify(role_permissions_object)
+                            };
+                        $.post(url, data)
+                            .done(function (result) {
+                                if (result.haveError)
+                                    deferred.reject(result.error);
+                                else
+                                    deferred.resolve(result);
+                            }).fail(function (error) {
+                                deferred.reject(error.statusText)
+                            });
+                        return deferred.promise();
+                    },
+                    remove: function (key, values) {
+                        var deferred = $.Deferred();
+                        var data =
+                            {
+                                action: "delete",
+                                key: key,
+                            };
+                        $.post(url, data)
+                            .done(function (result) {
+                                if (result.haveError)
+                                    deferred.reject(result.error);
+                                else
+                                    deferred.resolve(result);
+                            }).fail(function (error) {
+                                deferred.reject(error.statusText)
+                            });
+                        return deferred.promise();
+                    }
+                })
+            });
+
+            self.PermissionsDataSource = new DevExpress.data.DataSource({
+                store: new DevExpress.data.CustomStore({
+                    key: 'PermissionId',
+                    load: function (loadOptions) {
+                        var def = $.Deferred();
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DevRolePermissions", "Role", new { area = "SystemPage" })',
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify({ Id: self.currentRow().Id() }),
+                            success: function (data) {
+                                if (loadOptions.requireTotalCount === true)
+                                    def.resolve(data.data, { totalCount: data.totalCount });
+                                else
+                                    def.resolve(data.data);
+                                //dctglobal.unblockUI($('#ContextPage'));
+                            },
+                            failure: function (errMsg) {
+                                alert(errMsg);
+                            }
+                        });
+                        return def.promise();
+                    },
+                    update: function (key, values) {
+                        var deferred = $.Deferred();
+                        var data =
+                            {
+                                action: "update",
+                                key: key,
+                                values: values
+                            };
+                        
+                        return deferred.promise();
+                    }
+                })
+            });
+
+            self.clickEdit = function (rowIndex, row) {
+                var Data = { Id: ko.observable(rowIndex.key), Name: ko.observable(rowIndex.values['4']), Description: ko.observable(rowIndex.values['5']), Discriminator: ko.observable(rowIndex.values['6']) };
+                if (rowIndex.columnIndex === 1) {
+                    if (Data.Name() === 'Admin' || Data.Name() === 'Default User')
+                        self.IsAdmin(true);
+                    else
+                        self.IsAdmin(false);
+                    self.currentRow(Data);
+                    self.saveButtonText('Update');
+                    self.popupVisible(true);
+                }
+                if (rowIndex.columnIndex === 2) {
+                    self.IsAdmin(false);
+                    Data.Id = ko.observable(null);
+                    Data.Name = ko.observable('');
+                    Data.Description = ko.observable('');
+                    self.currentRow(Data);
+                    self.saveButtonText('Insert');
+                    self.popupVisible(true);
+                }
+                if (rowIndex.columnIndex === 3) {
+                    if (Data.Name() === 'Admin' || Data.Name() === 'Default User')
+                        alert('Unable to delete system roles')
+                    else
+                    {
+                        if (!confirm("Confirm delete " + Data.Name() + " role ?"))
+                            return;
+
+                        self.CustomDataSource.store().remove(Data.Id)
+                        .done(function () {
+                            DevExpress.ui.notify("Role deleted successfully");
+                            self.gridInstance.refresh();
+                        });
+                    }
+                }
+                //Data = null;
+            };
+            self.saveEvent = function () {
+                var form = $('#editorForm').dxForm('instance');
+                var val_result = form.validate();
+                if (!val_result.isValid)
+                    return;
+                var obj = self.currentRow();
+                //alert(obj.Name);
+                switch (self.saveButtonText())
+                {
+                    case 'Update':
+                        self.CustomDataSource.store().update(obj.Id, obj)
+                        .done(function () {
+                            self.gridInstance.refresh();
+                        });
+                        self.popupVisible(false);
+                        break;
+
+                    case 'Insert':
+                        self.CustomDataSource.store().insert(obj)
+                        .done(function () {
+                            self.gridInstance.refresh();
+                        });
+                        self.popupVisible(false);
+                        break;
+
+                    default:
+                        alert('no save event');
+                        break;
+                }
+            };
+
+        };
+        $(document).ready(
+            function () {
+                ko.cleanNode(document.getElementById('ContextPage'));
+                dctglobal.blockUI({
+                    target: $('#ContextPage'),
+                    animate: true,
+                    overlayColor: 'none'
+                });
+                _viewModel = new viewModel();
+                ko.applyBindings(_viewModel, document.getElementById('ContextPage'));
+                dctglobal.unblockUI($('#ContextPage'));
+                @*$.get('@Url.Action("DevPageData", "Role", new { area = "SystemPage" })', Math.random())
+                .done(function (data) {
+                    dctglobal.unblockUI($('#ContextPage'));
+                    _viewModel.arraydatasource = ko.mapping.fromJS(data);
+                    ko.applyBindings(_viewModel, document.getElementById('ContextPage'));
+                }).error(
+                function (xhr, ajaxOptions, thrownError) {
+                    dctglobal.unblockUI($('#ContextPage'));
+                });*@
+        }
+   );
+    </script>
+}

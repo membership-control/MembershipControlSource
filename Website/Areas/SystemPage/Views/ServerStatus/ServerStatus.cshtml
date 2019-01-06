@@ -1,0 +1,240 @@
+﻿@model WebControlTower.Areas.SystemPage.Models.ServerStatusPageModel
+@{
+    ViewBag.Title = "ServerStatus";
+    Layout = ViewBag.Layout;
+}
+<link href="~/Content/css/ServerStatus.css" rel="stylesheet"  />
+<link href="~/Content/assets/admin/layout/css/custom-systempage.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.easypiechart.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.flot.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.flot.resize.js" type="text/javascript"></script>
+<script src="~/Scripts/System/ServerStatus.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.sparkline.min.js" type="text/javascript"></script>
+
+<div id="ContextPage">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <div class="pagerheader">
+                            <i class="fa fa-tasks"></i> Server Status
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row" data-bind='foreach: arraydatasource.Details()'>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="portlet box red-sunglo">
+                                        <div class="portlet-title">
+                                            <div class="caption" data-bind="attr: { id: 'Title_' + Server_Name() }, text: Server_Name() ">
+                                            </div>
+                                            <div class="tools">
+                                                <a href="" class="collapse"></a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <div class="row">
+                                                <div class="col-md-3 col-sm-3">
+                                                    <div class="sparkline-chart">
+                                                        <div margin: left data-bind="attr: { id: 'CPU_CHART_' + Server_Name() }"></div>
+                                                        <div data-bind="attr: { id: 'CPU_TITLE_' + Server_Name() }">Waiting for information</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <div class="sparkline-chart">
+                                                        <div margin: left data-bind="attr: { id: 'MEMORY_CHART_' + Server_Name() }"></div>
+                                                        <div data-bind="attr: { id: 'MEMORY_TITLE_' + Server_Name() }">Waiting for information</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <div class="easy-pie-chart">
+                                                        <div data-percent="0" data-bind="attr: { id: 'cdriver_' + Server_Name(), class: 'number CDriver' + Server_Name() }" >
+                                                            <span>0 </span>
+                                                            %
+                                                        </div>
+                                                        <div data-bind="attr: { id: 'cdriver_TITLE_' + Server_Name() }" style="padding: 15px 0px;">Waiting for information</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                    <div class="easy-pie-chart">
+                                                        <div data-percent="0" data-bind="attr: { id: 'ddriver_' + Server_Name(), class: 'number DDriver' + Server_Name() }" >
+                                                            <span>0 </span>
+                                                            %
+                                                        </div>
+                                                        <div data-bind="attr: { id: 'ddriver_TITLE_' + Server_Name() }" style="padding: 15px 0px;">Waiting for information</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        var _viewModel;
+        var selectedToken = ko.observable("ALL");
+        var viewModel = function () {
+            self = this;
+            self.arraydatasource = null;
+            self.gridInstance = null;
+            self.gridContentReady = function (e) {
+                if (!self.gridInstance)
+                    self.gridInstance = e.component;
+            };
+        };
+        $(document).ready(function () {
+            _viewModel = new viewModel();
+            $.get('@Url.Action("ServerStatusLoad", "ServerStatus", new { area = "SystemPage", type = "details" })', Math.random())
+                  .done(function (data) {
+                      dctglobal.unblockUI($('#ContextPage'));
+                      _viewModel.arraydatasource = ko.mapping.fromJS(data);
+                      $.each(_viewModel.arraydatasource.Details(), function (index, value) {
+                          var cpudata1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                          var memorydata1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                          var serverame = value.Server_Name();
+                          sessionStorage.setItem('cpudata' + value.Server_Name(), cpudata1);
+                          sessionStorage.setItem('memorydata' + value.Server_Name(), memorydata1);
+                      });
+                      ko.applyBindings(_viewModel, document.getElementById('ContextPage'));
+                      $.each(_viewModel.arraydatasource.Details(), function (index, value) {
+                          $('.easy-pie-chart .number.CDriver' + value.Server_Name()).easyPieChart({
+                              animate: 1000,
+                              size: 100,
+                              lineWidth: 7,
+                              barColor: '#1caf9a'
+                          });
+
+                          $('.easy-pie-chart .number.DDriver' + value.Server_Name()).easyPieChart({
+                              animate: 1000,
+                              size: 100,
+                              lineWidth: 7,
+                              barColor: '#1caf9a'
+                          });
+                      });
+                  }).error(
+                  function (xhr, ajaxOptions, thrownError) {
+                      dctglobal.unblockUI($('#ContextPage'));
+                  });
+
+        })
+        $(function () {
+            var connection = dctglobal.getGlobalHubConnection();
+            $('#chartscroller').slimScroll({
+                color: '#00f',
+                size: '10px',
+                height: '250px',
+                alwaysVisible: true
+            });
+            var ChatHubProxy = connection.createHubProxy('ChatHub');
+            ChatHubProxy.on('addNewMessageToPage', function (name, message) {
+                var cname = '@User.Identity.Name';
+                var liclass;
+                if (cname == name)
+                    liclass = "out";
+                else
+                    liclass = "in";
+                $('#discussion').append('<li class="' + liclass + '"><div class="message"><span class="arrow"></span><a href="#" class="name">' + htmlEncode(name)
+                    + '</a><span class="datetime">' + htmlEncode(message.datetime) + '</span><span class="body">' + htmlEncode(message.message) + '</span></div></li>');
+                $('#chartscroller').slimScroll({
+                    scrollTo: '250px'
+                });
+
+            });
+            ChatHubProxy.on('addServerStatus', function (message) {
+
+                var temps = htmlEncode(message.Folder);
+                var detail = '<span>' + htmlEncode(message.ServerName) + '</span></br><span>' + htmlEncode(message.Cpuload) + '</span></br><span>' + htmlEncode(message.MemoryUsage) + '</span></br>';
+                var servicetemp = htmlEncode(message.Service);
+                var b = servicetemp.split('|');
+                var i = 0;
+                while (i < b.length) {
+                    detail = detail + '<span>' + b[i] + '</span></br>';
+                    i += 1;
+                }
+                var foldertemp = htmlEncode(message.Folder);
+                var c = foldertemp.split('|');
+                var i = 0;
+                while (i < c.length) {
+                    detail = detail + '<span>' + c[i] + '</span></br>'
+                    i += 1;
+                }
+                detail = detail + '<span>' + htmlEncode(message.RefreshTime) + '</span></br>'
+
+                var status = message.Cpuload;
+                var status2;
+                status = status.replace("CPU Usage: ", "");
+                status = status.replace("%", "");
+                ServerStatus.updateArray(status, "cpudata" + message.ServerName);
+                ServerStatus.refreshChart("cpudata", message.ServerName);
+                $('#CPU_TITLE_' + message.ServerName).html(message.Cpuload);
+
+                status = message.MemoryUsage;
+                status = status.replace("Memeory Usage: ", "");
+                status = status.replace(" MB", "");
+                var m = status.split("/");
+                var mp = (m[0] / m[1]) * 100
+                ServerStatus.updateArray(mp, "memorydata" + message.ServerName);
+                ServerStatus.refreshChart("memorydata", message.ServerName);
+                $('#MEMORY_TITLE_' + message.ServerName).html(message.MemoryUsage);
+
+
+                status = message.CDrive;
+                status = status.replace("C Drive Avaliable Space: ", "");
+                status = status.replace(" MB", "");
+                status2 = message.CDriveTotal;
+                status2 = status2.replace("C Drive Total Space: ", "");
+                status2 = status2.replace(" MB", "");
+                $('#cdriver_TITLE_' + message.ServerName).html(message.CDrive);
+                $('.easy-pie-chart .number.CDriver' + message.ServerName).data('easyPieChart').update(((status / status2) * 100).toFixed(2), 5000);
+                $('span', $('.easy-pie-chart .number.CDriver' + message.ServerName)).text(((status / status2) * 100).toFixed(2));
+                if (!message.DDrive) {
+                    status = '0';
+                } else {
+                    status = message.DDrive;
+                }
+                status = status.replace("D Drive Avaliable Space: ", "");
+                status = status.replace(" MB", "");
+                if (!message.DDriveTotal) {
+                    status = '0';
+                } else {
+                    status2 = message.DDriveTotal;
+                }
+                status2 = status2.replace("D Drive Total Space: ", "");
+                status2 = status2.replace(" MB", "");
+                $('#ddriver_TITLE_' + message.ServerName).html(message.DDrive);
+                $('.easy-pie-chart .number.DDriver' + message.ServerName).data('easyPieChart').update(((status / status2) * 100).toFixed(2), 5000);
+                $('span', $('.easy-pie-chart .number.DDriver' + message.ServerName)).text(((status / status2) * 100).toFixed(2));
+            });
+
+            connection.start().done(function () {
+                $('#sendmessage').click(function () {
+                    ChatHubProxy.invoke('Send', $('#message').val());
+                    $('#message').val('').focus();
+
+                });
+            });
+
+            connection.disconnected(function () {
+                ChatHubProxy.off('addNewMessageToPage');
+                ChatHubProxy.off('addServerStatus');
+            });
+        });
+
+            function htmlEncode(value) {
+                var encodedValue = $('<div />').text(value).html();
+                return encodedValue;
+            }
+
+
+    </script>
+}

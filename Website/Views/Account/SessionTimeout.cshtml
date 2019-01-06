@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "DW_EVENT_MASTER";
+    Layout = ViewBag.Layout;
+}
+<html>
+    <body>
+        <h3>Your session is timeout. <br />
+            The page will redirect to login screen in 5 seconds or you could click below link to login screen. <br />
+</h3>
+                       
+                    <a  id ="myLink">Login page</a>
+
+    </body>
+</html>
+  <script src="~/Scripts/jquery.min.js"></script>
+  <script>
+      var newurl, temp;
+      
+
+
+    $(document).ready(function () {
+        temp = document.location.pathname.split("/");
+        newurl = document.location.origin +"/"+ temp[1]+"/Navbar/LandingPage";
+        window.setTimeout(function () {
+            window.location.href = newurl;
+        }, 5000);
+        $('#myLink').click(function () {
+            temp = document.location.pathname.split("/");
+            newurl = document.location.origin + "/" + temp[1] + "/Navbar/LandingPage";
+            window.location.href = newurl;
+            return false;
+        });
+
+    });
+</script>
+
+

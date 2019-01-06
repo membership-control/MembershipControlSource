@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Membership Control | @ViewBag.Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="Membership Control" name="description" />
+    <meta content="Codermatic Team" name="author" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/simple-line-icons.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Themes/uniformjs/default/css/uniform.default.min.css" rel="stylesheet" />
+
+    <link href="~/Content/assets/admin/pages/css/login2.css" rel="stylesheet" />
+    <link href="~/Content/assets/global/css/components.css" rel="stylesheet" />
+    <link href="~/Content/assets/global/css/plugins.css" rel="stylesheet" />
+    <link href="~/Content/assets/admin/layout/css/layout.css" rel="stylesheet" />
+    <link href="~/Content/assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" />
+    <link href="~/Content/assets/admin/layout/css/custom.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/favicon.ico" />
+</head>
+<body class="login">
+    <div class="logo">
+        <img src="~/Content/assets/global/img/membership_logo_with_slogan.png" />
+        <br />
+        <h3>Membership Control</h3>
+
+    </div>
+
+    <div class="menu-toggler sidebar-toggler">
+    </div>
+    <div class="content">
+        @RenderBody()
+    </div>
+    <div class="copyright">
+        2018 &copy;  Membership Control System
+    </div>
+    <script src="~/Scripts/jquery.min.js"></script>
+
+    <script src="~/Scripts/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.uniform.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <!--<script src="~/Scripts/backstretch/jquery.backstretch.min.js"></script>-->
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+        $(document).ready(function () {
+            
+            @*// init background slide images
+            $.backstretch([
+                    "@Url.Content("~/Content/assets/admin/pages/media/bg/1.jpg")",
+         "@Url.Content("~/Content/assets/admin/pages/media/bg/2.jpg")",
+         "@Url.Content("~/Content/assets/admin/pages/media/bg/3.jpg")",
+         "@Url.Content("~/Content/assets/admin/pages/media/bg/4.jpg")"
+            ], {
+                fade: 1000,
+                duration: 8000
+            }
+         );*@ 
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

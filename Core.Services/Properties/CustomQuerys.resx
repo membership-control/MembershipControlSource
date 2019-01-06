@@ -1,0 +1,879 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Base_Count_Format" xml:space="preserve">
+    <value>select count(1)
+from
+(
+{0}
+) as A</value>
+  </data>
+  <data name="GetAllExportListenerDetailLog" xml:space="preserve">
+    <value>select b.EVENT_NAME, a.Status, a.insert_date,a.Remark from ExportListenerLog a, LOG_EVENT_MASTER b where groupid = @groupid
+and a.EventCode = b.EVENT_CODE order by a.insert_Date desc</value>
+  </data>
+  <data name="GetAllExportListenerLog" xml:space="preserve">
+    <value>select FullFileName, ExportType, ArchiveFullFileName, Status, insert_date, GroupID, seq, eventcode , remark , Setting_PK,ID 
+							into #temp from 
+							ExportListenerLog where getdate()- @days &lt; insert_Date 
+							select a.groupid, b.event_code into  #temp2 from (select a.groupid, max(b.SEQ) seq from #temp a, LOG_EVENT_MASTER b where a.eventcode = b.EVENT_CODE group by a.groupid) a,
+							LOG_EVENT_MASTER b where a.seq = b.seq and EVENT_TYPE = 'ExportListern'
+							select REVERSE(substring(reverse(a.fullfilename),0, charindex( '\',reverse(a.fullfilename),  0)))  filename,
+							SUBSTRING(a.fullfilename, 0,charindex( '\',reverse(a.fullfilename),  0)) folderpath,
+							a.FullFileName, a.ExportType, a.ArchiveFullFileName, a.Status, a.insert_date, a.GroupID, a.seq, a.eventcode , a.remark , a.Setting_PK,a.ID , c.EVENT_NAME from 
+							#temp a, #temp2 b, LOG_EVENT_MASTER c where a.groupid = b.groupid and a.eventcode = b.event_code and a.eventcode = c.event_Code
+							order by a.insert_date desc
+
+							drop table #temp
+							drop table #temp2</value>
+  </data>
+  <data name="GetALLImportListenerDetailLog" xml:space="preserve">
+    <value>select * into #temp1 from ImportListenerLog where groupid = @groupid
+select c.Mode, a.Status,b.EVENT_name,a.Remark ,max(a.Seq) seq, max(a.insert_date) insert_date ,b.seq eventseq
+ From #temp1 a left outer join ImportListenerSetting c  on a.Setting_PK = c.Setting_PK, log_event_master  b  where a.groupid = @groupid
+and a.eventcode = b.event_code group by c.Mode, a.Status,a.Remark ,b.EVENT_name,b.seq order by b.seq desc
+drop table #temp1</value>
+  </data>
+  <data name="GetALLImportListenerLog" xml:space="preserve">
+    <value>select * into #temp from ImportListenerlog (nolock) where insert_date &gt; getdate() - @days  and (eventcode = '2-01-000' or IsEndPoint = 1)
+select max(eventcode) eventcode, groupid into #temp3 from #temp where IsEndPoint = 1 group by groupid
+select ID, GroupID into #temp1 from #temp where eventcode = '2-01-000'
+select a.id, a.groupid into #temp2 from #temp a, #temp3 b where a.GroupID = b.GroupID and a.EventCode = b.EventCode
+delete a from #temp1 a where a.GroupID in (select distinct groupid from #temp2)
+select REVERSE(substring(reverse(a.fullfilename),0, charindex( '\',reverse(a.fullfilename),  0)))  Filename,
+SUBSTRING(a.fullfilename, 0,charindex( '\',reverse(a.fullfilename),  0)) FolderPath,
+a.fullfilename fullfilename,
+a.Setting_PK,a.DIJobName,a.ArchiveFullFileName,a.Status,a.insert_date,a.Seq,a.SendToFullName,a.SendToStauts,a.ArchiveStatus,a.GroupID,a.Remark,b.EVENT_NAME,a.EventCode
+from #temp a, LOG_EVENT_MASTER b 
+where (a.ID in (select id from #temp1) or a.id in (select id from #temp2) ) and 
+a.EventCode = b.EVENT_CODE
+order by insert_date desc
+
+drop table #temp
+drop table #temp1
+drop table #temp2
+drop table #temp3</value>
+  </data>
+  <data name="GetAllPOHeader" xml:space="preserve">
+    <value>select * into #temp from openquery("tapdbcnd04.tollgroup.local\dev", '
+select ORDERNO,
+	ORDER_SPLIT,
+	SUPPLIER_CODE,
+	CUSTOMER_ID,
+	MAX(RECEIVE_DATE) RECEIVE_DATE,
+	MAX(EDI_LAST_EDIT_TIME) EDI_LAST_EDIT_TIME,
+	MAX(FTP_RECEIVE_DATE) FTP_RECEIVE_DATE,
+	MAX(RECEIVE_DATE_UTC) RECEIVE_DATE_UTC
+from  tgf_integration.dbo.TGF_PO_CONTROL_TABLE 
+where receive_date &gt; getdate() - @Day and (CUSTOMER_ID in  (select value from DCT_mangement.dbo.usersetting where userid = ''@userid'' and 
+DataType = ''TGF_PO_CONTROL_TABLE.CUSTOMERID'' and Type = ''DBFILTER'' ) or  not exists (select value from DCT_mangement.dbo.usersetting where userid = ''@userid'' and 
+DataType = ''TGF_PO_CONTROL_TABLE.CUSTOMERID'' and Type = ''DBFILTER''))
+group by ORDERNO,
+	ORDER_SPLIT,
+	SUPPLIER_CODE,
+	CUSTOMER_ID') a 
+
+select
+	main.ORDERNO,
+	main.ORDER_SPLIT,
+	main.SUPPLIER_CODE,
+	main.CUSTOMER_ID,
+	main.RECEIVE_DATE,
+	case when joh.jd_ordernumber is not null then 'Y' else 'N' end "IN_EDIENTERPRISE",
+	case when joh.JD_SystemLastEditTimeUtc is not null then joh.JD_SystemLastEditTimeUtc else main.EDI_LAST_EDIT_TIME end "EDI_LAST_EDIT_TIME",
+	main.FTP_RECEIVE_DATE,
+	CASE WHEN main.FTP_RECEIVE_DATE IS NULL THEN 'Unable to calculate'
+	WHEN DATEDIFF(hour,main.FTP_RECEIVE_DATE,main.RECEIVE_DATE) &gt;= 72 THEN 'Over 72'
+	WHEN DATEDIFF(hour,main.FTP_RECEIVE_DATE,main.RECEIVE_DATE) &gt;= 48 THEN 'Over 48'
+	WHEN DATEDIFF(hour,main.FTP_RECEIVE_DATE,main.RECEIVE_DATE) &gt;= 24 THEN 'Over 24'
+	ELSE 'less than 24' END AS "FTP_VS_RECEIVE",
+	main.RECEIVE_DATE_UTC
+from #temp main with (nolock) 
+left outer join [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].[dbo].JobOrderHeader joh with (nolock)
+			on joh.jd_ordernumber = main.ORDERNO and joh.jd_ordernumbersplit = main.ORDER_SPLIT
+
+
+DROP TABLE #temp</value>
+  </data>
+  <data name="GetAllThirdParty" xml:space="preserve">
+    <value>select tpe.*, CASE WHEN tpe.IsSendExportListener &lt;&gt; 1 then 'NO_EXPORT_NEED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NULL then 'EXPORT_FAILED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NOT NULL then 'EXPORT_SUCCESS'
+				ELSE tpe.FTP_STATUS end as "DI_STATUS"
+from TGF_THIRD_PARTY_EVENTS tpe LEFT OUTER JOIN ExportListenerLogShort t2
+	on tpe.OUTPUT_FILE_NAME = t2.fullfilename and t2.[Status] = 'SUCCESS'
+where tpe.insert_date &gt; getdate() - @days 
+order by INSERT_DATE desc</value>
+  </data>
+  <data name="GetAllThirdPartyStatus" xml:space="preserve">
+    <value>SELECT *, '' "Css" FROM 
+(
+select 'ALL' "FTP_STATUS", count(*) "STATUS_COUNT" from TGF_THIRD_PARTY_EVENTS where insert_date &gt; getdate() - @days 
+UNION
+select FTP_STATUS, count(*) from TGF_THIRD_PARTY_EVENTS where insert_date &gt; getdate() - @days group by ftp_status
+/*
+UNION
+select 'EXPORT_FAILED', count(*) from TGF_THIRD_PARTY_EVENTS where insert_date &gt; getdate() - @days  and IsSendExportListener = 1 and OUTPUT_FILE_NAME not in 
+(select fullfilename from ExportListenerLogShort where [Status] = 'SUCCESS')
+UNION
+select 'EXPORT_SUCCESS', count(*) from TGF_THIRD_PARTY_EVENTS where insert_date &gt; getdate() - @days  and IsSendExportListener = 1 and OUTPUT_FILE_NAME in 
+(select fullfilename from ExportListenerLogShort where [Status] = 'SUCCESS')
+UNION
+select 'NO_EXPORT_NEED', count(*) from TGF_THIRD_PARTY_EVENTS where insert_date &gt; getdate() - @days  and IsSendExportListener &lt;&gt; 1 */
+) mast
+ORDER BY 
+case mast.[FTP_STATUS]
+	WHEN 'ALL' THEN 1
+	ELSE 2
+END</value>
+  </data>
+  <data name="GetImportListenerLogByGroupID" xml:space="preserve">
+    <value>select * into #temp From ImportListenerLog a with (nolock) where groupid = @groupid
+
+select a.FullFileName,a.Setting_PK,a.DIJobName,a.ArchiveFullFileName,a.Status,a.insert_date, 
+a.Seq,a.SendToFullName,a.SendToStauts,a.ArchiveStatus,a.GroupID,a.Remark,b.EVENT_NAME, a.ID
+From #temp a, log_event_master  b with (nolock) 
+where a.eventcode = b.event_code
+order by b.seq
+
+DROP table #temp</value>
+  </data>
+  <data name="GetPOChartByOrderStatus" xml:space="preserve">
+    <value>select a.* into #temp from openquery("tapdbcnd04.tollgroup.local\dev", '
+select ORDERNO,
+	ORDER_SPLIT
+from  tgf_integration.dbo.TGF_PO_CONTROL_TABLE 
+where receive_date &gt; getdate() - @Day and (CUSTOMER_ID in  (select value from DCT_mangement.dbo.usersetting where userid = ''@userid'' and 
+DataType = ''CUSTOMERID'' and Type = ''DBFILTER'' ) or  not exists (select value from DCT_mangement.dbo.usersetting where userid = ''@userid'' and 
+DataType = ''CUSTOMERID'' and Type = ''DBFILTER''))
+group by ORDERNO,
+	ORDER_SPLIT') a 
+
+
+select main.[STATUS], count(main.ORDERNO) ORDERNO from
+(
+select po.ORDERNO,
+	case when joh.jd_ordernumber is null then 'NOT IN EDI'
+	ELSE 'IN EDI' end "STATUS"
+from #temp po with (nolock) 
+left outer join [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].[dbo].JobOrderHeader joh with (nolock)
+		on joh.jd_ordernumber = po.ORDERNO and joh.jd_ordernumbersplit = po.ORDER_SPLIT
+) main
+group by main.[STATUS]
+
+DROP TABLE #temp</value>
+  </data>
+  <data name="GetServiceDetail" xml:space="preserve">
+    <value>select TGF_GI_ControlTower_Server_Status_Setting_PK,server_name Server_Name,Setting_detail Setting_Detail
+ from [dbo].[TGF_GI_ControlTower_Server_Status_Setting] where IsEnabled = 1 and Type = 'Service'</value>
+  </data>
+  <data name="GetShipmentEventMasterByBatchID" xml:space="preserve">
+    <value>select * from [DI_WK_TEMP].dbo.SHIPMENT_EVENT_MASTER where batch_id = @batchid</value>
+  </data>
+  <data name="TokenStaus_Query" xml:space="preserve">
+    <value>select ilt.[Setting_PK],
+ilt.[PK],
+ilt.[Status],
+ilt.[insert_date],
+ilt.[insert_user],
+ilt.[update_date],
+ilt.[update_user],
+ilt.[FileFullName],
+ilt.[batch_id]
+from importListenerToken as ilt where batch_id in (
+select batch_id from importListenerToken group by batch_id having COUNT(*) = 1) and Status &lt;&gt; 'FINISHED'
+and setting_pk in (select distinct setting_pk from ImportListenerSetting where Mode = 'Token') 
+and insert_date &lt;= getdate() - (12/24)
+</value>
+  </data>
+  <data name="GetExportTypeDetail" xml:space="preserve">
+    <value>SELECT a.[FolderPath]
+      ,a.[ExportType]
+      ,case when a.ExportTypeDetail_PK is null then a.ExportLocation else b.ExportLocation end ExportLocation
+      ,case when a.ExportTypeDetail_PK is null then a.[LoginName] else b.UserName end LoginName
+      ,case when a.ExportTypeDetail_PK is null then a.[Password] else b.Password end Password
+	  ,case when a.ExportTypeDetail_PK is null then null else b.flex1 end flex1
+	  ,case when a.ExportTypeDetail_PK is null then null else b.flex2 end flex2
+	  ,case when a.ExportTypeDetail_PK is null then null else b.flex3 end flex3
+      ,a.[DelayTime]
+      ,a.[FileNamePattern]
+      ,a.[FileNamePatternSection]
+      ,a.[FileExtension]
+	  , a.Setting_PK
+  FROM [TGF_Integration].[dbo].[ExportListenerSetting] a,
+		[TGF_Integration].[dbo].[exporttypedetail] b
+  where a.setting_pk = @setting_pk
+  and a.ExportTypeDetail_PK = b.ExportTypeDetail_PK</value>
+  </data>
+  <data name="GetAllPOClientReprocess" xml:space="preserve">
+    <value>select [description] Display,[folderpath] Folderpath 
+from ImportListenerSetting 
+where jobname = 'TGF_PO_Integration_V2'</value>
+  </data>
+  <data name="GetPOGridDetails" xml:space="preserve">
+    <value>select CAST(1 as BIT) "REPROCESS",
+	main.BATCH_ID,
+	main.ORDER_LINENO,
+	main.PRODUCT,
+	main.PRE_PROCESS_STATUS,
+	main.STAGING_STATUS,
+	main.TRANSFER_STATUS,
+	main.FTP_RECEIVE_DATE,
+	main.COMMENT,
+	main.SOURCE_FILE_NAME,
+	main.FILE_GENERATED
+from TGF_PO_CONTROL_TABLE main with (nolock) 
+where main.receive_date &gt; getdate() - @Day
+	and main.CUSTOMER_ID = @CUSTOMERID
+	and main.ORDERNO = @ORDERNO
+	and main.ORDER_SPLIT = @ORDERSPLIT
+	and main.SUPPLIER_CODE = @SUPPLIERCODE</value>
+  </data>
+  <data name="GetThirdPartyPaging" xml:space="preserve">
+    <value>select 
+tpe.CUSTOMER_NAME,tpe.KEY_REFERENCE, tpe.SHIPMENT_GID, tpe.FTP_STATUS, tpe.MESSAGE_FORMAT, tpe.EVENT_CODE, tpe.INSERT_DATE,  
+tpe.BATCH_ID, tpe.CONTROL_NUMBER, tpe.INPUT_FILE_NAME, tpe.OUTPUT_FILE_NAME,tpe.Order_No, tpe.flex1, tpe.flex3, tpe.Process_PK, tpe.Event_PK,
+tpe.IsSendExportListener , tpe.START_DATE, tpe.EVENT_DATE,'' DI_STATUS
+ into #temp from TGF_THIRD_PARTY_EVENTS (nolock) tpe where insert_date &gt; getdate() - @days 
+
+select * from (
+select tpe.CUSTOMER_NAME,tpe.KEY_REFERENCE, tpe.SHIPMENT_GID, tpe.FTP_STATUS, tpe.MESSAGE_FORMAT, tpe.EVENT_CODE, tpe.INSERT_DATE,  tpe.EVENT_DATE,
+tpe.BATCH_ID, tpe.CONTROL_NUMBER, tpe.INPUT_FILE_NAME, tpe.OUTPUT_FILE_NAME,tpe.Order_No, tpe.flex1, tpe.flex3, tpe.Process_PK, tpe.Event_PK , CASE WHEN tpe.IsSendExportListener &lt;&gt; 1 then 'NO_EXPORT_NEED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NULL then 'EXPORT_FAILED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NOT NULL then 'EXPORT_SUCCESS'
+				ELSE tpe.FTP_STATUS end as "DI_STATUS" ,
+				@row
+from #temp (nolock) tpe LEFT OUTER JOIN ExportListenerLogShort (nolock) t2
+	on tpe.OUTPUT_FILE_NAME = t2.fullfilename and t2.[Status] = 'SUCCESS'
+where tpe.insert_date &gt; getdate() - @days and (@whereclause)
+) a where RowNum &gt;= @start and RowNum &lt; @end
+order by RowNum
+drop table #temp</value>
+  </data>
+  <data name="GetThridPartyRowCount" xml:space="preserve">
+    <value>select 
+tpe.CUSTOMER_NAME,tpe.KEY_REFERENCE, tpe.SHIPMENT_GID, tpe.FTP_STATUS, tpe.MESSAGE_FORMAT, tpe.EVENT_CODE, tpe.INSERT_DATE,  
+tpe.BATCH_ID, tpe.CONTROL_NUMBER, tpe.INPUT_FILE_NAME, tpe.OUTPUT_FILE_NAME,tpe.Order_No, tpe.flex1, tpe.flex3, tpe.Process_PK, tpe.Event_PK,
+tpe.IsSendExportListener,tpe.EVENT_DATE
+ into #temp from TGF_THIRD_PARTY_EVENTS (nolock) tpe where insert_date &gt; getdate() - @days
+select count(*) from (
+select tpe.CUSTOMER_NAME,tpe.KEY_REFERENCE, tpe.SHIPMENT_GID, tpe.FTP_STATUS, tpe.MESSAGE_FORMAT, tpe.EVENT_CODE, tpe.INSERT_DATE,tpe.EVENT_DATE,  
+tpe.BATCH_ID, tpe.CONTROL_NUMBER, tpe.INPUT_FILE_NAME, tpe.OUTPUT_FILE_NAME,tpe.Order_No, tpe.flex1, tpe.flex3, tpe.Process_PK, tpe.Event_PK , CASE WHEN tpe.IsSendExportListener &lt;&gt; 1 then 'NO_EXPORT_NEED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NULL then 'EXPORT_FAILED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NOT NULL then 'EXPORT_SUCCESS'
+				ELSE tpe.FTP_STATUS end as "DI_STATUS" 
+from #temp (nolock) tpe LEFT OUTER JOIN ExportListenerLogShort (nolock)  t2
+	on tpe.OUTPUT_FILE_NAME = t2.fullfilename and t2.[Status] = 'SUCCESS'
+where tpe.insert_date &gt; getdate() - @days 
+) tpe where (@whereclause)
+drop table #temp</value>
+  </data>
+  <data name="GetThirdPartyByPK" xml:space="preserve">
+    <value>select tpe.*, CASE WHEN tpe.IsSendExportListener &lt;&gt; 1 then 'NO_EXPORT_NEED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NULL then 'EXPORT_FAILED'
+				WHEN tpe.OUTPUT_FILE_NAME IS NOT NULL and tpe.IsSendExportListener = 1 and t2.[Status] IS NOT NULL then 'EXPORT_SUCCESS'
+				ELSE tpe.FTP_STATUS end as "DI_STATUS"
+from TGF_THIRD_PARTY_EVENTS tpe LEFT OUTER JOIN ExportListenerLogShort t2
+	on tpe.OUTPUT_FILE_NAME = t2.fullfilename and t2.[Status] = 'SUCCESS'
+where Event_PK = @event_PK</value>
+  </data>
+  <data name="GetArchiveFilePath" xml:space="preserve">
+    <value>select TOP 1 Archived_FilePath
+from [dbo].[ArchiveFolderLog] with (nolock) 
+where archiveSettingPK in (select archiveFolderSettingPK from [dbo].[ArchiveFolderSetting] with (nolock) where FolderPath = @folder )
+	and [filename] = @file
+order by insert_date desc</value>
+  </data>
+  <data name="GetALLImportListenerLogPaging" xml:space="preserve">
+    <value>select id, GroupID into #temp from ImportListenerlog (nolock) where insert_date &gt; getdate() - 1 and (eventcode = '2-01-000')
+
+select  newid()id,
+a.GroupID, max(a.EventCode) eventcode
+into #temp1 from ImportListenerlog(nolock)  a , #temp  b where a.insert_date &gt; getdate() - 1 and  a.IsEndPoint = 1 and a.GroupID = b.GroupID
+group by a.groupid
+
+update a set a.id = b.id 
+from  #temp1 a, ImportListenerlog(nolock) b where
+b.insert_date &gt; getdate() - 1 and 
+ b.groupid = a.groupid and a.EventCode = b.EventCode
+
+select isnull(b.id, a.id) id, a.groupid, isnull(b.eventcode, '2-01-000') eventcode into #temp2 
+from #temp a left outer join #temp1 b on a.groupid = b.GroupID  
+
+Select * from (
+select REVERSE(substring(reverse(a.fullfilename),0, charindex( '\',reverse(a.fullfilename),  0)))  Filename,
+SUBSTRING(a.fullfilename, 0,charindex( '\',reverse(a.fullfilename),  0)) FolderPath,
+a.fullfilename fullfilename,
+a.Setting_PK,a.DIJobName,a.ArchiveFullFileName,a.Status,a.insert_date,a.Seq,a.SendToFullName,a.SendToStauts,a.ArchiveStatus,a.GroupID,a.Remark,b.EVENT_NAME,a.EventCode
+,ROW_number() OVER (ORDER BY A.INSERT_DATE) rownum
+from ImportListenerlog(nolock)  a, LOG_EVENT_MASTER b 
+where (a.ID in (select id from #temp2) or a.id in (select id from #temp2) ) and 
+a.EventCode = b.EVENT_CODE
+) a  where rownum &gt;1 and rownum &lt; 21
+
+
+drop table #temp
+drop table #temp1
+drop table #temp2</value>
+  </data>
+  <data name="GetALLImportListenerLogPaging2" xml:space="preserve">
+    <value>select * into #temp from ImportListenerlog(nolock) where insert_date &gt; getdate() - @days and (eventcode = '2-01-000' or IsEndPoint = 1)
+select max(eventcode) eventcode, groupid into #temp3 from #temp where IsEndPoint = 1 group by groupid
+select ID, GroupID into #temp1 from #temp where eventcode = '2-01-000'
+select a.id, a.groupid into #temp2 from #temp a, #temp3 b where a.GroupID = b.GroupID and a.EventCode = b.EventCode
+delete a from #temp1 a where a.GroupID in (select distinct groupid from #temp2)
+select * from 
+(
+select *,@row from (
+select REVERSE(substring(reverse(a.fullfilename),0, charindex( '\',reverse(a.fullfilename),  0)))  Filename,
+SUBSTRING(a.fullfilename, 0,charindex( '\',reverse(a.fullfilename),  0)) FolderPath,
+a.fullfilename fullfilename,
+a.Setting_PK,a.DIJobName,a.ArchiveFullFileName,a.Status,a.insert_date,a.Seq,a.SendToFullName,a.SendToStauts,a.ArchiveStatus,a.GroupID,a.Remark,b.EVENT_NAME,a.EventCode
+
+from #temp a, LOG_EVENT_MASTER b 
+where (a.ID in (select id from #temp1) or a.id in (select id from #temp2) ) and 
+a.EventCode = b.EVENT_CODE
+) a where (@whereclause)
+)a
+where a.rownum &gt;= @start and a.rownum &lt; @end 
+
+drop table #temp
+drop table #temp1
+drop table #temp2
+drop table #temp3</value>
+  </data>
+  <data name="GetALLImportListenerLogPaging2RowCount" xml:space="preserve">
+    <value>select * into #temp from ImportListenerlog(nolock) where insert_date &gt; getdate() - @days and (eventcode = '2-01-000' or IsEndPoint = 1)
+select max(eventcode) eventcode, groupid into #temp3 from #temp where IsEndPoint = 1 group by groupid
+select ID, GroupID into #temp1 from #temp where eventcode = '2-01-000'
+select a.id, a.groupid into #temp2 from #temp a, #temp3 b where a.GroupID = b.GroupID and a.EventCode = b.EventCode
+delete a from #temp1 a where a.GroupID in (select distinct groupid from #temp2)
+select count(*) from 
+(
+select * from (
+select REVERSE(substring(reverse(a.fullfilename),0, charindex( '\',reverse(a.fullfilename),  0)))  Filename,
+SUBSTRING(a.fullfilename, 0,charindex( '\',reverse(a.fullfilename),  0)) FolderPath,
+a.fullfilename fullfilename,
+a.Setting_PK,a.DIJobName,a.ArchiveFullFileName,a.Status,a.insert_date,a.Seq,a.SendToFullName,a.SendToStauts,a.ArchiveStatus,a.GroupID,a.Remark,b.EVENT_NAME,a.EventCode
+
+from #temp a, LOG_EVENT_MASTER b 
+where (a.ID in (select id from #temp1) or a.id in (select id from #temp2) ) and 
+a.EventCode = b.EVENT_CODE
+) a where (@whereclause)
+)a
+
+
+drop table #temp
+drop table #temp1
+drop table #temp2
+drop table #temp3</value>
+  </data>
+  <data name="GetUserHeader" xml:space="preserve">
+    <value>select * from (
+select a.Id, a.username Name,c.id RoleID, c.name RoleName, (select count(*) from [dbo].[AspNetUsers] ) totalcount,a.Email EmailAddress,
+case when (select count(*) from [dbo].[AspNetUserPermissions] where UserId = a.id) &gt; 0  then 1 else 0 end as UserSecurity,
+case when (select count(*) from [dbo].[UserSetting] where UserId = a.id) &gt; 0  then 1 else 0 end as DBFilter ,
+ROW_number() OVER (ORDER BY A.username) rownum
+  from [dbo].[AspNetUsers] a, [dbo].[AspNetUserRoles] b, [dbo].[AspNetRoles] c
+where a.id = b.UserId and b.RoleId = c.id ) a
+where 1=1 order by a.rownum</value>
+  </data>
+  <data name="GetAllIconIntegration" xml:space="preserve">
+    <value>select * into #dw_log from [TAPDBHKD05.TOLLGROUP.LOCAL].tgfdw.dbo.DW_to_DI_Integration_Log with (nolock) where Insert_By = 'iCON' and Insert_Date &gt; getdate() - @days
+
+select * into #import_listener_log_temp
+from IMPORTLISTENER_DI_LOG with (nolock) 
+where jobname like 'icon3%' 
+	and insert_date &gt; getdate() - @days
+	
+select cast(dw.Log_PK as varchar(50)) "Log_PK"
+	  ,a.[ImportListener_DI_PK]
+      ,dw.Keyreference "FullFileName"
+	  ,dw.E_BOOKING_NO "e_booking_no"
+	  ,dw.insert_date "Icon_insert_date"
+      ,a.[JobName]
+      ,a.[Process_PK]
+      ,a.[insert_user]
+      ,a.[insert_date]
+	  ,case when a.[Status] is null then 0 else 1 end as "LISTENER_TRIGGERED"
+	  ,case when b.[Status] is null then 0 else 1 end as "DI_CALLED" 
+	  ,case when b.[BATCH_ID] is null then a.[BATCH_ID] else b.[BATCH_ID] end as "BATCH_ID" into #import_listener_log
+from #dw_log dw LEFT OUTER JOIN #import_listener_log_temp a on a.FullFileName = dw.Keyreference and a.[Status] = '2-01-930'
+	LEFT OUTER JOIN #import_listener_log_temp b on a.Process_PK = b.Process_PK and b.[Status] = '3-01-000'
+--where a.[status] = '2-01-930'
+order by a.insert_date desc
+
+select a.Log_PK,
+	a.fullfilename,
+	a.e_booking_no,
+	CASE a.JobName when 'iCON3_DW_to_EDI_Consol_Shipment_Integration' then c.[Status] else b.[Status] end as summary_status,
+	a.Icon_insert_date,
+	a.JobName,
+	a.process_PK, 
+	a.insert_date "Listener_insert_date", 
+	b.Type, b.Keyreference,
+	b.insert_date "DI_Process_insert_date", 
+	b.BATCH_ID, 
+	cast(a.LISTENER_TRIGGERED as bit) "LISTENER_TRIGGERED",
+	cast(a.DI_CALLED as bit) "DI_CALLED", 
+	CASE a.JobName when 'iCON3_DW_to_EDI_Consol_Shipment_Integration' then c.[Status] else b.[Status] end as "Status",
+	case when c.[Status] = 'FAIL' or b.[Status] = 'FAIL' then ISNULL(c.[Remarks], b.[Remarks]) else NULL end as "Last_Remarks",
+	b.DI_Trace, 
+	b.DI_Error into #integration_view
+from #import_listener_log a left outer join TGF_DI_ICON_INTEGRATION_PROCESSING_LOG b with (nolock) on a.Process_PK = b.Process_PK and 
+(
+	(a.Jobname &lt;&gt; 'iCON3_DW_to_EDI_Consol_Shipment_Integration')
+	or
+	(a.Jobname = 'iCON3_DW_to_EDI_Consol_Shipment_Integration' and b.Remarks = 'Starting DW_to_EDI_Consol_Shipemnt_WF')
+)
+left outer join TGF_DI_ICON_INTEGRATION_PROCESSING_LOG c with (nolock) on a.Process_PK = c.Process_PK and (a.Jobname = 'iCON3_DW_to_EDI_Consol_Shipment_Integration' and c.Remarks = 'Starting DW_to_EDI_CONSOL_EVENTS')
+
+select e_booking_no "e_booking_no", ROW_NUMBER() over (order by DI_Process_insert_date asc) "rownum", [Status] into #status_sort from #integration_view 
+
+select a.e_booking_no, a.[Status] into #summary_status from #status_sort a inner join 
+(
+select e_booking_no, max(rownum) as maxrownum
+from #status_sort 
+group by e_booking_no
+) b on a.e_booking_no = b.e_booking_no and a.rownum = b.maxrownum
+
+update #integration_view set summary_status = NULL
+
+update a
+set summary_status = b.[Status]
+from #integration_view a LEFT OUTER JOIN #summary_status b
+	on a.e_booking_no = b.e_booking_no
+
+select batch_id, 
+	RIGHT([Filename], CHARINDEX('\', REVERSE([Filename])) - 1) "Filename"
+into #file_generated
+from Table2File_Mapping_result_log with (nolock) 
+where insert_date &gt; getdate() - @days
+	and batch_id in (
+	select case when len(batch_id) = 20 then batch_id + '_1B' else batch_id + '_CUH' end as BATCH_ID
+	from #integration_view 
+	where batch_id is not null
+)
+
+select distinct FullFileName, GroupID into #LogShort from ExportListenerLogShort with (nolock) where fullfilename like '%DILO2O%' and Create_date &gt; getdate() - @days
+update #LogShort set fullfilename = RIGHT(fullfilename, charindex('\',reverse(fullfilename)) - 1)
+
+
+select distinct LEFT(a.batch_id,CHARINDEX('_', a.batch_id) - 1) "batch_id" ,a.[Filename], case when b.Fullfilename IS NULL then 0 else 1 end "File_Exported" into #file_exported
+from #file_generated a LEFT OUTER JOIN #LogShort b with (nolock) on b.Fullfilename = a.Filename
+
+select * from (
+select CAST(1 as BIT) "REPROCESS",
+	a.*, 
+	case when b.batch_id IS NULL then cast(0 as bit) else cast(b.File_Exported as bit) end "FILE_EXPORTED",
+	b.[Filename] "Output_file_name" ,
+	case when a.[Type] = 'iCONBooking' then
+	cast(ISNULL((
+	select 1
+	from [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.GenCustomAddOnValue xv (nolock), [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.jobshipment js (nolock)
+	where xv.xv_parentid=js.js_pk
+	and xv.XV_Name='EBooking Ref'
+	and js.JS_IsForwardRegistered=0
+	and xv.xv_data=a.E_booking_no
+	),0) as bit) else
+	cast(ISNULL((
+	select 1
+	from [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.GenCustomAddOnValue xv (nolock), [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.jobshipment js (nolock)
+	where xv.xv_parentid=js.js_pk
+	and xv.XV_Name='EBooking Ref'
+	and js.JS_IsForwardRegistered=1
+	and xv.xv_data=a.E_booking_no
+	),0) as bit) end as "CW1_Received",
+	ROW_NUMBER() OVER ( ORDER BY @sortfield @sortdesc ) AS RowNum
+from #integration_view a LEFT OUTER JOIN #file_exported b on a.batch_id = b.batch_id
+) mast where RowNum &gt;= @start and RowNum &lt; @end and (@whereclause)
+order by RowNum
+
+DROP TABLE #dw_log
+DROP TABLE #import_listener_log_temp
+DROP TABLE #import_listener_log
+DROP TABLE #file_generated
+DROP TABLE #LogShort
+DROP TABLE #file_exported
+DROP TABLE #integration_view
+DROP TABLE #status_sort
+DROP TABLE #summary_status</value>
+  </data>
+  <data name="GetIconIntegrationChartDataset" xml:space="preserve">
+    <value>select * into #dw_log from [TAPDBHKD05.TOLLGROUP.LOCAL].tgfdw.dbo.DW_to_DI_Integration_Log with (nolock) where Insert_By = 'iCON' and Insert_Date &gt; getdate() - @days
+
+select * into #import_listener_log_temp_chart
+from IMPORTLISTENER_DI_LOG with (nolock) 
+where jobname like 'icon3%' 
+	and insert_date &gt; getdate() - @days
+	
+select dw.Log_PK
+      ,dw.Keyreference "FullFileName"
+	  ,dw.insert_date "Icon_insert_date"
+      ,a.[JobName]
+	  ,a.[Process_PK]
+      ,a.[insert_date]
+	  ,case when b.[BATCH_ID] is null then a.[BATCH_ID] else b.[BATCH_ID] end as "BATCH_ID" into #import_listener_log_chart
+from #dw_log dw LEFT OUTER JOIN #import_listener_log_temp_chart a on a.FullFileName = dw.Keyreference and a.[Status] = '2-01-930'
+	LEFT OUTER JOIN #import_listener_log_temp_chart b on a.Process_PK = b.Process_PK and b.[Status] = '3-01-000'
+order by a.insert_date desc
+
+select a.fullfilename,
+	a.JobName,
+	a.Icon_insert_date "Listener_insert_date", 
+	b.insert_date "DI_Process_insert_date", 
+	b.BATCH_ID into #integration_view_chart
+from #import_listener_log_chart a left outer join TGF_DI_ICON_INTEGRATION_PROCESSING_LOG b with (nolock) on a.Process_PK = b.Process_PK and 
+(
+	(a.Jobname &lt;&gt; 'iCON3_DW_to_EDI_Consol_Shipment_Integration')
+	or
+	(a.Jobname = 'iCON3_DW_to_EDI_Consol_Shipment_Integration' and b.Remarks = 'Starting DW_to_EDI_Consol_Shipemnt_WF')
+)
+left outer join TGF_DI_ICON_INTEGRATION_PROCESSING_LOG c with (nolock) on a.Process_PK = c.Process_PK and (a.Jobname = 'iCON3_DW_to_EDI_Consol_Shipment_Integration' and c.Remarks = 'Starting DW_to_EDI_CONSOL_EVENTS')
+
+
+select batch_id, 
+	RIGHT([Filename], CHARINDEX('\', REVERSE([Filename])) - 1) "Filename"
+into #file_generated_chart
+from Table2File_Mapping_result_log with (nolock) 
+where insert_date &gt; getdate() - ( @days + 1 )
+	and batch_id in (
+	select case when len(batch_id) = 20 then batch_id + '_1B' else batch_id + '_CUH' end as BATCH_ID
+	from #integration_view_chart 
+	where batch_id is not null
+)
+
+select distinct FullFileName, GroupID into #LogShort_chart from ExportListenerLogShort with (nolock) where fullfilename like '%DILO2O%' and create_date &gt; getdate() - @days
+update #LogShort_chart set fullfilename = RIGHT(fullfilename, charindex('\',reverse(fullfilename)) - 1)
+
+
+select distinct LEFT(a.batch_id,CHARINDEX('_', a.batch_id) - 1) "batch_id" ,case when b.Fullfilename IS NULL then 0 else 1 end "File_Exported" into #file_exported_chart
+from #file_generated_chart a LEFT OUTER JOIN #LogShort_chart b with (nolock) on b.Fullfilename = a.Filename
+
+select insert_date,count(fullfilename) "job_triggered", ROUND(sum(FILE_EXPORTED) * 100 / count(fullfilename),0) "output_success" 
+from (
+select distinct CONVERT(date,listener_insert_date) "listener_insert_date",LEFT(DATENAME(m, Listener_insert_date),3) + DATENAME(dd, Listener_insert_date) "insert_date",
+	 fullfilename,
+	case when b.batch_id IS NULL then 0 else b.File_Exported end "FILE_EXPORTED" 
+from #integration_view_chart a LEFT OUTER JOIN #file_exported_chart b on a.batch_id = b.batch_id
+) mast 
+group by listener_insert_date,insert_date
+order by listener_insert_date
+
+
+DROP TABLE #dw_log
+DROP TABLE #import_listener_log_temp_chart
+DROP TABLE #import_listener_log_chart
+DROP TABLE #file_generated_chart
+DROP TABLE #LogShort_chart
+DROP TABLE #file_exported_chart
+DROP TABLE #integration_view_chart</value>
+  </data>
+  <data name="GetAllIconIntegrationCount" xml:space="preserve">
+    <value>select * into #dw_log from [TAPDBHKD05.TOLLGROUP.LOCAL].tgfdw.dbo.DW_to_DI_Integration_Log with (nolock) where Insert_By = 'iCON' and Insert_Date &gt; getdate() - @days
+
+select * into #import_listener_log_temp
+from IMPORTLISTENER_DI_LOG with (nolock) 
+where jobname like 'icon3%' 
+	and insert_date &gt; getdate() - @days
+	
+select dw.Log_PK
+	  ,a.[ImportListener_DI_PK]
+      ,dw.Keyreference "FullFileName"
+	  ,dw.insert_date "Icon_insert_date"
+	  ,dw.E_BOOKING_NO
+	  ,dw.[Type]
+      ,a.[JobName]
+      ,a.[Process_PK]
+      ,a.[insert_user]
+      ,a.[insert_date] into #import_listener_log
+from #dw_log dw LEFT OUTER JOIN #import_listener_log_temp a on a.FullFileName = dw.Keyreference and a.[Status] = '2-01-930'
+	LEFT OUTER JOIN #import_listener_log_temp b on a.Process_PK = b.Process_PK and b.[Status] = '3-01-000'
+
+
+select count(*) 'cnt' from #import_listener_log where (@whereclause)
+
+
+DROP TABLE #dw_log
+DROP TABLE #import_listener_log_temp
+DROP TABLE #import_listener_log</value>
+  </data>
+  <data name="GetAllExportListenerLogPaging" xml:space="preserve">
+    <value>select FullFileName, ExportType, ArchiveFullFileName, Status, insert_date, GroupID, seq, eventcode , remark , Setting_PK,ID 
+into #temp from 
+ExportListenerLog (nolock) where getdate()- @days &lt; insert_Date 
+
+select a.groupid, b.event_code into  #temp2 from (select a.groupid, max(b.SEQ) seq from #temp a, LOG_EVENT_MASTER b where a.eventcode = b.EVENT_CODE group by a.groupid) a,
+LOG_EVENT_MASTER b where a.seq = b.seq and EVENT_TYPE = 'ExportListern'
+
+select * from (
+select *, @row from (
+select REVERSE(substring(reverse(a.fullfilename),0, charindex( '\',reverse(a.fullfilename),  0)))  filename,
+SUBSTRING(a.fullfilename, 0,charindex( '\',reverse(a.fullfilename),  0)) folderpath,
+a.FullFileName, a.ExportType, a.ArchiveFullFileName, a.Status, a.insert_date, a.GroupID, a.seq, a.eventcode , a.remark , a.Setting_PK,a.ID , c.EVENT_NAME 
+from #temp a, #temp2 b, LOG_EVENT_MASTER c where a.groupid = b.groupid and a.eventcode = b.event_code and a.eventcode = c.event_Code
+) tmp where (@whereclause)
+) tmp2 
+where tmp2.rownum &gt;= @start and tmp2.rownum &lt; @end
+
+drop table #temp
+drop table #temp2</value>
+  </data>
+  <data name="GetAllExportListenerLogPagingRowCount" xml:space="preserve">
+    <value>select FullFileName, ExportType, ArchiveFullFileName, Status, insert_date, GroupID, seq, eventcode , remark , Setting_PK,ID 
+into #temp from 
+ExportListenerLog (nolock) where getdate()- @days &lt; insert_Date 
+
+select a.groupid, b.event_code into  #temp2 from (select a.groupid, max(b.SEQ) seq from #temp a, LOG_EVENT_MASTER b where a.eventcode = b.EVENT_CODE group by a.groupid) a,
+LOG_EVENT_MASTER b where a.seq = b.seq and EVENT_TYPE = 'ExportListern'
+
+select count(*) from (
+select * from (
+select REVERSE(substring(reverse(a.fullfilename),0, charindex( '\',reverse(a.fullfilename),  0)))  filename,
+SUBSTRING(a.fullfilename, 0,charindex( '\',reverse(a.fullfilename),  0)) folderpath,
+a.FullFileName, a.ExportType, a.ArchiveFullFileName, a.Status, a.insert_date, a.GroupID, a.seq, a.eventcode , a.remark , a.Setting_PK,a.ID , c.EVENT_NAME 
+from #temp a, #temp2 b, LOG_EVENT_MASTER c where a.groupid = b.groupid and a.eventcode = b.event_code and a.eventcode = c.event_Code
+) tmp where (@whereclause)
+) tmp2 
+
+drop table #temp
+drop table #temp2</value>
+  </data>
+  <data name="GetAllIconIntegrationWithFilter" xml:space="preserve">
+    <value>select * into #dw_log from [TAPDBHKD05.TOLLGROUP.LOCAL].tgfdw.dbo.DW_to_DI_Integration_Log with (nolock) where Insert_By = 'iCON' and Insert_Date &gt; getdate() - @days
+
+select * into #import_listener_log_temp
+from IMPORTLISTENER_DI_LOG with (nolock) 
+where jobname like 'icon3%' 
+	and insert_date &gt; getdate() - @days
+	
+select cast(dw.Log_PK as varchar(50)) "Log_PK"
+	  ,a.[ImportListener_DI_PK]
+      ,dw.Keyreference "FullFileName"
+	  ,dw.E_BOOKING_NO "e_booking_no"
+	  ,dw.insert_date "Icon_insert_date"
+      ,a.[JobName]
+      ,a.[Process_PK]
+      ,a.[insert_user]
+      ,a.[insert_date]
+	  ,case when a.[Status] is null then 0 else 1 end as "LISTENER_TRIGGERED"
+	  ,case when b.[Status] is null then 0 else 1 end as "DI_CALLED" 
+	  ,case when b.[BATCH_ID] is null then a.[BATCH_ID] else b.[BATCH_ID] end as "BATCH_ID" into #import_listener_log
+from #dw_log dw LEFT OUTER JOIN #import_listener_log_temp a on a.FullFileName = dw.Keyreference and a.[Status] = '2-01-930'
+	LEFT OUTER JOIN #import_listener_log_temp b on a.Process_PK = b.Process_PK and b.[Status] = '3-01-000'
+--where a.[status] = '2-01-930'
+order by a.insert_date desc
+
+select a.Log_PK,
+	a.fullfilename,
+	a.e_booking_no,
+	CASE a.JobName when 'iCON3_DW_to_EDI_Consol_Shipment_Integration' then c.[Status] else b.[Status] end as summary_status,
+	a.Icon_insert_date,
+	a.JobName,
+	a.process_PK, 
+	a.insert_date "Listener_insert_date", 
+	b.Type, b.Keyreference,
+	b.insert_date "DI_Process_insert_date", 
+	b.BATCH_ID, 
+	cast(a.LISTENER_TRIGGERED as bit) "LISTENER_TRIGGERED",
+	cast(a.DI_CALLED as bit) "DI_CALLED", 
+	CASE a.JobName when 'iCON3_DW_to_EDI_Consol_Shipment_Integration' then c.[Status] else b.[Status] end as "Status",
+	case when c.[Status] = 'FAIL' or b.[Status] = 'FAIL' then ISNULL(c.[Remarks], b.[Remarks]) else NULL end as "Last_Remarks",
+	b.DI_Trace, 
+	b.DI_Error into #integration_view
+from #import_listener_log a left outer join TGF_DI_ICON_INTEGRATION_PROCESSING_LOG b with (nolock) on a.Process_PK = b.Process_PK and 
+(
+	(a.Jobname &lt;&gt; 'iCON3_DW_to_EDI_Consol_Shipment_Integration')
+	or
+	(a.Jobname = 'iCON3_DW_to_EDI_Consol_Shipment_Integration' and b.Remarks = 'Starting DW_to_EDI_Consol_Shipemnt_WF')
+)
+left outer join TGF_DI_ICON_INTEGRATION_PROCESSING_LOG c with (nolock) on a.Process_PK = c.Process_PK and (a.Jobname = 'iCON3_DW_to_EDI_Consol_Shipment_Integration' and c.Remarks = 'Starting DW_to_EDI_CONSOL_EVENTS')
+
+select e_booking_no "e_booking_no", ROW_NUMBER() over (order by DI_Process_insert_date asc) "rownum", [Status] into #status_sort from #integration_view 
+
+select a.e_booking_no, a.[Status] into #summary_status from #status_sort a inner join 
+(
+select e_booking_no, max(rownum) as maxrownum
+from #status_sort 
+group by e_booking_no
+) b on a.e_booking_no = b.e_booking_no and a.rownum = b.maxrownum
+
+update #integration_view set summary_status = NULL
+
+update a
+set summary_status = b.[Status]
+from #integration_view a LEFT OUTER JOIN #summary_status b
+	on a.e_booking_no = b.e_booking_no
+
+select batch_id, 
+	RIGHT([Filename], CHARINDEX('\', REVERSE([Filename])) - 1) "Filename"
+into #file_generated
+from Table2File_Mapping_result_log with (nolock) 
+where insert_date &gt; getdate() - @days
+	and batch_id in (
+	select case when len(batch_id) = 20 then batch_id + '_1B' else batch_id + '_CUH' end as BATCH_ID
+	from #integration_view 
+	where batch_id is not null
+)
+
+select distinct FullFileName, GroupID into #LogShort from ExportListenerLogShort with (nolock) where fullfilename like '%DILO2O%' and Create_date &gt; getdate() - @days
+update #LogShort set fullfilename = RIGHT(fullfilename, charindex('\',reverse(fullfilename)) - 1)
+
+
+select distinct LEFT(a.batch_id,CHARINDEX('_', a.batch_id) - 1) "batch_id" ,a.[Filename], case when b.Fullfilename IS NULL then 0 else 1 end "File_Exported" into #file_exported
+from #file_generated a LEFT OUTER JOIN #LogShort b with (nolock) on b.Fullfilename = a.Filename
+
+select * from (
+select CAST(1 as BIT) "REPROCESS",
+	a.*, 
+	case when b.batch_id IS NULL then cast(0 as bit) else cast(b.File_Exported as bit) end "FILE_EXPORTED",
+	b.[Filename] "Output_file_name" ,
+	case when a.[Type] = 'iCONBooking' then
+	cast(ISNULL((
+	select 1
+	from [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.GenCustomAddOnValue xv (nolock), [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.jobshipment js (nolock)
+	where xv.xv_parentid=js.js_pk
+	and xv.XV_Name='EBooking Ref'
+	and js.JS_IsForwardRegistered=0
+	and xv.xv_data=a.E_booking_no
+	),0) as bit) else
+	cast(ISNULL((
+	select 1
+	from [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.GenCustomAddOnValue xv (nolock), [TAPDBCND01.TOLLGROUP.LOCAL].[ENTERPRISE].dbo.jobshipment js (nolock)
+	where xv.xv_parentid=js.js_pk
+	and xv.XV_Name='EBooking Ref'
+	and js.JS_IsForwardRegistered=1
+	and xv.xv_data=a.E_booking_no
+	),0) as bit) end as "CW1_Received",
+	ROW_NUMBER() OVER ( ORDER BY @sortfield @sortdesc ) AS RowNum
+from #integration_view a LEFT OUTER JOIN #file_exported b on a.batch_id = b.batch_id
+) mast where (@whereclause)
+order by RowNum
+
+DROP TABLE #dw_log
+DROP TABLE #import_listener_log_temp
+DROP TABLE #import_listener_log
+DROP TABLE #file_generated
+DROP TABLE #LogShort
+DROP TABLE #file_exported
+DROP TABLE #integration_view
+DROP TABLE #status_sort
+DROP TABLE #summary_status</value>
+  </data>
+</root>

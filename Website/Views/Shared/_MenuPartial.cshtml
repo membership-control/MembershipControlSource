@@ -1,0 +1,82 @@
+﻿@model Core.Services.DTO.Generic.NavbarViewModel
+<!-- BEGIN SIDEBAR MENU -->
+<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+<ul class="page-sidebar-menu page-sidebar-menu-closed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+    <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+    <li class="sidebar-toggler-wrapper">
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+        <div class="sidebar-toggler">
+        </div>
+        <!-- END SIDEBAR TOGGLER BUTTON -->
+    </li>
+    <li><br /></li>
+    @{int idx = 0;}
+    @foreach (var cat in Model.Categories)
+    {
+        string parentClass = idx == 0 ? "start active open" : "";
+        string parentOpen = idx == 0 ? "open" : "";
+        string parent_iconClass = "";
+        string fontClass = "";
+        switch (cat.Category)
+        {
+            case "System":
+                parent_iconClass = "fa fa-gears";
+                fontClass = "nav-font-system";
+                break;
+
+            case "Master Page":
+                parent_iconClass = "fa fa-wrench";
+                fontClass = "nav-font-masterpage";
+                break;
+
+            case "Visibility":
+                parent_iconClass = "fa fa-search";
+                fontClass = "nav-font-visibility";
+                break;
+
+            case "Administration":
+                parent_iconClass = "fa fa-calendar";
+                fontClass = "nav-font-system";
+                break;
+
+            default:
+                parent_iconClass = "";
+                fontClass = "";
+                break;
+        }
+
+        <li class="@parentClass">
+            <a href="javascript:;">
+                <i class="@parent_iconClass"></i>
+                <span class="title @fontClass">@cat.Category</span>
+                @if (idx == 0)
+                {
+                    <span class="selected"></span>
+                }
+                <span class="arrow @parentOpen"></span>
+            </a>
+            <ul class="sub-menu">
+                @foreach (var page in Model.Pages.Where(p => p.Category == cat.Category))
+                {
+                    <li>
+                        <a class="ajaxify" href="@Url.Action(page.Action, page.Controller, new { area = page.Area, icon = page.ImageClass })">
+                            <div class="@fontClass">
+                                <i class="@page.ImageClass"></i>
+                                @page.Name
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+
+        </li>
+                idx++;
+    }
+</ul>
+
+<!-- END SIDEBAR MENU -->

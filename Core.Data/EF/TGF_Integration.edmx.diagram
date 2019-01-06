@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a114bf7e85dd4981ab0117777a7f857e" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="TGF_IntegrationModel.Email_handler" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.Email_handler_authent" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.Email_handler_log" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ImportListenerLog" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ImportListenerSetting" Width="2.25" PointX="11.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ImportListenerStaging" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ImportListenerToken" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ImportListenerVar" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ExportListenerSetting" Width="1.5" PointX="8.875" PointY="4.375" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ExportTypeDetail" Width="1.5" PointX="4.75" PointY="4.875" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.TGF_GI_ControlTower_Logging" Width="1.5" PointX="0.625" PointY="6.5" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.TGF_GI_ControlTower_Server_Status_Setting" Width="1.5" PointX="2.75" PointY="7.5" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ExportListenerLogShort" Width="1.5" PointX="5.375" PointY="9.75" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.TGF_THIRD_PARTY_EVENTS" Width="1.5" PointX="7.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.TGF_GI_ControlTower_Alert_Log" Width="1.5" PointX="9.375" PointY="10.75" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.TGF_PO_CONTROL_TABLE" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.ArchiveFolderSetting" Width="1.5" PointX="11.5" PointY="9.75" />
+        <EntityTypeShape EntityType="TGF_IntegrationModel.TGF_DI_DataFile_Naming" Width="1.5" PointX="3.375" PointY="12.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

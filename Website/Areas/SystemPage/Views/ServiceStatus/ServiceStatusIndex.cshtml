@@ -1,0 +1,335 @@
+﻿@model WebControlTower.Areas.SystemPage.Models.ServiceStatusPageModel
+@{
+    ViewBag.Title = "ServiceStatus";
+    Layout = ViewBag.Layout;
+}
+@section styles{
+    <style> .dx-datagrid-title { border-color: #0000ff; } </style>
+}
+<div id="service-popup"></div>
+<div id="ContextPage">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <div class="pagerheader">
+                            <i class="fa fa-power-off"></i> Service Status
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+    @using (Html.BeginForm())
+{
+        
+ <div class="dx-datagrid" id="grid" data-bind="dxDataGrid:
+    {
+        dataSource: {
+            store: {
+                data: arraydatasource.Details(),
+                type: 'array',
+                key: 'TGF_GI_ControlTower_Server_Status_Setting_PK'
+            }
+        }
+,
+     allowColumnResizing: true,
+                sorting: { mode: 'multiple' },
+
+     rowAlternationEnabled: true,
+            onContentReady: gridContentReady,
+           columns: [
+
+                    { dataField: 'Server_Name', caption: 'Server Name', width: 120,dataType: 'string' },
+      { dataField: 'Display_Name', caption: 'Service Name', width: 200,dataType: 'string' },
+     { dataField: 'Description', caption: 'Description', width: 340,dataType: 'string' },
+                     { dataField: 'Setting_Detail', caption: 'Service Name in server', width: 200,dataType: 'string' },
+                  @*  {
+                        dataField: 'Setting_Detail', caption: 'Status', width: 300,dataType: 'string',
+                        cellTemplate: function (cellElement, cellInfo) {
+                            if (cellInfo.data.Setting_Detail == 'Data Integrator Web Server') {              
+                                    cellElement.css('background', 'red');1
+                             }
+                             $('<span>').text(cellInfo.value).appendTo(cellElement);
+                        }
+                    },*@
+                    {
+                        dataField: 'UniqueKey', 
+                        width: 100,
+                        allowFiltering: false,
+                        caption: 'Status',
+                        allowSorting: false,
+@*                        cellTemplate: function (cellElement, cellInfo) {
+                            $('<img />')
+                    .attr('src', '/ControlTowerUAT/Images/NothingLight3535.png')
+                    .attr('id', cellInfo.value.toString().replace(/ /g,'').replace(/\$/g,'').replace(/\(/g,'').replace(/\)/g,'')+'1')
+                    .appendTo(cellElement);
+                                 }*@
+                             cellTemplate: function (cellElement, cellInfo) {
+
+                            $('<div>Waiting..</div>')
+                    .attr('id', cellInfo.value.toString().replace(/ /g,'').replace(/\$/g,'').replace(/\(/g,'').replace(/\)/g,'')+'1')       
+        .attr('class',     'label label-warning')
+                    .appendTo(cellElement);
+                                 }
+
+                        }
+     ,
+                                 {
+                        dataField: 'TGF_GI_ControlTower_Server_Status_Setting_PK', 
+                        width: 120,
+                        allowFiltering: false,
+                         caption: '',
+                        allowSorting: false,
+                        cellTemplate: function (cellElement, cellInfo) {
+     servicename = cellInfo.data['Server_Name'];
+                            $('<button ></button>').text('ON').click(function () {
+  serviceid = this.id;
+     serviceaction = 'TRUE';
+     displayaction = 'trun on';
+     $('#popuptext').html('Are you confirm to '+displayaction+'?<br /><br />');
+
+  @*         servicePopup.option("title", servicename);*@
+                        servicePopup.show();
+   
+                                @*startservice(this.id,'TRUE');*@
+                                return false;
+                             }).attr('id',cellInfo.value.toString())
+                                 @*}).attr('id', cellInfo.value.toString().replace(/ /g,'').replace(/\$/g,'').replace(/\(/g,'').replace(/\)/g,'')+'2')*@
+                               @*}).attr('id', cellInfo.data['Server_Name'].toString()+' '+cellInfo.data['Setting_Detail'].toString()+' ON')*@
+                                 @*.attr('disabled', true)*@
+                                   @*.attr('value','disgree')*@
+                                  .appendTo(cellElement);
+
+
+      $('<button ></button>').text('OFF').click(function () {
+  serviceid = this.id;
+     serviceaction = 'FALSE';
+@*   servicePopup.option("title", servicename);*@
+     displayaction = 'trun off';
+
+     $('#popuptext').html('Are you confirm to '+displayaction+'? <br /><br />');
+  
+                        servicePopup.show();
+
+                               @* startservice(this.id, 'FALSE');*@
+                                return false;
+                             }).attr('id',cellInfo.value.toString())
+                                 @*}).attr('id', cellInfo.value.toString().replace(/ /g,'').replace(/\$/g,'').replace(/\(/g,'').replace(/\)/g,'')+'2')*@
+                               @*}).attr('id', cellInfo.data['Server_Name'].toString()+' '+cellInfo.data['Setting_Detail'].toString()+' ON')*@
+                                 @*.attr('disabled', true)*@
+                                   @*.attr('value','disgree')*@
+                                
+                                  .appendTo(cellElement);
+                        }
+                    }
+  
+        ]
+    }">
+    </div>
+    }
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@section scripts{
+    <link href="~/Content/assets/admin/layout/css/custom-systempage.css" rel="stylesheet" />
+    <script>
+      
+        var serviceid, servicename, serviceaction,displayaction;
+        var _viewModel;
+        var viewModel = function () {
+            self = this;
+            self.arraydatasource = null;
+            self.gridInstance = null;
+            self.gridContentReady = function (e) {
+                if (!self.gridInstance)
+                    self.gridInstance = e.component;
+            };
+        };
+        var servicePopup;
+        $(document).ready(function () {
+
+            _viewModel = new viewModel();
+
+            servicePopup = $("#service-popup").dxPopup({
+                width: "20%",
+                height: "20%",
+                contentTemplate: function (contentElement) {
+
+                    $("<div/> ")
+                     .attr("id", "popuptext")
+                    .appendTo($(".dx-popup-content "));
+
+                    $('#popuptext').html('Are you confirm to '+displayaction+'?<br /><br />');
+
+                    $("<div />")
+                        .attr("id", "confirm")
+                        .dxButton({
+                            type: "success",
+                            text:"Confirm",
+                            onClick: function(){
+                                startservice(serviceid ,serviceaction);
+                            }
+                        }).appendTo($(".dx-popup-content "));
+                    
+                    $("<div />")
+                      .attr("id", "concel")
+                      .dxButton({
+                          type: "success",
+                          text:"Cancel",
+                          onClick: function(){
+                              servicePopup.hide();
+                          }
+
+                      }).appendTo($(".dx-popup-content "));
+
+                },
+                showTitle: false,
+                onShowing: function () {
+
+                },
+                onHiding: function () {
+                }
+            }).dxPopup("instance");
+
+
+            $.get('@Url.Action("ServiceStatusLoad", "ServiceStatus", new { area = "SystemPage"})')
+             .done(function (data) {
+                 _viewModel.arraydatasource = ko.mapping.fromJS(data);
+                 //              _viewModel.gridInstance.refresh();
+                 ko.applyBindings(_viewModel, document.getElementById('ContextPage'));
+
+             }).error(
+              function (xhr, ajaxOptions, thrownError) {
+                  alert('ess');
+              })
+            }
+         );
+        $(function () {
+            var connection = dctglobal.getGlobalHubConnection();
+            $('#chartscroller').slimScroll({
+                color: '#00f',
+                size: '10px',
+                height: '250px',
+                alwaysVisible: true
+            });
+            var ChatHubProxy = connection.createHubProxy('ChatHub');
+            ChatHubProxy.on('addNewMessageToPage', function (name, message) {
+                var cname = '@User.Identity.Name';
+                var liclass;
+                if (cname == name)
+                    liclass = "out";
+                else
+                    liclass = "in";
+                $('#discussion').append('<li class="' + liclass + '"><div class="message"><span class="arrow"></span><a href="#" class="name">' + htmlEncode(name)
+                    + '</a><span class="datetime">' + htmlEncode(message.datetime) + '</span><span class="body">' + htmlEncode(message.message) + '</span></div></li>');
+                $('#chartscroller').slimScroll({
+                    scrollTo: '250px'
+                });
+
+            });
+            ChatHubProxy.on('addServerStatus', function (message) {
+                var servername = htmlEncode(message.ServerName); 
+                var servicetemp = htmlEncode(message.Service);
+                var b = servicetemp.split('|');
+                var i = 0;
+                while (i < b.length) {
+                    var d =  b[i].split(':');
+                    if (d.length > 1)
+                    {
+                       var name  = d[0].replace('Service ','');
+                       var status = d[1].replace(' Status = ','');
+                       name = name.replace(/ /g,'').replace(/\$/g,'').replace(/\(/g,'').replace(/\)/g,'')+ servername;
+                       if (status.indexOf('Running') > -1 )
+                       {
+ //                          $('#'+name+'1').attr('src', '/ControlTowerUAT/Images/GreenLight3535.png');
+ //                          $('#'+name+'2').attr('disabled', false).text('Turn OFF');
+                           //                           $('#'+name+'1').html('<span class="label label-success">ON </span>')
+                           $('#'+name+'1').html('ON ')
+                           .attr('class',   'label label-success');
+
+                       }
+                       else
+                       {
+//                           $('#'+name+'1').attr('src', '/ControlTowerUAT/Images/RedLight3535.png');
+  //                         $('#'+name+'2').attr('disabled', false).text('Turn ON');
+                           $('#'+name+'1').html('OFF')
+                           .attr('class',     'label label-danger');
+                       }
+                    }
+                    i += 1;
+                }
+
+                
+                
+            });
+            connection.start().done(function () {
+                $('#sendmessage').click(function () {
+                    ChatHubProxy.invoke('Send', $('#message').val());
+                    $('#message').val('').focus();
+
+                });
+            });
+
+            connection.disconnected(function () {
+                ChatHubProxy.off('addNewMessageToPage');
+                ChatHubProxy.off('addServerStatus');
+            });
+        });
+
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+
+        function startservice(command, a)
+        {
+            dctglobal.blockUI({
+                target: $('#ContextPage'),
+                animate: true,
+                overlayColor: 'none'
+            });
+            var temp = document.location.pathname.split("/");
+            var urlperfix = temp[1];
+            jQuery.ajax({
+                type: 'POST',
+                url: '/'+urlperfix+'/SystemPage/ServiceStatus/StartService',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ setting_pk:command,action:a}),
+                success: function (data) {
+                    servicePopup.hide();
+                    dctglobal.unblockUI($('#ContextPage'));
+                    if (data === false) {
+                            DevExpress.ui.notify('Operation Failed or you do not have enough permission');
+                        return;
+                    }
+                    else
+                    {
+                        if (a == 'FALSE')
+                        {
+                            DevExpress.ui.notify('Service Stopped');
+                        }
+                        else
+                        {
+                            DevExpress.ui.notify('Service started');
+                        }
+                        return;
+                    }
+                },
+                failure: function (errMsg) {
+                    servicePopup.hide();
+                    DevExpress.ui.notify('Operation Failed or you do not have enough permission');
+                    
+                }
+            });
+        }
+
+    </script>
+
+}

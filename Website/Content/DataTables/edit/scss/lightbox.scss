@@ -1,0 +1,223 @@
+@mixin box-sizing($box-model) {
+  -webkit-box-sizing: $box-model; // Safari <= 5
+     -moz-box-sizing: $box-model; // Firefox <= 19
+          box-sizing: $box-model;
+}
+@mixin radial-gradient ($fromColor, $toColor ) {
+	background: $toColor; /* Fallback */
+	background:     -ms-radial-gradient(center, ellipse farthest-corner, $fromColor 0%, $toColor 100%); /* IE10 Consumer Preview */ 
+	background:    -moz-radial-gradient(center, ellipse farthest-corner, $fromColor 0%, $toColor 100%); /* Firefox */ 
+	background:      -o-radial-gradient(center, ellipse farthest-corner, $fromColor 0%, $toColor 100%); /* Opera */ 
+	background: -webkit-gradient(radial, center center, 0, center center, 497, color-stop(0, $fromColor), color-stop(1, $toColor)); /* Webkit (Safari/Chrome 10) */ 
+	background: -webkit-radial-gradient(center, ellipse farthest-corner, $fromColor 0%, $toColor 100%); /* Webkit (Chrome 11+) */ 
+	background: radial-gradient(ellipse farthest-corner at center, $fromColor 0%, $toColor 100%); /* W3C Markup, IE10 Release Preview */ 
+}
+
+@mixin close-icon () {
+	position: absolute;
+	top: -11px;
+	right: -11px;
+	width: 22px;
+	height: 22px;
+	border: 2px solid white;
+	background-color: black;
+	text-align: center;
+	border-radius: 15px;
+	cursor: pointer;
+	z-index: 12;
+	box-shadow: 2px 2px 6px #111;
+
+	&:after {
+		content: '\00d7';
+		color: white;
+		font-weight: bold;
+		font-size: 18px;
+		line-height: 22px;
+		font-family: 'Courier New', Courier, monospace;
+		padding-left: 1px;
+	}
+
+	&:hover {
+		background-color: #092079;
+		box-shadow: 2px 2px 9px #111;
+	}
+}
+
+@mixin overlay-background () {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	@include radial-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7) );
+
+	z-index: 10;
+
+	// IE8- doesn't support RGBA and jQuery uses `filter:` for the fade-in
+	// animation, so we need a child element that is used just for the display
+	>div {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+
+		// IE7-
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+		
+		// IE8
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+	}
+
+	// IE9 has both filter and rgba support, so we need a hack to disable the filter
+	>div:not([dummy]) {
+		filter: progid:DXImageTransform.Microsoft.gradient(enabled='false');
+	}
+}
+
+div.DTED_Lightbox_Wrapper {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	margin-left: -390px;
+	width: 780px;
+	height: 100%;
+	z-index: 11;
+
+	div.DTED_Lightbox_Container {
+		*position: absolute; /* IE6 */
+		*top: 50%;
+		#position: absolute; /* IE7 */
+		#top: 50%;
+		display: table;
+		height: 100%;
+		width: 100%;
+
+		div.DTED_Lightbox_Content_Wrapper {
+			*position: relative; /* IE6 */
+			#position: relative; /* IE7 */
+			display: table-cell;
+			vertical-align: middle;
+			width: 100%;
+
+			div.DTED_Lightbox_Content {
+				*top: -50%; /* IE6 */
+				#top: -50%; /* IE7 */
+				position: relative;
+				border: 7px solid rgba(220, 220, 220, 0.5);
+				box-shadow: 2px 2px 10px #555;
+				border-radius: 10px;
+				@include box-sizing(border-box);
+
+				div.DTE {
+					background: white;
+					border-radius: 6px;
+					box-shadow: 0 0 5px #555;
+					border: 2px solid #444;
+					@include box-sizing(border-box);
+
+					div.DTE_Header {
+						top: 2px;
+						left: 2px;
+						right: 2px;
+						width: auto;
+						border-top-left-radius: 5px;
+						border-top-right-radius: 5px;
+					}
+
+					div.DTE_Footer {
+						bottom: 2px;
+						left: 2px;
+						right: 2px;
+						width: auto;
+						border-bottom-left-radius: 5px;
+						border-bottom-right-radius: 5px;
+					}
+				}
+
+				div.DTED_Lightbox_Close {
+					@include close-icon();
+				}
+			}
+		}
+	}
+}
+
+
+div.DTED_Lightbox_Background {
+	@include overlay-background();
+}
+
+
+body.DTED_Lightbox_Mobile {
+	div.DTED_Lightbox_Background {
+		height: 0;
+	}
+
+	div.DTED_Lightbox_Shown {
+		display: none;
+	}
+
+	div.DTED_Lightbox_Wrapper {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		width: auto;
+		height: auto;
+		margin-left: 0;
+		-webkit-overflow-scrolling: touch;
+
+		div.DTED_Lightbox_Container {
+			display: block;
+
+			div.DTED_Lightbox_Content_Wrapper {
+				display: block;
+
+				div.DTED_Lightbox_Content {
+					border: 4px solid rgba(220, 220, 220, 0.5);
+					border-radius: 0;
+
+					div.DTE {
+						border-radius: 0;
+						box-shadow: 0 0 5px #555;
+						border: 2px solid #444;
+
+						div.DTE_Header {
+							border-top-left-radius: 0;
+							border-top-right-radius: 0;
+						}
+
+						div.DTE_Footer {
+							border-bottom-left-radius: 0;
+							border-bottom-right-radius: 0;
+						}
+					}
+
+					div.DTED_Lightbox_Close {
+						top: 11px;
+						right: 15px;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media only screen 
+and (max-width: 780px) {
+	div.DTED_Lightbox_Wrapper {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		margin-left: 0;
+	}
+}
+
+
+
+
+

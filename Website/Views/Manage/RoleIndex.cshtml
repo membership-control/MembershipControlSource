@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Manage Roles";
+}
+<p>&nbsp;</p>
+<div>
+    @Html.ActionLink("Create New Role", "RoleCreate") | @Html.ActionLink("Add Role to User", "RoleAddToUser")
+    <h3>Manage Roles</h3>
+    @foreach (string s in Model)
+    {
+        <p> @Html.Raw(s == "Admin"? "<i>" : "")
+            <strong>@s | </strong> 
+            @Html.Raw(s == "Admin" ? "</i>" : "")
+            <span onclick=" return confirm('Are you sure to delete?') ">
+                <a href="~/Manage/RoleDelete?roleName=@s" class="delLink" style="color:red;">Delete</a>
+            </span>
+        </p>
+    }
+    @Html.ValidationSummary(true);
+    <div class="message-success">@ViewBag.ResultMessage</div>
+</div>

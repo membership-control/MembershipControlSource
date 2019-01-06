@@ -1,0 +1,81 @@
+﻿.easy-pie-chart,
+.sparkline-chart {
+  text-align: center;
+    position: relative;
+}
+.easy-pie-chart .number {
+  font-size: 14px !important;
+  font-weight: 300;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+  width: 100px  !important;
+  height: 100px  !important;
+  line-height: 100px;
+}
+
+
+.easy-pie-chart .number canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0px;
+}
+
+.sparkline-chart {
+  margin-top: 15px;
+  position: relative;
+}
+
+.sparkline-chart .number {
+  width: 100px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+.percentage,
+.label {
+    margin-bottom: 0.5em;
+    text-align: center;
+    font-weight: 100;
+}
+.percentage{
+  font-size: 17px;
+}
+
+.sparkline-chart .title,
+.easy-pie-chart .title{
+  display: block;
+  text-align: center;
+  color: #333;
+  font-weight: 300;
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.sparkline-chart .title:hover,
+.easy-pie-chart .title:hover {
+  color: #666;
+  text-decoration: none;
+}
+
+.sparkline-chart .title > i,
+.easy-pie-chart .title > i {
+  margin-top: 5px;
+}
+
+.portlet.box.red-sunglo > .portlet-title
+{
+    background-color: #8fd9d5  !important;
+     border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.portlet.box.red-sunglo {
+ 	border-radius: 10px !important;
+}
+
+.portlet.box > .portlet-body {
+     border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
