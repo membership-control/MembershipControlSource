@@ -1,89 +1,4 @@
 ﻿var RegisterConfig = {
-    data: [
-        {
-            text: "ETF Course",
-            roomId: [1],
-            startDate: new Date(2018, 12, 4, 9, 30),
-            endDate: new Date(2018, 12, 4, 11),
-            fees: "3500",
-            recurrenceRule: "FREQ=WEEKLY;BYDAY=TU,FR;COUNT=10"
-        }, {
-            text: "Equities Course",
-            roomId: [2],
-            startDate: new Date(2018, 12, 4, 9, 30),
-            endDate: new Date(2018, 12, 4, 11),
-            fees: "3000",
-            recurrenceRule: "FREQ=WEEKLY;BYDAY=MO,TH;COUNT=10"
-        }, {
-            text: "Testing",
-            roomId: [3],
-            startDate: new Date(2018, 12, 4, 12, 0),
-            endDate: new Date(2018, 12, 4, 13, 0),
-            fees: "1000",
-            recurrenceRule: "FREQ=WEEKLY;BYDAY=MO;WKST=TU;INTERVAL=2;COUNT=2"
-        }, {
-            text: "Mock Exam",
-            roomId: [4],
-            startDate: new Date(2018, 12, 4, 9, 0),
-            endDate: new Date(2018, 12, 4, 9, 15),
-            fees: "150",
-            recurrenceRule: "FREQ=DAILY;BYDAY=WE;UNTIL=20170601"
-        }, {
-            text: "Introduction to students",
-            roomId: [5],
-            startDate: new Date(2018, 12, 5, 10, 0),
-            endDate: new Date(2018, 12, 5, 11, 0),
-            fees: "Free",
-            recurrenceRule: "FREQ=YEARLY;BYWEEKNO=23",
-            recurrenceException: "20170611T100000"
-        }, {
-            text: "REIT Course",
-            roomId: [3],
-            startDate: new Date(2018, 12, 5, 12, 0),
-            endDate: new Date(2018, 12, 5, 13, 35),
-            fees: "Free",
-            recurrenceRule: "FREQ=YEARLY;BYWEEKNO=24;BYDAY=TH,FR"
-        }, {
-            text: "Final Exam",
-            roomId: [4],
-            startDate: new Date(2018, 12, 5, 14, 30),
-            endDate: new Date(2018, 12, 5, 15, 45),
-            fees: "300",
-            recurrenceRule: "FREQ=MONTHLY;BYMONTHDAY=27;COUNT=1"
-        }, {
-            text: "Open Day",
-            roomId: [5],
-            startDate: new Date(2018, 12, 5, 9, 30),
-            endDate: new Date(2018, 12, 5, 13),
-            fees: "Free",
-            recurrenceRule: "FREQ=YEARLY;BYYEARDAY=148"
-        }
-    ],
-
-    resourcesData: [
-        {
-            text: "Room 101",
-            id: 1,
-            color: "#bbd806"
-        }, {
-            text: "Room 102",
-            id: 2,
-            color: "#f34c8a"
-        }, {
-            text: "Room 103",
-            id: 3,
-            color: "#ae7fcc"
-        }, {
-            text: "Examination room",
-            id: 4,
-            color: "#ff8817"
-        }, {
-            text: "Conference room",
-            id: 5,
-            color: "#03bb92"
-        }
-    ],
-
     input_selection: {
         NONE: 0,
         QR: 1,
@@ -93,6 +8,7 @@
     load_Url: $("#initurl").val(),
 //    email_Url: $("#emailurl").val(),
     upload_Url: $("#uploadurl").val(),
+    grid_Url: $("#detailgridurl").val(),
     phone_pattern: "^\\d+$",
     qr_pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
     form: null,
@@ -111,47 +27,48 @@ $(function () {
     $(document).ready(function () {
         RegisterConfig.lookup_used = RegisterConfig.input_selection.NONE;
 
-            var onUploadFinish = function (e) {
-                DevExpress.ui.notify('Successfully uploaded a file');
-            };
+        var onUploadFinish = function (e) {
+            DevExpress.ui.notify('Successfully uploaded a file');
+        };
 
-            var onUploadError = function (e) {
-                DevExpress.ui.notify('Error while transfer file');
-            };
-            
+        var onUploadError = function (e) {
+            DevExpress.ui.notify('Error while transfer file');
+        };
+
         $("#file-uploader").dxFileUploader({
-                accept: ".csv, text/csv",
-                uploadMode: "useButtons",
-                uploadUrl: RegisterConfig.upload_Url,
-                chunkSize: 200000,
-                onUploaded: onUploadFinish,
-                onUploadError: onUploadError,
-                onInitialized: function (e) {
-                    var baseCall = e.component._dropHandler;
-                    e.component._dropHandler = function (args) {
-                            return;
-                        baseCall.apply(this, args);
-                    }
+            accept: ".csv, text/csv",
+            uploadMode: "useButtons",
+            uploadUrl: RegisterConfig.upload_Url,
+            chunkSize: 200000,
+            onUploaded: onUploadFinish,
+            onUploadError: onUploadError,
+            onInitialized: function (e) {
+                var baseCall = e.component._dropHandler;
+                e.component._dropHandler = function (args) {
+                    return;
+                    baseCall.apply(this, args);
                 }
-            });
+            }
+        });
 
-            RegisterConfig.form_option = new $.DevDXForm({
-                url: RegisterConfig.load_Url,
-                key: "ACT_PK",
-                onFieldDataChanged: null,
-                showValidationSummary: false   
-            });
+        //RegisterConfig.form_option = new $.DevDXForm({
+        //    url: RegisterConfig.load_Url,
+        //    key: "ACT_PK",
+        //    onFieldDataChanged: null,
+        //    showValidationSummary: false
+        //});
 
-            dctglobal.blockUI({
-                target: $('#Context'),
-                animate: true,
-                overlayColor: 'none'
-            });
+        dctglobal.blockUI({
+            target: $('#Context'),
+            animate: true,
+            overlayColor: 'none'
+        });
 
         var load_result = {};
         $.post(RegisterConfig.load_Url, { action: "search" })
             .done(function (result) {
-                  load_result = result.data.map(function (value, label) {
+                if (result.data != null) {
+                    load_result = result.data.map(function (value, label) {
                         //loop through single json object; detect if field is startDate/endDate, replace value with new Date(value); 
                         Object.keys(value).forEach(function (key) {
                             //alert('Key : ' + key + ', Value : ' + value[key])
@@ -159,7 +76,8 @@ $(function () {
                                 value[key] = new Date(value[key]);
                         });
                         return value;
-                });
+                    });
+                }
 
                 $("#scheduler").dxScheduler({
                     dataSource: load_result,
@@ -179,9 +97,10 @@ $(function () {
                         var buttons = data.component._popup.option('buttons');
                         buttons[0].options = { text: 'Check in' };
                         buttons[1].options = { text: 'Close' };
-                        data.component._popup.option('buttons', buttons);    
+                        data.component._popup.option('buttons', buttons);
                         //var qrcode;
                         RegisterConfig.lookup_used = RegisterConfig.input_selection.NONE;
+                        RegisterConfig.key_pk = null;
                         var form = data.form;
                         //alert(data.appointmentData.ACT_PK);
                         form.option("items", [
@@ -267,6 +186,7 @@ $(function () {
                                                     else {
                                                         if (dataItem.data != null) {
                                                             RegisterConfig.lookup_used = RegisterConfig.input_selection.PHONE;
+                                                            RegisterConfig.key_pk = dataItem.key;
                                                             form.option("formData", dataItem.data);
                                                         } else
                                                             DevExpress.ui.notify(dataItem.error);
@@ -301,86 +221,105 @@ $(function () {
                                         disabled: true
                                     }
                                 }, {
-                                        colSpan: 2,
-                                        dataField: "startDate",
-                                        editorType: "dxDateBox",
-                                        editorOptions: {
-                                            width: "100%",
-                                            format: "datetime",
-                                            disabled: true
-                                        }
-                                    }, {
-                                        colSpan: 2,
-                                        name: "endDate",
-                                        dataField: "endDate",
-                                        editorType: "dxDateBox",
-                                        editorOptions: {
-                                            width: "100%",
-                                            format: "datetime",
-                                            disabled: true
-                                        }
+                                    colSpan: 2,
+                                    dataField: "startDate",
+                                    editorType: "dxDateBox",
+                                    editorOptions: {
+                                        width: "100%",
+                                        format: "datetime",
+                                        disabled: true
+                                    }
+                                }, {
+                                    colSpan: 2,
+                                    name: "endDate",
+                                    dataField: "endDate",
+                                    editorType: "dxDateBox",
+                                    editorOptions: {
+                                        width: "100%",
+                                        format: "datetime",
+                                        disabled: true
+                                    }
+                                },
+                                {
+                                    colSpan: 4,
+                                    label: {
+                                        text: "Fees"
                                     },
-                                    {
-                                        colSpan: 4,
-                                        label: {
-                                            text: "Fees"
-                                        },
-                                        editorType: "dxTextBox",
-                                        dataField: "ACT_Fee",
-                                        editorOptions: {
-                                            disabled: true
-                                        }
-                                    }]
-                            }, 
+                                    editorType: "dxTextBox",
+                                    dataField: "ACT_Fee",
+                                    editorOptions: {
+                                        disabled: true
+                                    }
+                                }]
+                            },
                             {
                                 itemType: "group",
                                 caption: "Member Details",
                                 cssClass: "second-group",
                                 colCount: 2,
                                 items: [{
-                                            colSpan: 2,
-                                            label: {
-                                                text: "Member Name"
-                                            },
-                                            editorType: "dxTextBox",
+                                    colSpan: 2,
+                                    label: {
+                                        text: "Member Name"
+                                    },
+                                    editorType: "dxTextBox",
                                     dataField: "MBR_Name",
                                     editorOptions: {
                                         disabled: true
                                     }
                                 },
-                                    {
-                                        colSpan: 2,
-                                        label: {
-                                            text: "Phone 1"
-                                        },
-                                        editorType: "dxTextBox",
-                                        dataField: "MBR_Phone1",
-                                        editorOptions: {
-                                            disabled: true
-                                        }
+                                {
+                                    colSpan: 2,
+                                    label: {
+                                        text: "Phone 1"
                                     },
-                                    {
-                                        colSpan: 1,
-                                        name: "RegDate",
-                                        dataField: "UAC_RegDate",
-                                        editorType: "dxDateBox",
-                                        editorOptions: {
-                                            width: "100%",
-                                            format: "datetime",
-                                            disabled: true
-                                        }
-                                    },
-                                    {
-                                        colSpan: 1,
-                                        name: "AttDate",
-                                        dataField: "UAC_AttDate",
-                                        editorType: "dxDateBox",
-                                        editorOptions: {
-                                            width: "100%",
-                                            format: "datetime"
-                                        }
+                                    editorType: "dxTextBox",
+                                    dataField: "MBR_Phone1",
+                                    editorOptions: {
+                                        disabled: true
                                     }
+                                },
+                                {
+                                    colSpan: 1,
+                                    name: "RegDate",
+                                    dataField: "UAC_RegDate",
+                                    editorType: "dxDateBox",
+                                    editorOptions: {
+                                        width: "100%",
+                                        format: "datetime",
+                                        disabled: true
+                                    }
+                                },
+                                {
+                                    colSpan: 1,
+                                    name: "AttDate",
+                                    dataField: "UAC_AttDate",
+                                    editorType: "dxDateBox",
+                                    editorOptions: {
+                                        width: "100%",
+                                        format: "datetime"
+                                    }
+                                }
                                 ]
+                            },
+                            {
+                                itemType: "group",
+                                colCount: 2,
+                                items: [{
+                                    colSpan: 2,
+                                    name: "show-grid",
+                                    template: function (data, $itemElement) {
+                                        $("<div>").appendTo($itemElement).dxButton({
+                                            icon: 'fa fa-group',
+                                            text: "Who joined ?",
+                                            width: '100%',
+                                            onClick: function (e) {
+                                                var url = RegisterConfig.grid_Url.replace("%7BPARAM1%7D", form.option("formData").ACT_PK);
+                                                window.open(url);
+                                            }
+                                        });
+                                    }
+                                }]
                             }
                         ]);
 
@@ -394,10 +333,11 @@ $(function () {
                         form.getEditor("Flex1").focus();
                     },
                     onAppointmentUpdating: function (e) {
-                        alert(e.oldData);
-                        alert(e.newData);
-                        alert(e.oldData.ACT_PK);
-                        alert(e.newData.ACT_PK);
+                        //alert(e.oldData);
+                        //alert(e.newData);
+                        //alert(e.oldData.UAC_AttDate);
+                        //alert(e.newData.UAC_AttDate);
+                        //e.cancel = true;
                         if (RegisterConfig.lookup_used === RegisterConfig.input_selection.QR && RegisterConfig.key_pk != null) {
                             dctglobal.blockUI({
                                 target: $('#Context'),
@@ -408,7 +348,32 @@ $(function () {
                                 {
                                     action: "updatebyqr",
                                     key: RegisterConfig.key_pk,
-                                    values: e.appointmentData
+                                    values: e.newData
+                                };
+                            $.post(RegisterConfig.load_Url, request)
+                                .done(function (dataItem) {
+                                    if (dataItem.haveError)
+                                        alert(dataItem.error);
+                                    else {
+                                        if (dataItem.data != null)
+                                            DevExpress.ui.notify("Checked in successfully");//form.option("formData", dataItem.data);
+                                        dctglobal.unblockUI($('#Context'));
+                                    }
+                                }).fail(function (error) {
+                                    DevExpress.ui.notify(error.statusText);
+                                });
+                        }
+                        else if (RegisterConfig.lookup_used === RegisterConfig.input_selection.PHONE && RegisterConfig.key_pk != null) {
+                            dctglobal.blockUI({
+                                target: $('#Context'),
+                                animate: true,
+                                overlayColor: 'none'
+                            });
+                            var request =
+                                {
+                                    action: "updatebyphone",
+                                    key: RegisterConfig.key_pk,
+                                    values: e.newData
                                 };
                             $.post(RegisterConfig.load_Url, request)
                                 .done(function (dataItem) {
@@ -425,7 +390,6 @@ $(function () {
                         }
                         else {
                             e.cancel = true;
-                            DevExpress.ui.notify("NotImplementedException");
                         }
                     },
                     height: 600,
@@ -450,5 +414,5 @@ $(function () {
             });
 
 
-     });
+    });
 });

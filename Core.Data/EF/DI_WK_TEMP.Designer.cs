@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\seanwec\Source\Workspaces\Membership_Control\Core.Data\EF\DI_WK_TEMP.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\seanwec\Source\repos\MembershipControlSource\Core.Data\EF\DI_WK_TEMP.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

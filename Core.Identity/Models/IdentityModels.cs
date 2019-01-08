@@ -91,7 +91,7 @@ namespace Core.Identity.Models
         public virtual Permission PermissionModel { get; set; }
     }
 
-    [System.ComponentModel.DataAnnotations.Schema.Table("AspNetGICTNavBar")]
+    [System.ComponentModel.DataAnnotations.Schema.Table("MEMNavbar")]
     public class NavBar
     {
         [System.ComponentModel.DataAnnotations.Key]

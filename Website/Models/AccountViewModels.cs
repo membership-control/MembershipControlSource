@@ -49,12 +49,12 @@ namespace WebMembership.Models
 
     public class LoginViewModel
     {
-        //[Required]
+        [Required]
         [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
 
-        //[Required]
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

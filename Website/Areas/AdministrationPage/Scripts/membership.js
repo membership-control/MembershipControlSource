@@ -1,14 +1,5 @@
 ﻿var MemberConfig = {
     initFormObj: {},
-
-    countrycodes:  ["US", "UK", "IN", "AU", "HK", "CN", "MY", "SG"],
-
-    member_type:  [
-    { "ID": 1, "Name": "Open" },
-    { "ID": 2, "Name": "Student" },
-    { "ID": 3, "Name": "Member" }
-],
-
     load_Url:  $("#forminit").val(),
     checkid_Url:  $("#checkid").val(),
     upload_Url: $("#photoload").val(),
@@ -195,7 +186,7 @@ $(function () {
                                 dataField: "MBR_Type",
                                 editorType: "dxSelectBox",
                                 editorOptions: {
-                                    dataSource: MemberConfig.member_type,
+                                    dataSource: CommonConfig.member_type,
                                     displayExpr: "Name",
                                     valueExpr: "ID"
                                 },
@@ -297,24 +288,41 @@ $(function () {
                                     dataField: "MBR_CountryCode",
                                     editorType: "dxSelectBox",
                                     editorOptions: {
-                                        dataSource: MemberConfig.countrycodes
+                                        dataSource: CommonConfig.countrycodes
                                     }
                                 },
                                 { dataField: "MBR_CountryName" }
                                 ]
-                            }]
+                                },
+                                {
+                                    title: "Career",
+                                    items: [{ dataField: "MBR_Occupations" },
+                                        { dataField: "MBR_CompanyName" },
+                                        { dataField: "MBR_Professional" },
+                                        { dataField: "MBR_Valuable" },
+                                        { dataField: "MBR_Networking" },
+                                        { dataField: "MBR_Parhnership" }
+                                    ]
+                                }
+                            ]
                         }]
                     }, {
                         itemType: "group",
                         items: [{
                             dataField: "MBR_Age",
-                            editorType: "dxNumberBox",
-                            editorOptions: {
-
-                            },
-                        }, {
-                            dataField: "MBR_Occupations"
-                        }]
+                            editorType: "dxNumberBox"
+                        }, 
+                            { dataField: "MBR_SupportInGroup" },
+                            { dataField: "MBR_ReferBy" },
+                            { dataField: "MBR_GroupID" },
+                            {
+                                dataField: "MBR_Remarks",
+                                editorType: "dxTextArea",
+                                editorOptions: {
+                                    height: 90
+                                }
+                            }
+                        ]
                     }, {
                         colSpan: 2,
                         dataField: "MBR_Skillset",

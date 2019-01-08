@@ -1,5 +1,4 @@
-﻿@model WebMembership.Areas.AdministrationPage.Models.MembershipLogModel
-@{
+﻿@{
     ViewBag.Title = "Membership";
     Layout = ViewBag.Layout;
 }
@@ -86,6 +85,7 @@
 @Html.Hidden("photoload", @Url.Action("Upload", "Membership", new { name = "{PARAM1}" }))
 @section scripts{
     <script src="~/Scripts/global/DevDXForm.js"></script>
+    <script src="~/Areas/AdministrationPage/Scripts/common-config.js"></script>
     <script src="~/Areas/AdministrationPage/Scripts/membership.js"></script>
 
 }

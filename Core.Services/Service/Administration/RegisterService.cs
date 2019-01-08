@@ -110,6 +110,45 @@ this.UnitOfWork.CreateSet<MEM_Activity>().UseAsDataSource(this._Imapper).For<Reg
             return response;
         }
 
+        private DevResponse EditByPhone(DevRequest request, LogModel logmodel)
+        {
+            DevResponse response = new DevResponse();
+            RegisterActivityMasterDTO orgin = base.ConvertObject<RegisterActivityMasterDTO>(request.Values);
+
+            IEnumerable<MEM_UserActivity> user_activities = this.GetAll().Where(u => u.UAC_ACT_PK == orgin.ACT_PK && u.UAC_MBR_PK == orgin.MBR_PK).ToList();
+            
+            foreach(var user_activity in user_activities)
+            {
+                user_activity.UAC_AttDate = orgin.UAC_AttDate;
+                user_activity.UAC_UpdateDate = DateTime.Now;
+                user_activity.UAC_UpdateUser = "UAT";
+
+                var result_update = base.Update(user_activity);
+                if (result_update.Code == 0)
+                {
+                    response.haveError = false;
+                    response.key = request.Key;
+                    response.data = orgin;
+                }
+                else
+                {
+                    response.haveError = true;
+                    response.error = "CODE:" + result_update.Code + "  MSG:" + result_update.ErrMsg;
+                    break;
+                }
+            }
+
+            
+            //logmodel.PK = System.Guid.NewGuid();
+            //logmodel.Details = this.UnitOfWork.Sql;
+            //logmodel.Action = request.CuttentAction;
+            //logmodel.Status = !response.haveError;
+            //logmodel.Remark = response.error;
+            //base.Log(logmodel);
+
+            return response;
+        }
+
         private DevResponse SingleDataByPhone(DevRequest request)
         {
             DevResponse response = new DevResponse();
@@ -189,10 +228,6 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
 
         #endregion
 
-        public DevResponse CheckQR(string value)
-        {
-            throw new NotImplementedException();
-        }
 
         public DevResponse DevPageAll(NameValueCollection request, LogModel logmodel = null)
         {
@@ -207,6 +242,8 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                     throw new NotImplementedException();//return this.Remove(convertRequest, logmodel);
                 case "updatebyqr":
                     return this.EditByQR(convertRequest, logmodel);
+                case "updatebyphone":
+                    return this.EditByPhone(convertRequest, logmodel);
                 case "searchphone":
                     return this.SingleDataByPhone(convertRequest);
                 case "searchqr":
@@ -218,8 +255,13 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
 
         protected Task SendFormattedHTMLEmailAsync(HTMLEmailViewModel model, Stream stream)
         {
+            string setting_address = System.Configuration.ConfigurationManager.AppSettings["MailAddress"];
+            string setting_smtp = System.Configuration.ConfigurationManager.AppSettings["MailSMTP"];
+            int setting_port = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["MailPort"]);
+            string setting_pass = System.Configuration.ConfigurationManager.AppSettings["MailPass"];
+
             MailMessage msg = new MailMessage();
-            msg.From = new MailAddress("passiveincome.shawn@gmail.com");
+            msg.From = new MailAddress(setting_address);
 
             msg.Subject = model.Subject;
             msg.Body = model.Body;
@@ -230,12 +272,12 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
             attachment.ContentDisposition.FileName = "Ticket.jpeg";
             msg.Attachments.Add(attachment);
 
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            SmtpClient smtpClient = new SmtpClient(setting_smtp);
             smtpClient.EnableSsl = true;
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("passiveincome.shawn@gmail.com", "yoj829IE*");
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(setting_address, setting_pass);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = credentials;
-            smtpClient.Port = 587;
+            smtpClient.Port = setting_port;
 
             return smtpClient.SendMailAsync(msg);
         }
@@ -380,6 +422,48 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
             {
                 response.haveError = true;
                 response.error = "CODE:" + result_add.Code + "  MSG:" + result_add.ErrMsg;
+            }
+
+            return response;
+        }
+
+        public DevResponse LoadDetailGrid(string act_id)
+        {
+            DevResponse response = new DevResponse();
+            Guid act_pk = Guid.Empty;
+            Guid.TryParse(act_id, out act_pk);
+
+            IQueryable<MEM_UserActivity> uacs = base.GetFiltered(x => x.UAC_ACT_PK == act_pk);
+            IQueryable<MEM_Membership> members = this.UnitOfWork.CreateSet<MEM_Membership>().AsQueryable();
+            var result_data = from uac in uacs
+                              from member in members
+                                .Where(member => member.MBR_PK == uac.UAC_MBR_PK)
+                              select new RegisterActivityGridDTO
+                              {
+                                  ACT_PK = uac.UAC_ACT_PK,
+                                  ACT_Name = uac.UAC_ACT_Name,
+                                  Remark = uac.UAC_Remarks,
+                                  MBR_Name = member.MBR_Name,
+                                  MBR_ChineseName = member.MBR_ChineseName,
+                                  MBR_Phone1 = member.MBR_Phone1,
+                                  MBR_Phone2 = member.MBR_Phone2,
+                                  MBR_WeChatNo = member.MBR_WeChatNo,
+                                  RegDate = uac.UAC_RegDate
+                              };
+
+            List<RegisterActivityGridDTO> final_data_list =
+                result_data.ToList();
+            
+            if (final_data_list.Count() > 0)
+            {
+                response.haveError = false;
+                response.key = final_data_list.First().ACT_Name;
+                response.data = final_data_list;
+            }
+            else
+            {
+                response.haveError = true;
+                response.error = "No joiners";
             }
 
             return response;

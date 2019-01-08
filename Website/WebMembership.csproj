@@ -266,6 +266,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Areas\AdministrationPage\Models\RegisterJoinersViewModel.cs" />
     <Compile Include="Areas\SystemPage\Controllers\FolderStatusController.cs" />
     <Compile Include="Areas\SystemPage\Controllers\RoleController.cs" />
     <Compile Include="Areas\SystemPage\Controllers\ServerStatusController.cs" />
@@ -284,7 +285,6 @@
     <Compile Include="Areas\AdministrationPage\Controllers\POControlTowerController.cs" />
     <Compile Include="Areas\AdministrationPage\Models\RegisterViewModel.cs" />
     <Compile Include="Areas\AdministrationPage\Models\ActivityLogModel.cs" />
-    <Compile Include="Areas\AdministrationPage\Models\MembershipLogModel.cs" />
     <Compile Include="Areas\AdministrationPage\AdministrationAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -307,6 +307,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\AdministrationPage\Scripts\common-config.js" />
     <Content Include="Areas\SystemPage\Scripts\User.js" />
     <Content Include="Areas\AdministrationPage\Scripts\activity.js" />
     <Content Include="Areas\AdministrationPage\Scripts\membership.js" />
@@ -1050,10 +1051,6 @@
     <Content Include="Content\assets\global\img\social\youtube.png" />
     <Content Include="Content\assets\global\img\syncfusion-icons-white.png" />
     <Content Include="Content\assets\global\img\syncfusion-icons.png" />
-    <Content Include="Content\assets\global\img\TGF.jpg" />
-    <Content Include="Content\assets\global\img\toll_green200.png" />
-    <Content Include="Content\assets\global\img\toll_green_600.png" />
-    <Content Include="Content\assets\global\img\toll_load_small.gif" />
     <Content Include="Content\bootstrap-switch\bootstrap2\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-switch\bootstrap2\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap-switch\bootstrap3\bootstrap-switch.css" />
@@ -1601,6 +1598,7 @@
     <Content Include="Areas\AdministrationPage\Views\Icon3Integration\Index.cshtml" />
     <Content Include="Areas\AdministrationPage\Views\Membership\Index.cshtml" />
     <Content Include="Areas\AdministrationPage\Views\Activity\Index.cshtml" />
+    <Content Include="Areas\AdministrationPage\Views\Register\JoinersDetails.cshtml" />
     <None Include="Properties\PublishProfiles\10.250.75.54.pubxml" />
     <None Include="Properties\PublishProfiles\DSProd.pubxml" />
     <None Include="Properties\PublishProfiles\DSUAT.pubxml" />

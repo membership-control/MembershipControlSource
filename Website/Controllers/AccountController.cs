@@ -74,17 +74,10 @@ namespace WebMembership.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            //Chong Membership temp
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            if (!string.IsNullOrEmpty(returnUrl))
-                return RedirectToLocal(returnUrl);
-            else
-                return RedirectToAction("LandingPage", "Navbar", new { area = "" });
-            //return RedirectToAction("Index", "Register", new { area = "AdministrationPage" });
 
             // 这不会计入到为执行帐户锁定而统计的登录失败次数中
             // 若要在多次输入错误密码的情况下触发帐户锁定，请更改为 shouldLockout: true
@@ -96,26 +89,24 @@ namespace WebMembership.Controllers
                     {
                         try
                         {
-                            using (Core.Data.EF.TGF_IntegrationEntities db = new Core.Data.EF.TGF_IntegrationEntities())
+                            using (Core.Data.EF.DI_WK_TEMPEntities db = new Core.Data.EF.DI_WK_TEMPEntities())
                             {
                                 Core.Data.Model.LogModel logmodel = this.Log;
                                 logmodel.PK = System.Guid.NewGuid();
                                 logmodel.Action = "login";
                                 logmodel.Status = true;
                                 logmodel.Insert_User = model.Email;
-                                var entity = new Core.Data.EF.TGF_GI_ControlTower_Logging();
-                                entity.PK = logmodel.PK;
-                                entity.Mode_ID = logmodel.Mode_ID;
-                                entity.Details = logmodel.Details;
-                                entity.Insert_Date = logmodel.Insert_Date;
-                                entity.Insert_User = logmodel.Insert_User;
-                                entity.Client = logmodel.Client;
-                                entity.Action = logmodel.Action;
-                                entity.SessionID = logmodel.SessionID;
-                                entity.Status = logmodel.Status;
-                                entity.Remark = logmodel.Remark;
+                                var entity = new Core.Data.EF.MEM_SysLog();
+                                entity.SYS_PK = logmodel.PK;
+                                entity.SYS_LOG_Account = logmodel.Insert_User;
+                                entity.SYS_Host = logmodel.Mode_ID;
+                                entity.SYS_InsertDate = logmodel.Insert_Date.Value;
+                                entity.SYS_InsertUser = logmodel.Insert_User;
+                                entity.SYS_Address = logmodel.Client;
+                                entity.SYS_Action = logmodel.Action;
+                                entity.SYS_Remarks = logmodel.Remark;
 
-                                db.Set<Core.Data.EF.TGF_GI_ControlTower_Logging>().Add(entity);
+                                db.Set<Core.Data.EF.MEM_SysLog>().Add(entity);
                                 db.SaveChanges();
                             }
                         }
@@ -125,7 +116,7 @@ namespace WebMembership.Controllers
                             return RedirectToLocal(returnUrl);
                         else
                             //return RedirectToAction("Index", "CommingSoon", new { area = "" });
-                            //return RedirectToAction("Register", "AdministrationPage", new { area = "" });
+                            //return RedirectToAction("Index", "Register", new { area = "AdministrationPage" });
                             return RedirectToAction("LandingPage", "Navbar", new { area = "" });
                     }
                 case SignInStatus.LockedOut:
@@ -479,7 +470,7 @@ namespace WebMembership.Controllers
         // POST: /Account/LogOff
          [AllowAnonymous]
         [HttpPost]
-//        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> LogOff()
         {
             var clientKey = Request.Browser.Type;
@@ -489,10 +480,10 @@ namespace WebMembership.Controllers
                 await UserManager.SignOutClientAsync(user, clientKey);
                 AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             }
-//            return RedirectToAction("LogOff", "Account");
-            //return RedirectToAction("Register", "AdministrationPage");
+            //            return RedirectToAction("LogOff", "Account");
+            //return RedirectToAction("Index", "Register", new { area = "AdministrationPage" });
             return RedirectToAction("LandingPage", "Navbar", new { area = "" });
-//            return View(); ;
+            //            return View(); ;
         }
 
         //

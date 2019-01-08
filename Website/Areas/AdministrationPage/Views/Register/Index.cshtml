@@ -1,5 +1,4 @@
-﻿@model WebMembership.Areas.AdministrationPage.Models.RegisterViewModel
-@{
+﻿@{
     ViewBag.Title = "Register";
     Layout = ViewBag.Layout;
 }
@@ -94,6 +93,7 @@
 
 @Html.Hidden("initurl", Url.Action("LoadAll", "Register", new { area = "AdministrationPage" }))
 @Html.Hidden("uploadurl", Url.Action("UploadForms", "Register", new { }))
+@Html.Hidden("detailgridurl", Url.Action("JoinersDetails", "Register", new { id = "{PARAM1}" }))
 @section scripts{
     <!--<link href="~/Content/assets/admin/layout/css/custom-visibilitypage.css" rel="stylesheet" />-->
     <!--<script src="~/Scripts/global/DevDataGrid.js"></script>-->

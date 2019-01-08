@@ -35,35 +35,46 @@ namespace Core.Services.Service
             result_model.Pages = new List<NavbarChild>();
             using (var context = new ApplicationDbContext())
             {
+                //Chong membership temp - select all out regardless Permission model
                 var all_navbars = context.NavBars.ToList();
                 var config = new MapperConfiguration(cfg => cfg.CreateMissingTypeMaps = true);
                 var mapper = config.CreateMapper();
-                if (userRoles.Any(r => r.Name == "Admin"))
-                {
-                    //CHONG : temporary use hardcode Case When sorting for Category
-                    result_model.Categories = all_navbars.OrderBy(menu => menu.Category.Contains("System") ? "A1" : menu.Category).ToList()
+                result_model.Categories = all_navbars.OrderBy(menu => menu.Category.Contains("System") ? "A1" : menu.Category).ToList()
                                             .Select(a => a.Category).GroupBy(t => t)
                                             .Select(g => mapper.Map<NavbarParent>(new { Category = g.Key }))
                                             .ToList();
-                    result_model.Pages = all_navbars.Select(a => mapper.Map<NavbarChild>(a)).OrderBy(menu => menu.Seq).ToList();
-                }
-                else
-                {
-                    var permission_ids = user.UserPermissions.Select(p => p.PermissionId).ToList();
-                    userRoles.ForEach(role =>
-                    {
-                        permission_ids = role.RolePermissions.Select(p => p.PermissionId).Union(permission_ids).ToList();
-                    });
-//                    result_model.Pages = all_navbars.Where(menu => permission_ids.Contains(menu.PermissionId) || string.IsNullOrEmpty(menu.PermissionId))
-                        result_model.Pages = all_navbars.Where(menu => permission_ids.Contains(menu.PermissionId) )
-                                    .Select(a => mapper.Map<NavbarChild>(a))
-                                    .OrderBy(menu => menu.Seq)
-                                    .ToList();
-                    result_model.Categories = result_model.Pages.OrderBy(menu => menu.Category.Contains("System") ? "A1" : menu.Category).ToList()
-                                            .Select(a => a.Category).GroupBy(t => t)
-                                            .Select(g => mapper.Map<NavbarParent>(new { Category = g.Key }))
-                                            .ToList();
-                }
+                result_model.Pages = all_navbars.Select(a => mapper.Map<NavbarChild>(a)).OrderBy(menu => menu.Seq).ToList();
+
+                //Chong membership temp
+                //                var all_navbars = context.NavBars.ToList();
+                //                var config = new MapperConfiguration(cfg => cfg.CreateMissingTypeMaps = true);
+                //                var mapper = config.CreateMapper();
+                //                if (userRoles.Any(r => r.Name == "Admin"))
+                //                {
+                //                    //CHONG : temporary use hardcode Case When sorting for Category
+                //                    result_model.Categories = all_navbars.OrderBy(menu => menu.Category.Contains("System") ? "A1" : menu.Category).ToList()
+                //                                            .Select(a => a.Category).GroupBy(t => t)
+                //                                            .Select(g => mapper.Map<NavbarParent>(new { Category = g.Key }))
+                //                                            .ToList();
+                //                    result_model.Pages = all_navbars.Select(a => mapper.Map<NavbarChild>(a)).OrderBy(menu => menu.Seq).ToList();
+                //                }
+                //                else
+                //                {
+                //                    var permission_ids = user.UserPermissions.Select(p => p.PermissionId).ToList();
+                //                    userRoles.ForEach(role =>
+                //                    {
+                //                        permission_ids = role.RolePermissions.Select(p => p.PermissionId).Union(permission_ids).ToList();
+                //                    });
+                ////                    result_model.Pages = all_navbars.Where(menu => permission_ids.Contains(menu.PermissionId) || string.IsNullOrEmpty(menu.PermissionId))
+                //                        result_model.Pages = all_navbars.Where(menu => permission_ids.Contains(menu.PermissionId) )
+                //                                    .Select(a => mapper.Map<NavbarChild>(a))
+                //                                    .OrderBy(menu => menu.Seq)
+                //                                    .ToList();
+                //                    result_model.Categories = result_model.Pages.OrderBy(menu => menu.Category.Contains("System") ? "A1" : menu.Category).ToList()
+                //                                            .Select(a => a.Category).GroupBy(t => t)
+                //                                            .Select(g => mapper.Map<NavbarParent>(new { Category = g.Key }))
+                //                                            .ToList();
+                //                }
             }
 
             return result_model;

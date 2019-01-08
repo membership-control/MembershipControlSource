@@ -21,6 +21,11 @@ namespace Core.Identity
     {
         public Task SendAsync(IdentityMessage message)
         {
+            string setting_address = System.Configuration.ConfigurationManager.AppSettings["MailAddress"];
+            string setting_smtp = System.Configuration.ConfigurationManager.AppSettings["MailSMTP"];
+            int setting_port = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["MailPort"]);
+            string setting_pass = System.Configuration.ConfigurationManager.AppSettings["MailPass"];
+
             #region formatter
             string text = string.Format("Please click on this link to {0}: {1}", message.Subject, message.Body);
             string html = "Please confirm your account by clicking this link: <a href=\"" + message.Body + "\">link</a><br/>";
@@ -29,17 +34,19 @@ namespace Core.Identity
             #endregion
 
             MailMessage msg = new MailMessage();
-            msg.From = new MailAddress("sysmsg-nsis@tollgroup.com");
+            msg.From = new MailAddress(setting_address);
 
             msg.To.Add(new MailAddress(message.Destination));
             msg.Subject = message.Subject;
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
 
-            SmtpClient smtpClient = new SmtpClient("10.64.4.26");
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("tgficon", "eyMm82bq", "tollgroup");
+            SmtpClient smtpClient = new SmtpClient(setting_smtp);
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(setting_address,setting_pass);
+            smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = credentials;
-            //smtpClient.EnableSsl = true;
+            smtpClient.EnableSsl = true;
+            smtpClient.Port = setting_port;
             return smtpClient.SendMailAsync(msg);
         }
     }

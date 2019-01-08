@@ -81,13 +81,9 @@
           <Property Name="MBR_Flex4" Type="nvarchar" MaxLength="100" />
           <Property Name="MBR_Flex5" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MEM_SysLog">
           <Key>
             <PropertyRef Name="SYS_PK" />
-            <PropertyRef Name="SYS_LOG_Account" />
-            <PropertyRef Name="SYS_InsertDate" />
           </Key>
           <Property Name="SYS_PK" Type="uniqueidentifier" Nullable="false" />
           <Property Name="SYS_LOG_Account" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -125,19 +121,8 @@ warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary
         <EntityContainer Name="DI_WK_TEMPModelStoreContainer">
           <EntitySet Name="MEM_Activity" EntityType="Self.MEM_Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MEM_Membership" EntityType="Self.MEM_Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEM_SysLog" EntityType="Self.MEM_SysLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MEM_UserActivity" EntityType="Self.MEM_UserActivity" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MEM_SysLog" EntityType="Self.MEM_SysLog" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [MEM_SysLog].[SYS_PK] AS [SYS_PK], 
-    [MEM_SysLog].[SYS_LOG_Account] AS [SYS_LOG_Account], 
-    [MEM_SysLog].[SYS_Host] AS [SYS_Host], 
-    [MEM_SysLog].[SYS_Address] AS [SYS_Address], 
-    [MEM_SysLog].[SYS_Action] AS [SYS_Action], 
-    [MEM_SysLog].[SYS_Remarks] AS [SYS_Remarks], 
-    [MEM_SysLog].[SYS_InsertDate] AS [SYS_InsertDate], 
-    [MEM_SysLog].[SYS_InsertUser] AS [SYS_InsertUser]
-    FROM [dbo].[MEM_SysLog] AS [MEM_SysLog]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -145,9 +130,9 @@ warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary
       <Schema Namespace="DI_WK_TEMPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DI_WK_TEMPEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="MEM_Activity" EntityType="DI_WK_TEMPModel.MEM_Activity" />
-          <EntitySet Name="MEM_SysLog" EntityType="DI_WK_TEMPModel.MEM_SysLog" />
           <EntitySet Name="MEM_Membership" EntityType="DI_WK_TEMPModel.MEM_Membership" />
           <EntitySet Name="MEM_UserActivity" EntityType="DI_WK_TEMPModel.MEM_UserActivity" />
+          <EntitySet Name="MEM_SysLog" EntityType="DI_WK_TEMPModel.MEM_SysLog" />
         </EntityContainer>
         <EntityType Name="MEM_Activity">
           <Key>
@@ -178,21 +163,6 @@ warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary
           <Property Name="ACT_Flex3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ACT_Flex4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ACT_Flex5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="MEM_SysLog">
-          <Key>
-            <PropertyRef Name="SYS_PK" />
-            <PropertyRef Name="SYS_LOG_Account" />
-            <PropertyRef Name="SYS_InsertDate" />
-          </Key>
-          <Property Name="SYS_PK" Type="Guid" Nullable="false" />
-          <Property Name="SYS_LOG_Account" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Host" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Action" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SYS_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MEM_Membership">
           <Key>
@@ -264,6 +234,19 @@ warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary
           <Property Name="UAC_UpdateUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UAC_DOC_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="MEM_SysLog">
+          <Key>
+            <PropertyRef Name="SYS_PK" />
+          </Key>
+          <Property Name="SYS_PK" Type="Guid" Nullable="false" />
+          <Property Name="SYS_LOG_Account" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Host" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Action" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SYS_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -298,20 +281,6 @@ warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary
                 <ScalarProperty Name="ACT_Type" ColumnName="ACT_Type" />
                 <ScalarProperty Name="ACT_ID" ColumnName="ACT_ID" />
                 <ScalarProperty Name="ACT_PK" ColumnName="ACT_PK" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MEM_SysLog">
-            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_SysLog">
-              <MappingFragment StoreEntitySet="MEM_SysLog">
-                <ScalarProperty Name="SYS_InsertUser" ColumnName="SYS_InsertUser" />
-                <ScalarProperty Name="SYS_InsertDate" ColumnName="SYS_InsertDate" />
-                <ScalarProperty Name="SYS_Remarks" ColumnName="SYS_Remarks" />
-                <ScalarProperty Name="SYS_Action" ColumnName="SYS_Action" />
-                <ScalarProperty Name="SYS_Address" ColumnName="SYS_Address" />
-                <ScalarProperty Name="SYS_Host" ColumnName="SYS_Host" />
-                <ScalarProperty Name="SYS_LOG_Account" ColumnName="SYS_LOG_Account" />
-                <ScalarProperty Name="SYS_PK" ColumnName="SYS_PK" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -384,6 +353,20 @@ warning 6002: The table/view 'DI_WK_TEMP.dbo.MEM_SysLog' does not have a primary
                 <ScalarProperty Name="UAC_MBR_PK" ColumnName="UAC_MBR_PK" />
                 <ScalarProperty Name="UAC_ID" ColumnName="UAC_ID" />
                 <ScalarProperty Name="UAC_PK" ColumnName="UAC_PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEM_SysLog">
+            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_SysLog">
+              <MappingFragment StoreEntitySet="MEM_SysLog">
+                <ScalarProperty Name="SYS_InsertUser" ColumnName="SYS_InsertUser" />
+                <ScalarProperty Name="SYS_InsertDate" ColumnName="SYS_InsertDate" />
+                <ScalarProperty Name="SYS_Remarks" ColumnName="SYS_Remarks" />
+                <ScalarProperty Name="SYS_Action" ColumnName="SYS_Action" />
+                <ScalarProperty Name="SYS_Address" ColumnName="SYS_Address" />
+                <ScalarProperty Name="SYS_Host" ColumnName="SYS_Host" />
+                <ScalarProperty Name="SYS_LOG_Account" ColumnName="SYS_LOG_Account" />
+                <ScalarProperty Name="SYS_PK" ColumnName="SYS_PK" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

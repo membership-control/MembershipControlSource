@@ -246,6 +246,7 @@
     <Compile Include="DTO\Administration\ActivityDTO.cs" />
     <Compile Include="DTO\Administration\GoogleFormDTO.cs" />
     <Compile Include="DTO\Administration\MemberDTO.cs" />
+    <Compile Include="DTO\Administration\RegisterActivityGridDTO.cs" />
     <Compile Include="DTO\Administration\RegisterActivityMasterDTO.cs" />
     <Compile Include="DTO\Administration\UserActivityDTO.cs" />
     <Compile Include="DTO\Generic\HTMLEmailViewModel.cs" />

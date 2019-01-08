@@ -26,8 +26,8 @@ namespace Core.Data.EF
         }
     
         public virtual DbSet<MEM_Activity> MEM_Activity { get; set; }
-        public virtual DbSet<MEM_SysLog> MEM_SysLog { get; set; }
         public virtual DbSet<MEM_Membership> MEM_Membership { get; set; }
         public virtual DbSet<MEM_UserActivity> MEM_UserActivity { get; set; }
+        public virtual DbSet<MEM_SysLog> MEM_SysLog { get; set; }
     }
 }

@@ -1,0 +1,87 @@
+﻿@model WebMembership.Areas.AdministrationPage.Models.RegisterJoinersViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        table {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Membership Control" name="description" />
+    <meta content="Codermatic Team" name="author" />
+    <title>Membership Control - Registration Details</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Themes/uniformjs/default/css/uniform.default.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-switch/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/favicon.ico" />
+    <link href="~/Content/dx.common.css" rel="stylesheet" />
+    <link href="~/Content/dx.light.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        @if (String.IsNullOrEmpty(Model.Activity_Name))
+        {
+            <h4>No data found</h4>
+        }
+        else
+        {
+            <h3>@Model.Activity_Name</h3>
+            <br/>
+            <div>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Chinese Name</th>
+                        <th>Phone 1</th>
+                        <th>Phone 2</th>
+                        <th>Wechat No</th>
+                        <th>Register Date</th>
+                        <th>Register Remarks</th>
+                    </tr>
+                    @foreach(var obj in Model.DataGrid)
+                    {
+                    <tr>
+                        <td>@obj.MBR_Name</td>
+                        <td>@obj.MBR_ChineseName</td>
+                        <td>@obj.MBR_Phone1</td>
+                        <td>@obj.MBR_Phone2</td>
+                        <td>@obj.MBR_WeChatNo</td>
+                        <td>@obj.RegDate.ToString()</td>
+                        <td>@obj.Remark</td>
+                    </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</body>
+</html>

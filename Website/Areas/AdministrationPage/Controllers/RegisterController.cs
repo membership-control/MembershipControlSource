@@ -1,5 +1,6 @@
 ﻿using Core.Services.Interface;
 using Core.Services.DTO.Generic;
+using Core.Services.DTO.Administration;
 using WebMembership.Areas.AdministrationPage.Models;
 using System;
 using System.Configuration;
@@ -16,6 +17,7 @@ using Core.Identity.Models;
 namespace WebMembership.Areas.Administration.Controllers
 {
     //[CustomAuthorize]
+    [Authorize]
     public class RegisterController : WebMembership.Controllers.BaseController
     {
         private IRegister _iRegister;
@@ -43,16 +45,35 @@ namespace WebMembership.Areas.Administration.Controllers
                 ViewBag.Layout = "~/Views/Shared/_LayoutDevExtreme.cshtml";
             }
 
-            return View(_vm);
+            return View();
         }
 
-        //[HttpPost]
+        [HttpPost]
         public ActionResult LoadAll()
         {
             //var results = this._iALVWHistory.DevPageAll(HttpContext.Request.Form);
             //return new WebMembership.MVC.NewJsonResult(results);
             var results = this._iRegister.DevPageAll(HttpContext.Request.Form);
             return new WebMembership.MVC.NewJsonResult(results);
+        }
+
+        public ActionResult JoinersDetails(string id)
+        {
+            var results = this._iRegister.LoadDetailGrid(id);
+            WebMembership.Areas.AdministrationPage.Models.RegisterJoinersViewModel view_model =
+                new RegisterJoinersViewModel();
+
+
+            if (results.haveError)
+                return View(view_model);
+            else
+            {
+                view_model.Activity_Name = results.key;
+                view_model.DataGrid = (List<RegisterActivityGridDTO>)results.data;
+
+                return View(view_model);
+            }
+                
         }
 
         [HttpPost]

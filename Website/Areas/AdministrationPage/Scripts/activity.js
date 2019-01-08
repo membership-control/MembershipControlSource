@@ -1,30 +1,5 @@
 ﻿var ActivityData = {
     initFormObj: {},
-
-    activity_type: [
-        { "ID": 1, "Name": "OPP" },
-        { "ID": 2, "Name": "被動收入課程" },
-        { "ID": 3, "Name": "投資項目" }
-    ],
-
-    activity_category: [
-        { "ID": 1, "Name": "Investment" },
-        { "ID": 2, "Name": "Housing" }
-    ],
-
-    activity_status: [
-        { "Name": "OPEN" },
-        { "Name": "COMPLETED" }
-    ],
-
-    member_type: [
-        { "ID": 1, "Name": "Open" },
-        { "ID": 2, "Name": "Student" },
-        { "ID": 3, "Name": "Member" }
-    ],
-
-    countrycodes: ["US", "UK", "IN", "AU", "HK", "CN", "MY", "SG"],
-
     load_Url: $("#forminit").val(),
     checkid_Url: $("#checkid").val(),
     form: null,
@@ -244,7 +219,7 @@ $(function () {
                             dataField: "ACT_Status",
                             editorType: "dxSelectBox",
                             editorOptions: {
-                                dataSource: ActivityData.activity_status,
+                                dataSource: CommonConfig.activity_status,
                                 displayExpr: "Name",
                                 valueExpr: "Name"
                             }
@@ -258,7 +233,7 @@ $(function () {
                         dataField: "ACT_Type",
                         editorType: "dxSelectBox",
                         editorOptions: {
-                            dataSource: ActivityData.activity_type,
+                            dataSource: CommonConfig.activity_type,
                             displayExpr: "Name",
                             valueExpr: "Name"
                         },
@@ -270,7 +245,7 @@ $(function () {
                         dataField: "ACT_Category",
                         editorType: "dxSelectBox",
                         editorOptions: {
-                            dataSource: ActivityData.activity_category,
+                            dataSource: CommonConfig.activity_category,
                             displayExpr: "Name",
                             valueExpr: "Name"
                         },
@@ -282,7 +257,7 @@ $(function () {
                         dataField: "ACT_MemberTypeReq",
                         editorType: "dxSelectBox",
                         editorOptions: {
-                            dataSource: ActivityData.member_type,
+                            dataSource: CommonConfig.member_type,
                             displayExpr: "Name",
                             valueExpr: "ID"
                         },
@@ -345,7 +320,7 @@ $(function () {
                             dataField: "ACT_Location",
                             editorType: "dxSelectBox",
                             editorOptions: {
-                                dataSource: ActivityData.countrycodes
+                                dataSource: CommonConfig.countrycodes
                             }
                         }, {
                             dataField: "ACT_Address"

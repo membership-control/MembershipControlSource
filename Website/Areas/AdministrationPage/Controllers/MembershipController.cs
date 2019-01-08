@@ -12,7 +12,7 @@ using Core.Identity.Models;
 
 namespace WebMembership.Areas.Administration.Controllers
 {
-    //[CustomAuthorize]
+    [CustomAuthorize]
     //[AuthLog(Area = "030400000000", PermissionLevel = PermissionLevel.Read)]
     public class MembershipController : WebMembership.Controllers.BaseController
     {
