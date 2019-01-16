@@ -367,7 +367,7 @@
     <Content Include="Content\bootstrap-modal.css" />
     <Content Include="Content\template\Email\QR_email_template.html" />
     <Content Include="Global.asax" />
-    <Content Include="Images\uploads\973f2ece0ddd437e930af36fe7c6bef5.jpg" />
+    <Content Include="Images\uploads\dummy.bmp" />
     <Content Include="Scripts\amcharts\amcharts.js" />
     <Content Include="Scripts\amcharts\changeLog.txt" />
     <Content Include="Scripts\amcharts\funnel.js" />
@@ -2152,6 +2152,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>

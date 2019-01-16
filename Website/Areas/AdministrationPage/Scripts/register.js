@@ -213,7 +213,7 @@ $(function () {
                             else if (e.component.option("selectedIndex") === 2) {
                                 $("#mv-confirm-name").html(RegisterConfig.new_member_model.MBR_Name);
                                 $("#mv-confirm-phone").html(RegisterConfig.new_member_model.MBR_Phone1);
-                                $("#mv-confirm-email").html(RegisterConfig.new_member_model.MBR_Email);
+                                $("#mv-confirm-email-text").html(RegisterConfig.new_member_model.MBR_Email);
 
                                 $("#mv-confirm-checkin").dxCheckBox({
                                     value: RegisterConfig.new_member_model.IsCheckin,
