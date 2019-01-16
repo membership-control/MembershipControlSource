@@ -55,5 +55,6 @@ namespace Core.Data.EF
         public string MBR_Flex3 { get; set; }
         public string MBR_Flex4 { get; set; }
         public string MBR_Flex5 { get; set; }
+        public string MBR_Email { get; set; }
     }
 }

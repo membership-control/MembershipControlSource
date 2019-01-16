@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebMembership.Areas.AdministrationPage.Models
 {
-    public class RegisterViewModel
+    public class RegisterAdminViewModel
     {
         public string[] ServicesSource { get; set; }
         public string imageClass { get; set; }

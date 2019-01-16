@@ -40,7 +40,7 @@
             <PropertyRef Name="MBR_PK" />
           </Key>
           <Property Name="MBR_PK" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="MBR_ID" Type="int" Nullable="false" />
+          <Property Name="MBR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MBR_Type" Type="int" Nullable="false" />
           <Property Name="MBR_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="MBR_ChineseName" Type="nvarchar" MaxLength="100" />
@@ -80,6 +80,7 @@
           <Property Name="MBR_Flex3" Type="nvarchar" MaxLength="100" />
           <Property Name="MBR_Flex4" Type="nvarchar" MaxLength="100" />
           <Property Name="MBR_Flex5" Type="nvarchar" MaxLength="100" />
+          <Property Name="MBR_Email" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="MEM_SysLog">
           <Key>
@@ -99,7 +100,7 @@
             <PropertyRef Name="UAC_PK" />
           </Key>
           <Property Name="UAC_PK" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="UAC_ID" Type="int" Nullable="false" />
+          <Property Name="UAC_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UAC_MBR_PK" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UAC_ACT_PK" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UAC_ACT_Name" Type="nvarchar" MaxLength="500" Nullable="false" />
@@ -130,9 +131,9 @@
       <Schema Namespace="DI_WK_TEMPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DI_WK_TEMPEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="MEM_Activity" EntityType="DI_WK_TEMPModel.MEM_Activity" />
+          <EntitySet Name="MEM_SysLog" EntityType="DI_WK_TEMPModel.MEM_SysLog" />
           <EntitySet Name="MEM_Membership" EntityType="DI_WK_TEMPModel.MEM_Membership" />
           <EntitySet Name="MEM_UserActivity" EntityType="DI_WK_TEMPModel.MEM_UserActivity" />
-          <EntitySet Name="MEM_SysLog" EntityType="DI_WK_TEMPModel.MEM_SysLog" />
         </EntityContainer>
         <EntityType Name="MEM_Activity">
           <Key>
@@ -164,12 +165,25 @@
           <Property Name="ACT_Flex4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ACT_Flex5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="MEM_SysLog">
+          <Key>
+            <PropertyRef Name="SYS_PK" />
+          </Key>
+          <Property Name="SYS_PK" Type="Guid" Nullable="false" />
+          <Property Name="SYS_LOG_Account" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Host" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Action" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SYS_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SYS_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="MEM_Membership">
           <Key>
             <PropertyRef Name="MBR_PK" />
           </Key>
           <Property Name="MBR_PK" Type="Guid" Nullable="false" />
-          <Property Name="MBR_ID" Type="Int32" Nullable="false" />
+          <Property Name="MBR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MBR_Type" Type="Int32" Nullable="false" />
           <Property Name="MBR_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MBR_ChineseName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -209,13 +223,14 @@
           <Property Name="MBR_Flex3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MBR_Flex4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="MBR_Flex5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MBR_Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MEM_UserActivity">
           <Key>
             <PropertyRef Name="UAC_PK" />
           </Key>
           <Property Name="UAC_PK" Type="Guid" Nullable="false" />
-          <Property Name="UAC_ID" Type="Int32" Nullable="false" />
+          <Property Name="UAC_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UAC_MBR_PK" Type="Guid" Nullable="false" />
           <Property Name="UAC_ACT_PK" Type="Guid" Nullable="false" />
           <Property Name="UAC_ACT_Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -233,19 +248,6 @@
           <Property Name="UAC_UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UAC_UpdateUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UAC_DOC_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="MEM_SysLog">
-          <Key>
-            <PropertyRef Name="SYS_PK" />
-          </Key>
-          <Property Name="SYS_PK" Type="Guid" Nullable="false" />
-          <Property Name="SYS_LOG_Account" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Host" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Action" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SYS_InsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SYS_InsertUser" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -284,9 +286,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="MEM_SysLog">
+            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_SysLog">
+              <MappingFragment StoreEntitySet="MEM_SysLog">
+                <ScalarProperty Name="SYS_InsertUser" ColumnName="SYS_InsertUser" />
+                <ScalarProperty Name="SYS_InsertDate" ColumnName="SYS_InsertDate" />
+                <ScalarProperty Name="SYS_Remarks" ColumnName="SYS_Remarks" />
+                <ScalarProperty Name="SYS_Action" ColumnName="SYS_Action" />
+                <ScalarProperty Name="SYS_Address" ColumnName="SYS_Address" />
+                <ScalarProperty Name="SYS_Host" ColumnName="SYS_Host" />
+                <ScalarProperty Name="SYS_LOG_Account" ColumnName="SYS_LOG_Account" />
+                <ScalarProperty Name="SYS_PK" ColumnName="SYS_PK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MEM_Membership">
             <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_Membership">
               <MappingFragment StoreEntitySet="MEM_Membership">
+                <ScalarProperty Name="MBR_Email" ColumnName="MBR_Email" />
                 <ScalarProperty Name="MBR_Flex5" ColumnName="MBR_Flex5" />
                 <ScalarProperty Name="MBR_Flex4" ColumnName="MBR_Flex4" />
                 <ScalarProperty Name="MBR_Flex3" ColumnName="MBR_Flex3" />
@@ -353,20 +370,6 @@
                 <ScalarProperty Name="UAC_MBR_PK" ColumnName="UAC_MBR_PK" />
                 <ScalarProperty Name="UAC_ID" ColumnName="UAC_ID" />
                 <ScalarProperty Name="UAC_PK" ColumnName="UAC_PK" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MEM_SysLog">
-            <EntityTypeMapping TypeName="DI_WK_TEMPModel.MEM_SysLog">
-              <MappingFragment StoreEntitySet="MEM_SysLog">
-                <ScalarProperty Name="SYS_InsertUser" ColumnName="SYS_InsertUser" />
-                <ScalarProperty Name="SYS_InsertDate" ColumnName="SYS_InsertDate" />
-                <ScalarProperty Name="SYS_Remarks" ColumnName="SYS_Remarks" />
-                <ScalarProperty Name="SYS_Action" ColumnName="SYS_Action" />
-                <ScalarProperty Name="SYS_Address" ColumnName="SYS_Address" />
-                <ScalarProperty Name="SYS_Host" ColumnName="SYS_Host" />
-                <ScalarProperty Name="SYS_LOG_Account" ColumnName="SYS_LOG_Account" />
-                <ScalarProperty Name="SYS_PK" ColumnName="SYS_PK" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

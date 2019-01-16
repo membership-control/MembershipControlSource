@@ -13,6 +13,7 @@ namespace Core.Services.DTO.Administration
         public Nullable<System.DateTime> endDate { get; set; }
         public string text { get; set; }
         public string ACT_Type { get; set; }
+        public string ACT_Status { get; set; }
         public string ACT_Current { get; set; }
         public Nullable<decimal> ACT_Fee { get; set; }
         public string ACT_Remarks { get; set; }
@@ -22,7 +23,7 @@ namespace Core.Services.DTO.Administration
         public System.DateTime UAC_RegDate { get; set; }
         Nullable<System.DateTime> _attdate;
         public Nullable<System.DateTime> UAC_AttDate {
-            get { return _attdate ?? DateTime.Today; }
+            get { return _attdate ?? DateTime.Now; }
             set { _attdate = value; }
         }
         public string Flex1 { get; set; }

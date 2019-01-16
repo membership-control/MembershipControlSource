@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Services.DTO.Generic;
+using Core.Data.Model;
+using Core.Infrastructure.Dev;
 
 namespace Core.Services.Interface
 {
-    public interface IEmail
+    public interface ILogging : IDisposable
     {
-        Task SendFormattedHTMLEmailAsync(HTMLEmailViewModel model);
+        DevResponse LogDB(LogModel db_model);
     }
 }

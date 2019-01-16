@@ -84,7 +84,7 @@ this.UnitOfWork.CreateSet<MEM_Activity>().UseAsDataSource(this._Imapper).For<Reg
             {
                 convert_hanlder.UAC_AttDate = orgin.UAC_AttDate;
                 convert_hanlder.UAC_UpdateDate = DateTime.Now;
-                convert_hanlder.UAC_UpdateUser = "UAT";
+                convert_hanlder.UAC_UpdateUser = logmodel.Insert_User;
 
                 var result_update = base.Update(convert_hanlder);
                 if (result_update.Code == 0)
@@ -121,7 +121,7 @@ this.UnitOfWork.CreateSet<MEM_Activity>().UseAsDataSource(this._Imapper).For<Reg
             {
                 user_activity.UAC_AttDate = orgin.UAC_AttDate;
                 user_activity.UAC_UpdateDate = DateTime.Now;
-                user_activity.UAC_UpdateUser = "UAT";
+                user_activity.UAC_UpdateUser = logmodel.Insert_User;
 
                 var result_update = base.Update(user_activity);
                 if (result_update.Code == 0)
@@ -282,10 +282,150 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
             return smtpClient.SendMailAsync(msg);
         }
 
-        public async Task<DevResponse> UploadForm(byte[] filebinary, bool isEmail = true, object emailModel = null)
+        public async Task<DevResponse> RegisterNewOrExistingMember(NameValueCollection request, LogModel logmodel, object emailModel = null)
+        {
+            DevRequest converted_request = new DevRequest(request);
+            DevResponse response = new DevResponse();
+            RegisterActivityNewMemberDTO new_member = base.ConvertObject<RegisterActivityNewMemberDTO>(converted_request.Values);
+
+
+            Guid new_member_pk = Guid.NewGuid();
+            MEM_Membership member_entity = new MEM_Membership()
+            {
+                MBR_PK = new_member_pk,
+                MBR_Type = 1,
+                MBR_Name = new_member.MBR_Name,
+                MBR_Phone1 = new_member.MBR_Phone1,
+                MBR_Agreement = true,
+                MBR_IsEnable = true,
+                MBR_Email = new_member.MBR_Email,
+                MBR_InsertDate = DateTime.Now,
+                MBR_InsertUser = logmodel.Insert_User
+            };
+
+            this.UnitOfWork.CreateSet<MEM_Membership>().Add(member_entity);
+            if (this.UnitOfWork.Commit() < 1)
+            {
+                response.haveError = true;
+                response.error = "MSG: save fail";
+            }
+            else
+            {
+                response.haveError = false;
+                response.key = new_member_pk.ToString();
+                //response.data = member_entity;
+            }
+
+
+            if (!response.haveError && new_member.IsCheckin)
+            {
+                ///////////////////////
+                Guid act_pk = new_member.ACT_PK;
+                var activity = this.UnitOfWork.CreateSet<MEM_Activity>()
+                        .UseAsDataSource(this._Imapper).For<ActivityDTO>()
+                        .Where(x => x.ACT_PK == act_pk)
+                        .SingleOrDefault();
+
+                Guid new_uac_pk = Guid.NewGuid();
+                MEM_UserActivity uac_entity = new MEM_UserActivity()
+                {
+                    UAC_PK = new_uac_pk,
+                    UAC_MBR_PK = new_member_pk,
+                    UAC_ACT_PK = activity.ACT_PK,
+                    UAC_ACT_Name = activity.ACT_Name,
+                    UAC_ACT_Type = activity.ACT_Type,
+                    UAC_ACT_From_Date = activity.ACT_FromDate,
+                    UAC_ACT_To_Date = activity.ACT_ToDate,
+                    UAC_RegDate = DateTime.Now,
+                    UAC_AttDate = DateTime.Now,
+                    UAC_Current = activity.ACT_Current,
+                    UAC_Fee = activity.ACT_Fee,
+                    UAC_Remarks = new_member.MBR_Email,
+                    UAC_InsertDate = DateTime.Now,
+                    UAC_InsertUser = logmodel.Insert_User
+                };
+
+
+                var result_add = base.Add(uac_entity);
+                if (result_add.Code == 0)
+                {
+                    try
+                    {
+                        //Email ?
+                        if (new_member.IsEmail)
+                        {
+                            if (emailModel == null)
+                            {
+                                response.haveError = true;
+                                response.error = "MSG: emailModel is empty!";
+                            }
+                            else
+                            {
+                                //converted_handler_list.ToList().ForEach(address =>
+                                //{
+                                var email_model = (HTMLEmailViewModel)emailModel;
+                                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                                QRCodeData qrCodeData = qrGenerator.CreateQrCode(new_uac_pk.ToString(), QRCodeGenerator.ECCLevel.Q);
+                                QRCode qrCode = new QRCode(qrCodeData);
+                                using (Bitmap bitMap = qrCode.GetGraphic(20))
+                                {
+                                    using (MemoryStream ms = new MemoryStream())
+                                    {
+                                        //try
+                                        //{ 
+                                        bitMap.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                                        email_model.Body = email_model.Body.Replace("{COURSESTARTDATE}", activity.ACT_FromDate.Value.ToString());
+                                        email_model.Subject = "Ticket to Course: " + activity.ACT_Name;
+                                        email_model.Destination = new_member.MBR_Email;
+
+                                        //send email
+                                        await this.SendFormattedHTMLEmailAsync(email_model, ms);
+                                    }
+                                }
+
+                                response.haveError = false;
+                                response.key = new_uac_pk.ToString();
+                                //response.data = uac_entity;
+
+                            }
+                        }
+                        else
+                        {
+                            response.haveError = false;
+                            response.key = new_uac_pk.ToString();
+                            //response.data = uac_entity;
+                        }
+                    }
+                    catch (Exception mail_ex)
+                    {
+                        logmodel.Action = "error";
+                        logmodel.Remark = mail_ex.Message;
+                        base.Log(logmodel);
+                    }
+                }
+                else
+                {
+                    response.haveError = true;
+                    response.error = "CODE:" + result_add.Code + "  MSG:" + result_add.ErrMsg;
+                }
+
+                ////////////////////////////////////
+            }
+
+            //logmodel.PK = System.Guid.NewGuid();
+            //logmodel.Details = this.UnitOfWork.Sql;
+            //logmodel.Action = request.CuttentAction;
+            //logmodel.Status = !response.haveError;
+            //logmodel.Remark = response.error;
+            //base.Log(logmodel);
+
+            return response;
+        }
+
+        public async Task<DevResponse> UploadForm(byte[] filebinary, Core.Data.Model.LogModel logmodel, bool isEmail = true, object emailModel = null)
         {
             DevResponse response = new DevResponse();
-            
             MemoryStream memoryStream = new MemoryStream(filebinary);
 
             List<GoogleFormDTO> forms = new List<GoogleFormDTO>();
@@ -314,36 +454,37 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
 
                 forms = query.Skip(1).ToList();
             }
-            
-            var members = this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<MemberDTO>();
+
+            //var members = this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<MemberDTO>();
+            var members = this.UnitOfWork.CreateSet<MEM_Membership>().AsQueryable();
             var activities = this.UnitOfWork.CreateSet<MEM_Activity>().UseAsDataSource(this._Imapper).For<ActivityDTO>();
 
             System.Globalization.CultureInfo provider = System.Globalization.CultureInfo.InvariantCulture;
             var user_activities = from form in forms
-                                  from member in members
+                                    from member in members
                                     .Where(member => member.MBR_Phone1 == form.D || member.MBR_Phone2 == form.D)
-                                  from activity in activities
+                                    from activity in activities
                                     .Where(activity => form.F.Contains(activity.ACT_Name))
-                                  select new UserActivityDTO
-                                  {
-                                      UAC_PK = Guid.NewGuid(),
-                                      UAC_MBR_PK = member.MBR_PK,
-                                      UAC_ACT_PK = activity.ACT_PK,
-                                      UAC_ACT_Name = activity.ACT_Name,
-                                      UAC_ACT_Type = activity.ACT_Type,
-                                      UAC_ACT_From_Date = activity.ACT_FromDate,
-                                      UAC_ACT_To_Date = activity.ACT_ToDate,
-                                      UAC_RegDate = DateTime.ParseExact(form.A, "yyyy/MM/dd h:mm:ss tt 'GMT+8'", provider),
-                                      UAC_Current = activity.ACT_Current,
-                                      UAC_Fee = activity.ACT_Fee,
-                                      UAC_Remarks = form.B,
-                                      UAC_MBR_Phone = form.D,
-                                      UAC_ACT_ID = activity.ACT_ID,
-                                      UAC_InsertDate = DateTime.Now,
-                                      UAC_InsertUser = "UAT" //Identity.User
-                                  };
-            IEnumerable<MEM_UserActivity> converted_handler = this._Imapper.Map<IEnumerable<MEM_UserActivity>>(user_activities);
-            List<MEM_UserActivity> converted_handler_list = converted_handler.ToList();
+                                    select new MEM_UserActivity //UserActivityDTO
+                                    {
+                                        UAC_PK = Guid.NewGuid(),
+                                        UAC_MBR_PK = member.MBR_PK,
+                                        UAC_ACT_PK = activity.ACT_PK,
+                                        UAC_ACT_Name = activity.ACT_Name,
+                                        UAC_ACT_Type = activity.ACT_Type,
+                                        UAC_ACT_From_Date = activity.ACT_FromDate,
+                                        UAC_ACT_To_Date = activity.ACT_ToDate,
+                                        UAC_RegDate = DateTime.ParseExact(form.A, "yyyy/MM/dd h:mm:ss tt 'GMT+8'", provider),
+                                        UAC_Current = activity.ACT_Current,
+                                        UAC_Fee = activity.ACT_Fee,
+                                        UAC_Remarks = form.B,
+                                        //UAC_MBR_Phone = form.D,
+                                        //UAC_ACT_ID = activity.ACT_ID,
+                                        UAC_InsertDate = DateTime.Now,
+                                        UAC_InsertUser = logmodel.Insert_User //Identity.User
+                                    };
+            //IEnumerable<MEM_UserActivity> converted_handler = this._Imapper.Map<IEnumerable<MEM_UserActivity>>(user_activities);
+            List<MEM_UserActivity> converted_handler_list = user_activities.ToList();
 
             var result_add = base.AddRange(converted_handler_list);
             if (result_add.Code == 0)
@@ -361,10 +502,10 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                         //Imgur's API
                         //try
                         //{
-                            //var imgur_client = new Imgur.API.Authentication.Impl.ImgurClient("1ddca48bbbf58b0", "d1d15c74a6d0d1ad9d42d1befb56827a62d025a4");
-                            //var imgur_endpoint = new Imgur.API.Endpoints.Impl.ImageEndpoint(imgur_client);
-                            //imgur_endpoint.HttpClient.BaseAddress = new Uri("https://api.imgur.com/3/image");
-                        
+                        //var imgur_client = new Imgur.API.Authentication.Impl.ImgurClient("1ddca48bbbf58b0", "d1d15c74a6d0d1ad9d42d1befb56827a62d025a4");
+                        //var imgur_endpoint = new Imgur.API.Endpoints.Impl.ImageEndpoint(imgur_client);
+                        //imgur_endpoint.HttpClient.BaseAddress = new Uri("https://api.imgur.com/3/image");
+
                         foreach (var address in converted_handler_list)
                         {
                             //converted_handler_list.ToList().ForEach(address =>
@@ -384,7 +525,7 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                                     //Imgur.API.Models.IImage image = imgur_endpoint.UploadImageStreamAsync(ms).GetAwaiter().GetResult();
                                     // email_model.Body = email_model.Body.Replace("{QR_Code}", image.Link);
                                     email_model.Body = email_model.Body.Replace("{COURSESTARTDATE}", address.UAC_ACT_From_Date.Value.ToString());
-                                        email_model.Subject = "Ticket to Course: " + address.UAC_ACT_Name;
+                                    email_model.Subject = "Ticket to Course: " + address.UAC_ACT_Name;
                                     email_model.Destination = address.UAC_Remarks;
 
                                     //send email
@@ -392,7 +533,7 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                                     //}
                                     //    catch (Imgur.API.ImgurException imgurEx)
                                     //    {
-                                            
+
                                     //    }
                                     //    catch (Exception ex1)
                                     //{ }
@@ -423,6 +564,7 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                 response.haveError = true;
                 response.error = "CODE:" + result_add.Code + "  MSG:" + result_add.ErrMsg;
             }
+
 
             return response;
         }

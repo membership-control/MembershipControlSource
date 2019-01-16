@@ -9,7 +9,7 @@ namespace Core.Services.DTO.Administration
     public class MemberDTO
     {
         public System.Guid MBR_PK { get; set; }
-        public int MBR_ID { get; set; }
+        public string MBR_ID { get; set; }
         public int MBR_Type { get; set; }
         public string MBR_Name { get; set; }
         public string MBR_ChineseName { get; set; }
@@ -48,5 +48,6 @@ namespace Core.Services.DTO.Administration
         public string MBR_Flex3 { get; set; }
         public string MBR_Flex4 { get; set; }
         public string MBR_Flex5 { get; set; }
+        public string MBR_Email { get; set; }
     }
 }

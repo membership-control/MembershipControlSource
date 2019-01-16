@@ -36,6 +36,47 @@
         .second-group {
             background-color: rgba(191, 191, 191, 0.15);
         }
+
+        .add-popup-area {
+            margin-top: 20px;
+        }
+
+        .multiview-item {
+            margin: 25px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border-top: 1px solid lightgray;
+            border-bottom: 1px solid lightgray;
+            padding: 20px 0 30px;
+        }
+
+            .multiview-item > div {
+                padding-top: 20px;
+            }
+
+        .add-popup-area > div:first-child {
+            padding-left: 25px;
+        }
+
+        .add-popup-area p,
+        .add-popup-area h1 {
+            margin: 0;
+        }
+
+        .multiview-item-buttons-group {
+            float: right;
+            margin-right: 25px;
+        }
+
+        .multiview-item-confirmation-items {
+            font: 16px sans-serif;
+            font-weight: bold;
+        }
+
         /*
         #imgQR {
           width:80px;
@@ -65,6 +106,7 @@
     </div>
 </div>
 <div id="Context">
+    <div id="add-popup"></div>
     <div class="row">
         <div class="container">
             <div id="context-menu"></div>
@@ -91,14 +133,80 @@
     </div>
 </div>
 
+<script type="text/html" id="mv-dialog">
+    <div class="multiview-item">
+        <h3>Member Phone not found. Create one now?</h3>
+    </div>
+    <div>
+        <p>
+            <div class="multiview-item-buttons-group">
+                <span><button type="button" class="btn default multiview-item-button-next" onclick="RegisterUtils.multiview_select(1);">Next</button></span>
+            </div>
+        </p>
+    </div>
+</script>
+<script type="text/html" id="mv-form">
+    <div class="multiview-item">
+        <h3>Enter all details below</h3>
+        <div>
+            <p>
+                <div id="new-member-form" class="dx-form" style="margin-bottom: 10px;"></div>
+            </p>
+        </div>
+    </div>
+    <div>
+        <p>
+            <div class="multiview-item-buttons-group">
+                <span><button type="button" class="btn default multiview-item-button-back" onclick="RegisterUtils.multiview_select(0);">Back</button></span>
+                <span><button type="button" class="btn default multiview-item-button-next" onclick="RegisterUtils.multiview_select(2);">Next</button></span>
+            </div>
+        </p>
+    </div>
+</script>
+<script type="text/html" id="mv-confirmation">
+    <div class="multiview-item">
+        <h3>Confirm Review the details below</h3>
+        <div>
+            <p>
+                Name:
+                <div id="mv-confirm-name" class="multiview-item-confirmation-items"></div>
+            </p>
+            <p>
+                Phone:
+                <div id="mv-confirm-phone" class="multiview-item-confirmation-items"></div>
+            </p>
+            <p>
+                Email:
+                <div id="mv-confirm-email" class="multiview-item-confirmation-items"></div>
+            </p>
+        </div>
+        <br />
+        <div>
+            <p>
+                <div id="mv-confirm-checkin"></div>
+            </p>
+            <p>
+                <div id="mv-confirm-email"></div>
+            </p>
+        </div>
+    </div>
+    <div>
+        <p>
+            <div class="multiview-item-buttons-group">
+                <span><button type="button" class="btn default multiview-item-button-back" onclick="RegisterUtils.multiview_select(1);">Back</button></span>
+                <span><button type="button" class="btn blue multiview-item-button-save" onclick="RegisterUtils.fSubmitNewMember();">Save</button></span>
+            </div>
+        </p>
+    </div>
+</script>
+
 @Html.Hidden("initurl", Url.Action("LoadAll", "Register", new { area = "AdministrationPage" }))
 @Html.Hidden("uploadurl", Url.Action("UploadForms", "Register", new { }))
+@Html.Hidden("regurl", Url.Action("RegisterMember", "Register", new { }))
 @Html.Hidden("detailgridurl", Url.Action("JoinersDetails", "Register", new { id = "{PARAM1}" }))
 @section scripts{
-    <!--<link href="~/Content/assets/admin/layout/css/custom-visibilitypage.css" rel="stylesheet" />-->
-    <!--<script src="~/Scripts/global/DevDataGrid.js"></script>-->
     <script src="~/Scripts/qrcode/qrcode.min.js" type="text/javascript"></script>
-    <script src="~/Scripts/global/DevDXForm.js"></script>
+    <!--<script src="~/Scripts/global/DevDXForm.js"></script>-->
     <script src="~/Areas/AdministrationPage/Scripts/register.js"></script>
 
 }

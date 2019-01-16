@@ -248,6 +248,7 @@
     <Compile Include="DTO\Administration\MemberDTO.cs" />
     <Compile Include="DTO\Administration\RegisterActivityGridDTO.cs" />
     <Compile Include="DTO\Administration\RegisterActivityMasterDTO.cs" />
+    <Compile Include="DTO\Administration\RegisterActivityNewMemberDTO.cs" />
     <Compile Include="DTO\Administration\UserActivityDTO.cs" />
     <Compile Include="DTO\Generic\HTMLEmailViewModel.cs" />
     <Compile Include="DTO\Generic\NavbarViewModel.cs" />
@@ -274,7 +275,8 @@
     <Compile Include="Interface\Administration\IMember.cs" />
     <Compile Include="Interface\Administration\IRegister.cs" />
     <Compile Include="Interface\Base\IDevGrid.cs" />
-    <Compile Include="Interface\Base\IEmail.cs" />
+    <Compile Include="Interface\Base\ILogging.cs" />
+    <Compile Include="Interface\Base\IMessenger.cs" />
     <Compile Include="Interface\Base\IFileIO.cs" />
     <Compile Include="Interface\Base\INavbar.cs" />
     <Compile Include="Interface\System\IFolderStatus.cs" />
@@ -296,7 +298,8 @@
     <Compile Include="Service\Administration\ActivityService.cs" />
     <Compile Include="Service\Administration\MemberService.cs" />
     <Compile Include="Service\Administration\RegisterService.cs" />
-    <Compile Include="Service\Generic\EmailService.cs" />
+    <Compile Include="Service\Generic\LoggingService.cs" />
+    <Compile Include="Service\Generic\MessengerService.cs" />
     <Compile Include="Service\Generic\NavbarService.cs" />
     <Compile Include="Service\SystemPage\FolderStatus.cs" />
     <Compile Include="Service\SystemPage\RoleService.cs" />

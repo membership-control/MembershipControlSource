@@ -26,7 +26,7 @@ namespace WebMembership.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult LoadData()
         {
-            var results = _Iactivity.DevPageAll(HttpContext.Request.Form); //this.Log);
+            var results = _Iactivity.DevPageAll(HttpContext.Request.Form, this.Log);
             //return new WebMembership.MVC.NewJsonResult(results);
             return new WebMembership.MVC.NewJsonResult(results);
         }

@@ -4,22 +4,91 @@
         QR: 1,
         PHONE: 2
     },
+    new_member_model: {
+        MBR_Name: "",
+        MBR_Phone1: "",
+        MBR_Email: "",
+        ACT_PK: null,
+        IsCheckin: true,
+        IsEmail: true
+    },
 
     load_Url: $("#initurl").val(),
 //    email_Url: $("#emailurl").val(),
     upload_Url: $("#uploadurl").val(),
     grid_Url: $("#detailgridurl").val(),
+    reg_Url: $("#regurl").val(),
+
     phone_pattern: "^\\d+$",
     qr_pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+
     form: null,
     key_pk: null,
     lookup_used: null,
-    form_option: null
+    form_option: null,
+    AddPopup: null,
+    AddNewView: null
 
 };
 
 var RegisterUtils = {
-    
+    multiview_select: function (index) {
+        if (index === 2) {
+            //form page's next need special handling
+            let newform = $("#new-member-form").dxForm("instance");
+            let result = newform.validate();
+            switch (result.isValid) {
+                case true:
+                    RegisterConfig.AddNewView.option("selectedIndex", index);
+                    break;
+
+                default:
+                    //do nothing
+            }
+        }
+        else 
+            RegisterConfig.AddNewView.option("selectedIndex", index);
+    },
+
+    fInitNewMemberModel: function () {
+        RegisterConfig.new_member_model.MBR_Name = "";
+        RegisterConfig.new_member_model.MBR_Phone1 = "";
+        RegisterConfig.new_member_model.MBR_Email = "";
+        RegisterConfig.new_member_model.IsCheckin = true;
+        RegisterConfig.new_member_model.IsEmail = true;
+        RegisterConfig.new_member_model.ACT_PK = null;
+    },
+
+    fSubmitNewMember: function () {
+
+        dctglobal.blockUI({
+            target: $('#Context'),
+            animate: true,
+            overlayColor: 'none'
+        });
+
+        let data =
+            {
+                //action: "update",
+                //key: MemberConfig.pk,  //can put existing member pk here if future want include exists member registration
+                values: RegisterConfig.new_member_model
+            };
+        $.post(RegisterConfig.reg_Url, data)
+            .done(function (result) {
+                if (result.haveError) {
+                    dctglobal.unblockUI($('#Context'));
+                    DevExpress.ui.notify(result.error);
+                }
+                else {
+                    RegisterConfig.AddPopup.hide();
+                    dctglobal.unblockUI($('#Context'));
+                    DevExpress.ui.notify("Successfully registered");
+                }
+            }).fail(function (error) {
+                alert(error.statusText);
+            });
+    }
+
 };
 
 
@@ -50,6 +119,135 @@ $(function () {
                 }
             }
         });
+
+        RegisterConfig.AddPopup = $("#add-popup").dxPopup({
+            width: "70%",
+            height: "75%",
+            contentTemplate: function (contentElement) {
+                $("<div />")
+                    .addClass("add-popup-area")
+                    .appendTo(contentElement);
+
+                $("<div />").attr("id", "multiview-container")
+                    .dxMultiView({
+                        height: 550,
+                        //dataSource: [ RegisterConfig.new_member_model ],
+                        swipeEnabled: false,
+                        selectedIndex: 0,
+                        loop: false,
+                        animationEnabled: true,
+                        items: [
+                            { template: $("#mv-dialog") },
+                            { template: $("#mv-form") },
+                            { template: $("#mv-confirmation") }
+                        ],
+                        onSelectionChanged: function (e) {
+                            if (e.component.option("selectedIndex") === 1) {  //second page with form
+                                let form = $("#new-member-form").dxForm({
+                                    formData: RegisterConfig.new_member_model,
+                                    showValidationSummary: false,
+                                    validationGroup: "NewMemberData",
+                                    items: [{
+                                        dataField: "MBR_Name",
+                                        label: {
+                                            text: "Name"
+                                        },
+                                        editorType: "dxTextBox",
+                                        editorOptions: {
+                                            onChange: function (e) {
+                                                //alert(e.component.option("value"));
+                                                RegisterConfig.new_member_model.MBR_Name = e.component.option("value");
+                                            }
+                                        },
+                                        validationRules: [{
+                                            type: "required",
+                                            message: "Name is required"
+                                        }]
+                                    },
+                                    {
+                                        label: {
+                                            text: "Phone"
+                                        },
+                                        editorType: "dxTextBox",
+                                        editorOptions: {
+                                            disabled: true,
+                                            value: RegisterConfig.new_member_model.MBR_Phone1,
+                                            onChange: function (e) {
+                                                //alert(e.component.option("value"));
+                                                RegisterConfig.new_member_model.MBR_Phone1 = e.component.option("value");
+                                            }
+                                        },
+                                        datafield: "MBR_Phone1",
+                                        validationRules: [{
+                                            type: "required",
+                                            message: "Phone is required"
+                                        }, {
+                                            type: "pattern",
+                                            pattern: RegisterConfig.phone_pattern,
+                                            message: "Invalid phone"
+                                        }]
+                                    },
+                                    {
+                                        datafield: "MBR_Email",
+                                        label: {
+                                            text: "Email Address"
+                                        },
+                                        editorType: "dxTextBox",
+                                        editorOptions: {
+                                            onChange: function (e) {
+                                                //alert(e.component.option("value"));
+                                                RegisterConfig.new_member_model.MBR_Email = e.component.option("value");
+                                            }
+                                        },
+                                        validationRules: [{
+                                            type: "required",
+                                            message: "Email is required"
+                                        },
+                                        { type: "email", message: "Email is invalid" }]
+                                    }
+                                    ]
+                                }).dxForm("instance");
+
+                                form.repaint();
+                            }
+                            else if (e.component.option("selectedIndex") === 2) {
+                                $("#mv-confirm-name").html(RegisterConfig.new_member_model.MBR_Name);
+                                $("#mv-confirm-phone").html(RegisterConfig.new_member_model.MBR_Phone1);
+                                $("#mv-confirm-email").html(RegisterConfig.new_member_model.MBR_Email);
+
+                                $("#mv-confirm-checkin").dxCheckBox({
+                                    value: RegisterConfig.new_member_model.IsCheckin,
+                                    onValueChanged: function (data) {
+                                        RegisterConfig.new_member_model.IsCheckin = data.value;
+                                    },
+                                    text: "Register & Check-In this activity now ?"
+                                });
+
+                                $("#mv-confirm-email").dxCheckBox({
+                                    value: RegisterConfig.new_member_model.IsEmail,
+                                    onValueChanged: function (data) {
+                                        RegisterConfig.new_member_model.IsEmail = data.value;
+                                    },
+                                    text: "Send Email ?"
+                                });
+                            }
+                        }
+                    })
+                    .prependTo($(".add-popup-area"));
+
+                RegisterConfig.AddNewView = $("#multiview-container").dxMultiView("instance");
+            },
+            onShowing: function () {
+                //Bind to model here
+            },
+            onHiding: function () {
+                //Init the model or un-bind here
+                if (RegisterConfig.AddNewView !== null) {
+                    RegisterConfig.AddNewView.option("selectedIndex", 0);
+                }
+                RegisterUtils.fInitNewMemberModel();
+            }
+        }).dxPopup("instance");
 
         //RegisterConfig.form_option = new $.DevDXForm({
         //    url: RegisterConfig.load_Url,
@@ -92,6 +290,12 @@ $(function () {
                         allowDeleting: false,
                         allowDragging: false,
                         allowResizing: false
+                    },
+                    appointmentTemplate: function (itemData, itemIndex, itemElement) {
+                        if (itemData.ACT_Status === "OPEN")
+                            itemElement.append("<div style=\"background-color:orange\">" + itemData.text + "</div>");
+                        else
+                            itemElement.append("<div>" + itemData.text + "</div>");
                     },
                     onAppointmentFormCreated: function (data) {
                         var buttons = data.component._popup.option('buttons');
@@ -188,8 +392,14 @@ $(function () {
                                                             RegisterConfig.lookup_used = RegisterConfig.input_selection.PHONE;
                                                             RegisterConfig.key_pk = dataItem.key;
                                                             form.option("formData", dataItem.data);
-                                                        } else
-                                                            DevExpress.ui.notify(dataItem.error);
+                                                        } else {
+                                                            if (dataItem.error.indexOf("Phone") !== -1) {
+                                                                RegisterConfig.new_member_model.MBR_Phone1 = key;
+                                                                RegisterConfig.new_member_model.ACT_PK = data.appointmentData.ACT_PK;
+                                                                RegisterConfig.AddPopup.show();
+                                                            } else
+                                                                DevExpress.ui.notify(dataItem.error);
+                                                        }
                                                         dctglobal.unblockUI($('#Context'));
                                                     }
                                                 }).fail(function (error) {

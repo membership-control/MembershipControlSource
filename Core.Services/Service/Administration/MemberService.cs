@@ -128,14 +128,14 @@ this.GetAll().UseAsDataSource(this._Imapper).For<MemberDTO>();
                 base.CopyData<MEM_Membership>(realdata, convert_hanlder);
                 //               realdata.insert_date = DateTime.Now;
                 realdata.MBR_UpdateDate = DateTime.Now;
-                realdata.MBR_UpdateUser = "UAT"; //logmodel.Insert_User;
+                realdata.MBR_UpdateUser = logmodel.Insert_User;
 
                 var result_update = base.Update(realdata);
                 if (result_update.Code == 0)
                 {
                     response.haveError = false;
                     response.key = convert_hanlder.MBR_PK.ToString();
-                    response.data = realdata;
+                    response.data = orgin; //this._Imapper.Map<MemberDTO>(realdata);
                 }
                 else
                 {
@@ -148,14 +148,14 @@ this.GetAll().UseAsDataSource(this._Imapper).For<MemberDTO>();
                 Guid id = Guid.NewGuid();
                 convert_hanlder.MBR_PK = id;
                 convert_hanlder.MBR_InsertDate = DateTime.Now;
-                convert_hanlder.MBR_InsertUser = "UAT"; //logmodel.Insert_User;
+                convert_hanlder.MBR_InsertUser = logmodel.Insert_User;
 
                 var result_add = base.Add(convert_hanlder);
                 if (result_add.Code == 0)
                 {
                     response.haveError = false;
                     response.key = convert_hanlder.MBR_PK.ToString();
-                    response.data = convert_hanlder; //request.Values;
+                    response.data = this._Imapper.Map<MemberDTO>(convert_hanlder); //request.Values;
                 }
                 else
                 {
@@ -164,12 +164,9 @@ this.GetAll().UseAsDataSource(this._Imapper).For<MemberDTO>();
                 }
             }
 
-            //logmodel.PK = System.Guid.NewGuid();
-            //logmodel.Details = this.UnitOfWork.Sql;
-            //logmodel.Action = request.CuttentAction;
-            //logmodel.Status = !response.haveError;
-            //logmodel.Remark = response.error;
-            //base.Log(logmodel);
+            logmodel.Action = request.CuttentAction;
+            logmodel.Remark = response.error;
+            base.Log(logmodel);
 
             return response;
         }
@@ -183,14 +180,19 @@ this.GetAll().UseAsDataSource(this._Imapper).For<MemberDTO>();
 
             try
             {
-                IQueryable<MemberDTO> data =
-    this.GetAll().UseAsDataSource(this._Imapper).For<MemberDTO>();
-                var query_data = !data.Any(predicate => predicate.MBR_MemberID.ToUpper() == ID.ToUpper());
-                response.data = query_data;
-
-                response.haveError = false;
-                response.error = null;
-
+                if (String.IsNullOrEmpty(ID))
+                {
+                    response.data = true;
+                    response.haveError = false;
+                }
+                else
+                {
+                    IQueryable<MemberDTO> data =
+        this.GetAll().UseAsDataSource(this._Imapper).For<MemberDTO>();
+                    var query_data = !data.Any(predicate => predicate.MBR_MemberID.ToUpper() == ID.ToUpper());
+                    response.data = query_data;
+                    response.haveError = false;
+                }
             }
             catch (Exception ex)
             {

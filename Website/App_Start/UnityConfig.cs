@@ -81,7 +81,8 @@ namespace WebMembership.App_Start
             container.RegisterType<IIcon3Integration, Icon3IntegrationService>(new PerRequestLifetimeManager());
             container.RegisterType<Core.Services.Interface.IRole, RoleService>(new PerRequestLifetimeManager());
             container.RegisterType<Core.Services.Interface.IUser, UserService>(new PerRequestLifetimeManager());
-            container.RegisterType<Core.Services.Interface.IEmail, Core.Services.Service.EmailService>(new PerRequestLifetimeManager());
+            container.RegisterType<Core.Services.Interface.IMessenger, Core.Services.Service.MessengerService>(new PerRequestLifetimeManager());
+            container.RegisterType<Core.Services.Interface.ILogging, Core.Services.Service.LoggingService>(new PerRequestLifetimeManager());
             container.RegisterType<IActivity, ActivityService>(new PerRequestLifetimeManager());
             container.RegisterType<IMember, MemberService>(new PerRequestLifetimeManager());
             container.RegisterType<IRegister, RegisterService>(new PerRequestLifetimeManager());

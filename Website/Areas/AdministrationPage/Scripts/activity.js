@@ -1,5 +1,5 @@
 ﻿var ActivityData = {
-    initFormObj: {},
+    initFormObj: { "ACT_Location": "HK" },
     load_Url: $("#forminit").val(),
     checkid_Url: $("#checkid").val(),
     form: null,
@@ -205,6 +205,7 @@ $(function () {
                         items: [{
                             colSpan: 1,
                             dataField: "ACT_ID",
+                            label: { text: "ID" },
                             editorType: "dxTextBox",
                             validationRules: [{
                                 type: "required",
@@ -216,7 +217,8 @@ $(function () {
                             }]
                         }, {
                             colSpan: 1,
-                            dataField: "ACT_Status",
+                                dataField: "ACT_Status",
+                                label: { text: "Status" },
                             editorType: "dxSelectBox",
                             editorOptions: {
                                 dataSource: CommonConfig.activity_status,
@@ -231,6 +233,7 @@ $(function () {
                     colSpan: 3,
                     items: [{
                         dataField: "ACT_Type",
+                        label: { text: "Type" },
                         editorType: "dxSelectBox",
                         editorOptions: {
                             dataSource: CommonConfig.activity_type,
@@ -242,7 +245,8 @@ $(function () {
                             message: "Type is required"
                         }]
                     }, {
-                        dataField: "ACT_Category",
+                            dataField: "ACT_Category",
+                            label: { text: "Category" },
                         editorType: "dxSelectBox",
                         editorOptions: {
                             dataSource: CommonConfig.activity_category,
@@ -254,7 +258,8 @@ $(function () {
                             message: "Category is required"
                         }]
                     }, {
-                        dataField: "ACT_MemberTypeReq",
+                            dataField: "ACT_MemberTypeReq",
+                            label: { text: "MemberType Requirement" },
                         editorType: "dxSelectBox",
                         editorOptions: {
                             dataSource: CommonConfig.member_type,
@@ -276,6 +281,7 @@ $(function () {
                     {
                         colSpan: 2,
                         dataField: "ACT_Name",
+                        label: { text: "Activity Name" },
                         validationRules: [{
                             type: "required",
                             message: "Activity Name is required"
@@ -284,6 +290,7 @@ $(function () {
                     {
                         colSpan: 1,
                         dataField: "ACT_FromDate",
+                        label: { text: "From Date" },
                         editorType: "dxDateBox",
                         editorOptions: {
                             format: "datetime",
@@ -297,6 +304,7 @@ $(function () {
                     {
                         colSpan: 1,
                         dataField: "ACT_ToDate",
+                        label: { text: "To Date" },
                         editorType: "dxDateBox",
                         editorOptions: {
                             format: "datetime",
@@ -318,21 +326,27 @@ $(function () {
                         itemType: "group",
                         items: [{
                             dataField: "ACT_Location",
+                            label: { text: "Location" },
                             editorType: "dxSelectBox",
                             editorOptions: {
-                                dataSource: CommonConfig.countrycodes
+                                dataSource: CommonConfig.countrycodes,
+                                value: "HK"
                             }
                         }, {
-                            dataField: "ACT_Address"
+                                dataField: "ACT_Address",
+                                label: { text: "Address" }
                         }, {
-                            dataField: "ACT_Current"
+                                dataField: "ACT_Current",
+                                label: { text: "Currency" }
                         }, {
-                            dataField: "ACT_Fee",
+                                dataField: "ACT_Fee",
+                                label: { text: "Fee" },
                             editorType: "dxNumberBox"
                         }]
                     }, {
                         colSpan: 2,
                         dataField: "ACT_Remarks",
+                        label: { text: "Remarks" },
                         editorType: "dxTextArea",
                         editorOptions: {
                             height: 120

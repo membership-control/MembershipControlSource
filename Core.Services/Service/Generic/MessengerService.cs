@@ -9,9 +9,9 @@ using Core.Services.DTO.Generic;
 
 namespace Core.Services.Service
 {
-    public class EmailService : IEmail
+    public class MessengerService : IMessenger
     {
-        public EmailService()
+        public MessengerService()
         {
         }
 

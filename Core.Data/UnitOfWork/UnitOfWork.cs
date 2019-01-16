@@ -128,26 +128,24 @@ namespace Core.Data.UnitOfWork
         {
             try
             {
-                using (Core.Data.EF.TGF_IntegrationEntities db = new Core.Data.EF.TGF_IntegrationEntities())
-                {
-                    var entity = new Core.Data.EF.TGF_GI_ControlTower_Logging();
-                    entity.PK = logmodel.PK;
-                    entity.Mode_ID = logmodel.Mode_ID;
-                    entity.Details = !String.IsNullOrEmpty(logmodel.Details) && logmodel.Details.Length > 4000? 
-                        logmodel.Details.Substring(0,4000) : logmodel.Details;
-                    entity.Insert_Date = logmodel.Insert_Date;
-                    entity.Insert_User = logmodel.Insert_User;
-                    entity.Client = logmodel.Client;
-                    entity.Action = logmodel.Action;
-                    entity.SessionID = logmodel.SessionID;
-                    entity.Status = logmodel.Status;
-                    entity.Remark = logmodel.Remark;
+                var entity = new Core.Data.EF.MEM_SysLog();
+                entity.SYS_PK = System.Guid.NewGuid();
+                entity.SYS_Host = logmodel.Mode_ID;
+                //entity.Details = !String.IsNullOrEmpty(logmodel.Details) && logmodel.Details.Length > 4000? 
+                //    logmodel.Details.Substring(0,4000) : logmodel.Details;
+                entity.SYS_InsertDate = logmodel.Insert_Date.Value;
+                entity.SYS_InsertUser = logmodel.Insert_User;
+                entity.SYS_LOG_Account = logmodel.Insert_User;
+                entity.SYS_Address = logmodel.Client;
+                entity.SYS_Action = logmodel.Action;
+                //entity.SessionID = logmodel.SessionID;
+                //entity.Status = logmodel.Status;
+                entity.SYS_Remarks = logmodel.Remark ?? this.Sql;
 
-                    db.Set<Core.Data.EF.TGF_GI_ControlTower_Logging>().Add(entity);
-                    db.SaveChanges();
-                }
+                this.DbContext.Set<Core.Data.EF.MEM_SysLog>().Add(entity);
+                this.DbContext.SaveChanges();
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { throw ex; }
         }
 
         #endregion

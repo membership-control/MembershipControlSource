@@ -17,16 +17,18 @@ namespace WebMembership.Areas.Administration.Controllers
     public class MembershipController : WebMembership.Controllers.BaseController
     {
          private IMember _IMember;
+        private ILogging _ILog;
 
-         public MembershipController(IMember iMember)
+         public MembershipController(IMember iMember, ILogging iLog)
         {
             this._IMember = iMember;
+            this._ILog = iLog;
         }
 
         [HttpPost]
         public ActionResult LoadData()
         {
-            var results = this._IMember.DevPageAll(HttpContext.Request.Form); //this.Log);
+            var results = this._IMember.DevPageAll(HttpContext.Request.Form, this.Log);
             return new WebMembership.MVC.NewJsonResult(results);
         }
 
@@ -53,6 +55,10 @@ namespace WebMembership.Areas.Administration.Controllers
                 string filePath = string.Format("~/Images/uploads/{0}", fileName);
                 Request.Files[0].SaveAs(Server.MapPath(filePath));
                 result = true;
+
+                //Logging
+                this.Log.Action = "upload";
+                this._ILog.LogDB(this.Log);
             }
 
             //return View();

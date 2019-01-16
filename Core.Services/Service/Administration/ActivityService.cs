@@ -126,7 +126,7 @@ this.GetAll().UseAsDataSource(this._Imapper).For<ActivityDTO>();
                 base.CopyData<MEM_Activity>(realdata, convert_hanlder);
                 //               realdata.insert_date = DateTime.Now;
                 realdata.ACT_UpdateDate = DateTime.Now;
-                realdata.ACT_UpdateUser = "UAT"; //logmodel.Insert_User;
+                realdata.ACT_UpdateUser = logmodel.Insert_User;
 
                 var result_update = base.Update(realdata);
                 if (result_update.Code == 0)
@@ -146,7 +146,7 @@ this.GetAll().UseAsDataSource(this._Imapper).For<ActivityDTO>();
                 Guid id = Guid.NewGuid();
                 convert_hanlder.ACT_PK = id;
                 convert_hanlder.ACT_InsertDate = DateTime.Now;
-                convert_hanlder.ACT_InsertUser = "UAT"; //logmodel.Insert_User;
+                convert_hanlder.ACT_InsertUser = logmodel.Insert_User;
 
                 var result_add = base.Add(convert_hanlder);
                 if (result_add.Code == 0)
@@ -162,12 +162,9 @@ this.GetAll().UseAsDataSource(this._Imapper).For<ActivityDTO>();
                 }
             }
 
-            //logmodel.PK = System.Guid.NewGuid();
-            //logmodel.Details = this.UnitOfWork.Sql;
-            //logmodel.Action = request.CuttentAction;
-            //logmodel.Status = !response.haveError;
-            //logmodel.Remark = response.error;
-            //base.Log(logmodel);
+            logmodel.Action = request.CuttentAction;
+            logmodel.Remark = response.error;
+            base.Log(logmodel);
 
             return response;
         }

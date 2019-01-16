@@ -11,8 +11,8 @@
     ],
 
     activity_status: [
-        { "Name": "OPEN" },
-        { "Name": "COMPLETED" }
+        { "Name": "OPEN", "color": "#03bb92" },
+        { "Name": "COMPLETED", "color": "#f34c8a" }
     ],
 
     member_type: [

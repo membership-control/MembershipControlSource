@@ -34,7 +34,6 @@ namespace Core.Services.Configuration
                 .ForMember(src => src.ACT_Location, opt => opt.Ignore())
                 .ForMember(src => src.ACT_MaxSeat, opt => opt.Ignore())
                 .ForMember(src => src.ACT_MemberTypeReq, opt => opt.Ignore())
-                .ForMember(src => src.ACT_Status, opt => opt.Ignore())
                 .ForMember(src => src.ACT_UpdateDate, opt => opt.Ignore())
                 .ForMember(src => src.ACT_UpdateUser, opt => opt.Ignore())
                 .ForSourceMember(src => src.MBR_PK, opt => opt.Ignore())
@@ -62,7 +61,6 @@ namespace Core.Services.Configuration
                 .ForSourceMember(src => src.ACT_Location, opt => opt.Ignore())
                 .ForSourceMember(src => src.ACT_MaxSeat, opt => opt.Ignore())
                 .ForSourceMember(src => src.ACT_MemberTypeReq, opt => opt.Ignore())
-                .ForSourceMember(src => src.ACT_Status, opt => opt.Ignore())
                 .ForSourceMember(src => src.ACT_UpdateDate, opt => opt.Ignore())
                 .ForSourceMember(src => src.ACT_UpdateUser, opt => opt.Ignore())
                 .ForMember(src => src.MBR_PK, opt => opt.Ignore())
@@ -74,9 +72,11 @@ namespace Core.Services.Configuration
                 .ForMember(src => src.Flex2, opt => opt.Ignore());
 
             CreateMap<MemberDTO, MEM_Membership>()
-                .ForMember(des => des.MBR_Photo, opt => opt.Ignore());
+                .ForMember(des => des.MBR_Photo, opt => opt.Ignore())
+                .ForMember(des => des.MBR_ID, opt => opt.MapFrom(src => Convert.ToInt32(src.MBR_ID)));
             CreateMap<MEM_Membership, MemberDTO>()
-                .ForSourceMember(sourceMember => sourceMember.MBR_Photo, opt => opt.Ignore());
+                .ForSourceMember(sourceMember => sourceMember.MBR_Photo, opt => opt.Ignore())
+                .ForMember(des => des.MBR_ID, opt => opt.MapFrom(src => String.Format("{0:D6}", src.MBR_ID)));
 
             CreateMap<UserActivityDTO, MEM_UserActivity>()
                 .ForSourceMember(src => src.UAC_MBR_Phone, opt => opt.Ignore())

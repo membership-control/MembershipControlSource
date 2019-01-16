@@ -21,13 +21,13 @@ namespace WebMembership.Areas.Administration.Controllers
     public class RegisterController : WebMembership.Controllers.BaseController
     {
         private IRegister _iRegister;
-        private RegisterViewModel _vm;
+        private RegisterAdminViewModel _vm;
         
         public RegisterController(IRegister RegisterInterface)
         {
             //this._iALVWHistory = ALVWHistory;
             this._iRegister = RegisterInterface;
-            _vm = new RegisterViewModel();
+            _vm = new RegisterAdminViewModel();
             //_vm.ServicesSource = this._iALVWHistory.GetAll().Select(s => s.SERVICE).Distinct().ToArray();
         }
 
@@ -53,7 +53,7 @@ namespace WebMembership.Areas.Administration.Controllers
         {
             //var results = this._iALVWHistory.DevPageAll(HttpContext.Request.Form);
             //return new WebMembership.MVC.NewJsonResult(results);
-            var results = this._iRegister.DevPageAll(HttpContext.Request.Form);
+            var results = this._iRegister.DevPageAll(HttpContext.Request.Form, this.Log);
             return new WebMembership.MVC.NewJsonResult(results);
         }
 
@@ -91,9 +91,27 @@ namespace WebMembership.Areas.Administration.Controllers
                     email_model.Body = reader.ReadToEnd();
                 }
 
-                    result = await this._iRegister.UploadForm(binaryData, true, email_model);
+                    result = await this._iRegister.UploadForm(binaryData, this.Log, true, email_model);
             }
             
+            //return View();
+            return new WebMembership.MVC.NewJsonResult(result, JsonRequestBehavior.DenyGet);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> RegisterMember()
+        {
+            Core.Infrastructure.Dev.DevResponse result = null;
+
+            HTMLEmailViewModel email_model = new HTMLEmailViewModel();
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Content/template/Email/QR_email_template.html")))
+            {
+                email_model.Body = reader.ReadToEnd();
+            }
+
+            result = await this._iRegister.RegisterNewOrExistingMember(HttpContext.Request.Form, this.Log, email_model);
+
             //return View();
             return new WebMembership.MVC.NewJsonResult(result, JsonRequestBehavior.DenyGet);
         }
@@ -113,6 +131,6 @@ namespace WebMembership.Areas.Administration.Controllers
 
         //    return Json(result, JsonRequestBehavior.DenyGet);
         //}
-        
+
     }
 }

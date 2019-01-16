@@ -1,5 +1,5 @@
 ﻿var MemberConfig = {
-    initFormObj: {},
+    initFormObj: { "MBR_CountryCode": "HK" },
     load_Url:  $("#forminit").val(),
     checkid_Url:  $("#checkid").val(),
     upload_Url: $("#photoload").val(),
@@ -11,6 +11,12 @@
 };
 
 var MemberUtils = {
+
+    pad: function (str, max) {
+        str = str.toString();
+        return str.length < max ? this.pad("0" + str, max) : str;
+    },
+
     loadForm: function (data) {
         MemberConfig.form.option("formData", data);
 
@@ -115,7 +121,10 @@ var MemberUtils = {
                             else {
                                 MemberConfig.pk = result.key;
                                 MemberUtils.loadForm(result.data);
-                                MemberConfig.form.getEditor("MBR_MemberID").option("disabled", true);
+                                if (result.data.MBR_MemberID !== null && result.data.MBR_MemberID !== "")
+                                    MemberConfig.form.getEditor("MBR_MemberID").option("disabled", true);
+                                else
+                                    MemberConfig.form.getEditor("MBR_MemberID").option("disabled", false);
                                 //MemberConfig.form.getEditor("ACT_ID").option("disabled", true);
                                 //MemberUtils.freload_selection();
                                 dctglobal.unblockUI($('#Context'));
@@ -140,7 +149,11 @@ var MemberUtils = {
                                 MemberConfig.uploader.option("disabled", false);
                                 MemberConfig.pk = result.key;
                                 MemberUtils.loadForm(result.data);
-                                MemberConfig.form.getEditor("MBR_MemberID").option("disabled", true);
+                                if (result.data.MBR_MemberID !== null && result.data.MBR_MemberID !== "")
+                                    MemberConfig.form.getEditor("MBR_MemberID").option("disabled", true);
+                                else
+                                    MemberConfig.form.getEditor("MBR_MemberID").option("disabled", false);
+
                                 //MemberConfig.form.getEditor("ACT_ID").option("disabled", true);
                                 //MemberUtils.freload_selection();
                                 dctglobal.unblockUI($('#Context'));
@@ -172,169 +185,278 @@ $(function () {
                 items: [{
                     itemType: "group",
                     cssClass: "first-group",
-                    colCount: 5,
+                    colCount: 6,
                     items: [{
                         template: "<div class='form-avatar'></div>"
                     }, {
-                        itemType: "group",
-                        colSpan: 4,
-                        items: [{
                             itemType: "group",
-                            colCount: 3,
+                            colSpan: 5, //start here
                             items: [{
-                                colSpan: 1,
-                                dataField: "MBR_Type",
-                                editorType: "dxSelectBox",
-                                editorOptions: {
-                                    dataSource: CommonConfig.member_type,
-                                    displayExpr: "Name",
-                                    valueExpr: "ID"
-                                },
-                                validationRules: [{
-                                    type: "required",
-                                    message: "Member Type is required"
-                                }]
-                            }, {
-                                    colSpan: 1,
-                                    dataField: "MBR_MemberID",
-                                    validationRules: [{
-                                        type: "required",
-                                        message: "ID is required"
-                                    }, {
-                                        type: 'custom',
-                                        validationCallback: MemberUtils.fcheckIDAvailable,
-                                        message: 'This ID is not available.'
-                                    }]
-                                },
-                                {
-                                colSpan: 1,
-                                dataField: "MBR_IsEnable",
-                                editorType: "dxSwitch"
-                            }]
-                        },
-                        {
-                            dataField: "MBR_Name",
-                            validationRules: [{
-                                type: "required",
-                                message: "Name is required"
-                            }]
-                        }, {
-                            dataField: "MBR_ChineseName"
-                        }, {
-                            dataField: "MBR_EffectiveDate",
-                            editorType: "dxDateBox",
-                            editorOptions: {
-                                format: "datetime",
-                                width: "100%"
-                            }
-                        },
-                        {
-                            dataField: "MBR_ExpiredDate",
-                            editorType: "dxDateBox",
-                            editorOptions: {
-                                format: "datetime",
-                                width: "100%"
-                            }
-                        }
-                        ]
-                    }]
-                }, {
-                    itemType: "group",
-                    cssClass: "second-group",
-                    colCount: 2,
-                    items: [{
-                        itemType: "group",
-                        colSpan: 1,
-                        caption: "Contact Information",
-                        items: [{
-                            itemType: "tabbed",
-                            tabPanelOptions: {
-                                deferRendering: false
-                            },
-                            tabs: [{
-                                title: "Phone",
+                                itemType: "group",
+                                colCount: 3,
                                 items: [{
+                                    colSpan: 1,
                                     dataField: "MBR_Phone1",
-                                    label: {
-                                        text: "Phone 1"
-                                    },
+                                    label: { text: "Phone 1" },
                                     editorType: "dxTextBox",
                                     validationRules: [{
                                         type: "required",
                                         message: "Phone is required"
                                     },
-                                        {
-                                            type: "pattern",
-                                            pattern: MemberConfig.phone_pattern,
-                                            message: "Invalid phone"
+                                    {
+                                        type: "pattern",
+                                        pattern: MemberConfig.phone_pattern,
+                                        message: "Invalid phone"
+                                    }]
+                                }, {
+                                        colSpan: 1,
+                                        dataField: "MBR_MemberID",
+                                        label: { text: "Member ID" },
+                                        validationRules: [{
+                                            type: 'custom',
+                                            validationCallback: MemberUtils.fcheckIDAvailable,
+                                            message: 'This ID is not available.'
                                         }]
-                                },
-                                {
-                                    dataField: "MBR_Phone2",
-                                    label: {
-                                        text: "Phone 2"
-                                    },
-                                    editorOptions: {
-                                        maskChar: "+"
-                                    }
-                                },
-                                { dataField: "MBR_WeChatNo" }
-                                ]
+                                    }, {
+                                        colSpan: 1,
+                                        dataField: "MBR_IsEnable",
+                                        label: { text: "Enabled" },
+                                        editorType: "dxSwitch"
+                                    }]
                             }, {
-                                title: "Address",
-                                items: [{ dataField: "MBR_Address1" },
-                                { dataField: "MBR_Address2" },
+                                    itemType: "group",
+                                    colCount: 3,
+                                    items: [{
+                                        colSpan: 1,
+                                        dataField: "MBR_Name",
+                                        label: { text: "Name" },
+                                        validationRules: [{
+                                            type: "required",
+                                            message: "Name is required"
+                                        }]
+                                    }, {
+                                            colSpan: 1,
+                                            dataField: "MBR_Age",
+                                            label: { text: "Age" },
+                                            editorType: "dxNumberBox"
+                                        },
+                                        {
+                                            colSpan: 1,
+                                            dataField: "MBR_Type",
+                                            label: { text: "Type" },
+                                            editorType: "dxSelectBox",
+                                            editorOptions: {
+                                                dataSource: CommonConfig.member_type,
+                                                displayExpr: "Name",
+                                                valueExpr: "ID"
+                                            },
+                                            validationRules: [{
+                                                type: "required",
+                                                message: "Member Type is required"
+                                            }]
+                                        }
+                                    ]
+                                },
                                 {
-                                    dataField: "MBR_CountryCode",
-                                    editorType: "dxSelectBox",
-                                    editorOptions: {
-                                        dataSource: CommonConfig.countrycodes
-                                    }
+                                    itemType: "group",
+                                    colCount: 3,
+                                    items: [{
+                                        colSpan: 1,
+                                        dataField: "MBR_ChineseName",
+                                        label: { text: "中文名" }
+                                    },
+                                        {
+                                            colSpan: 1,
+                                            dataField: "MBR_ReferBy",
+                                            label: { text: "Refer By" }
+                                        },
+                                        {
+                                            colSpan: 1,
+                                            dataField: "MBR_GroupID",
+                                            label: { text: "Group ID" }
+                                        }
+                                    ]
                                 },
-                                { dataField: "MBR_CountryName" }
-                                ]
+                                {
+                                    itemType: "group",
+                                    colCount: 3,
+                                    items: [
+                                        {
+                                            colSpan: 1,
+                                            dataField: "MBR_WeChatNo",
+                                            label: { text: "WeChat No" }
+                                        },
+                                        {
+                                            colSpan: 1,
+                                            dataField: "MBR_Phone2",
+                                            label: {
+                                                text: "Phone 2"
+                                            },
+                                            validationRules: [
+                                                {
+                                                    type: "pattern",
+                                                    pattern: MemberConfig.phone_pattern,
+                                                    message: "Invalid phone"
+                                                }]
+                                        },
+                                        {
+                                            colSpan: 1,
+                                            dataField: "MBR_Email",
+                                            label: { text: "Email" },
+                                            validationRules: [{ type: "email", message: "Email is invalid" }]
+                                        }
+                                    ]
                                 },
+                                {
+                                    itemType: "group",
+                                    colCount: 3,
+                                    items: [
+                                        {
+                                            colSpan: 1,
+                                            dataField: "MBR_EffectiveDate",
+                                            label: { text: "Effective Date" },
+                                            editorType: "dxDateBox",
+                                            editorOptions: {
+                                                format: "datetime",
+                                                width: "100%"
+                                            }
+                                        },
+                                        {
+                                            dataField: "MBR_ExpiredDate",
+                                            label: { text: "Expiry Date" },
+                                            editorType: "dxDateBox",
+                                            editorOptions: {
+                                                format: "datetime",
+                                                width: "100%"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, {
+                            colSpan: 2,
+                            dataField: "MBR_ID",
+                            label: { text: "Member ID" },
+                            editorType: "dxTextBox",
+                            editorOptions: {
+                                disabled: true
+                            }
+                        }
+                    ]
+                },
+                    {
+                    itemType: "group",
+                    cssClass: "second-group",
+                    colCount: 4,
+                    items: [{
+                        itemType: "group",
+                        colSpan: 4,
+                        //caption: "Personal Information",
+                        items: [{
+                            itemType: "tabbed",
+                            tabPanelOptions: {
+                                deferRendering: false
+                            },
+                            tabs: [
                                 {
                                     title: "Career",
-                                    items: [{ dataField: "MBR_Occupations" },
-                                        { dataField: "MBR_CompanyName" },
-                                        { dataField: "MBR_Professional" },
-                                        { dataField: "MBR_Valuable" },
-                                        { dataField: "MBR_Networking" },
-                                        { dataField: "MBR_Parhnership" }
+                                    items: [
+                                        {
+                                            dataField: "MBR_CompanyName",
+                                            label: { text: "Company Name" }
+                                        },
+                                        {
+                                            dataField: "MBR_Occupations",
+                                            label: { text: "Occupation" }
+                                        },
+                                        {
+                                            dataField: "MBR_Professional",
+                                            label: { text: "Professional" }
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: "Address",
+                                    items: [
+                                        {
+                                            dataField: "MBR_Address1",
+                                            label: { text: "Address 1" }
+                                        },
+                                        {
+                                            dataField: "MBR_Address2",
+                                            label: { text: "Address 2" }
+                                        },
+                                        {
+                                            dataField: "MBR_CountryCode",
+                                            label: { text: "Country Code" },
+                                            editorType: "dxSelectBox",
+                                            editorOptions: {
+                                                dataSource: CommonConfig.countrycodes,
+                                                value: "HK"
+                                            }
+                                        },
+                                        {
+                                            dataField: "MBR_CountryName",
+                                            label: { text: "Country Name" }
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: "Give",
+                                    items: [
+                                        {
+                                            dataField: "MBR_SupportInGroup",
+                                            label: { text: "Support In Group" }
+                                        },
+                                        {
+                                            dataField: "MBR_Valuable",
+                                            label: { text: "Values" }
+                                        },
+                                        {
+                                            dataField: "MBR_Skillset",
+                                            label: { text: "Skillsets" },
+                                            editorType: "dxTextArea",
+                                            editorOptions: {
+                                                height: 120
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    title: "Take",
+                                    items: [
+                                        {
+                                            dataField: "MBR_Networking",
+                                            label: { text: "Networking" }
+                                        },
+                                        {
+                                            dataField: "MBR_Parhnership",
+                                            label: { text: "Partnership" }
+                                        }
                                     ]
                                 }
                             ]
                         }]
                     }, {
+                        colSpan: 4,
                         itemType: "group",
-                        items: [{
-                            dataField: "MBR_Age",
-                            editorType: "dxNumberBox"
-                        }, 
-                            { dataField: "MBR_SupportInGroup" },
-                            { dataField: "MBR_ReferBy" },
-                            { dataField: "MBR_GroupID" },
+                            items: [ 
+                                {
+                                    colSpan: 1,
+                                    dataField: "MBR_Agreement",
+                                    label: { text: "Agreement" },
+                                    editorType: "dxCheckBox"
+                                },
                             {
+                                colSpan: 3,
                                 dataField: "MBR_Remarks",
+                                label: { text: "Remarks" },
                                 editorType: "dxTextArea",
                                 editorOptions: {
                                     height: 90
                                 }
                             }
                         ]
-                    }, {
-                        colSpan: 2,
-                        dataField: "MBR_Skillset",
-                        editorType: "dxTextArea",
-                        editorOptions: {
-                            height: 120
-                        }
-                    },
-                    {
-                        colSpan: 2,
-                        dataField: "MBR_Agreement",
-                        editorType: "dxCheckBox"
                     }
                     ]
                 }]
@@ -361,7 +483,10 @@ $(function () {
                                     MemberConfig.uploader.option("disabled", false);
                                     MemberConfig.pk = dataItem.key;
                                     MemberUtils.loadForm(dataItem.data);
-                                    MemberConfig.form.getEditor("MBR_MemberID").option("disabled", true);
+                                    if (dataItem.data.MBR_MemberID !== null && dataItem.data.MBR_MemberID !== "")
+                                        MemberConfig.form.getEditor("MBR_MemberID").option("disabled", true);
+                                    else
+                                        MemberConfig.form.getEditor("MBR_MemberID").option("disabled", false);
                                 } else
                                     DevExpress.ui.notify("Member not found");
                                 dctglobal.unblockUI($('#Context'));
