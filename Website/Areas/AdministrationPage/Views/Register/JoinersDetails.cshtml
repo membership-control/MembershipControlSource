@@ -65,6 +65,7 @@
                         <th>Phone 2</th>
                         <th>Wechat No</th>
                         <th>Register Date</th>
+                        <th>Attend Date</th>
                         <th>Register Remarks</th>
                     </tr>
                     @foreach(var obj in Model.DataGrid)
@@ -76,6 +77,14 @@
                         <td>@obj.MBR_Phone2</td>
                         <td>@obj.MBR_WeChatNo</td>
                         <td>@obj.RegDate.ToString()</td>
+                        @if (!obj.AttDate.HasValue)
+                        {
+                            <td></td>
+                        }
+                        else
+                        {
+                            <td>@obj.AttDate.Value.ToString()</td>
+                        }
                         <td>@obj.Remark</td>
                     </tr>
                     }

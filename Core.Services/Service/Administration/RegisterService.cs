@@ -179,7 +179,7 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                 else
                 {
                     response.data = null;
-                    response.error = "No corresponding UserActivity found";
+                    response.error = "No UserActivity found";
                 }
             }
             else
@@ -590,7 +590,8 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                                   MBR_Phone1 = member.MBR_Phone1,
                                   MBR_Phone2 = member.MBR_Phone2,
                                   MBR_WeChatNo = member.MBR_WeChatNo,
-                                  RegDate = uac.UAC_RegDate
+                                  RegDate = uac.UAC_RegDate,
+                                  AttDate = uac.UAC_AttDate
                               };
 
             List<RegisterActivityGridDTO> final_data_list =

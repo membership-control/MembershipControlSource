@@ -7,9 +7,9 @@
 {
     <style>
         .visual > i {
-          color: #FFFFFF;
-          opacity: 0.2;
-          filter: alpha(opacity=10);
+            color: #FFFFFF;
+            opacity: 0.2;
+            filter: alpha(opacity=10);
         }
 
         .more {
@@ -31,9 +31,6 @@
         }
     </style>
 }
-<h3 class="page-title">
-    Welcome to Membership Control
-</h3>
 
 <div class="row">
     <div class="col-md-12 col-sm-12">
@@ -44,3 +41,14 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+<script>
+    $(document).ready(
+        function () {
+            $('.page-sidebar li > a.ajaxify:first').click();
+        }
+       );
+</script>
+}
+    

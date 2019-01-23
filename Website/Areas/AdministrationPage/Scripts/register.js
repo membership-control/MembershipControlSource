@@ -122,15 +122,20 @@ $(function () {
 
         RegisterConfig.AddPopup = $("#add-popup").dxPopup({
             width: "70%",
-            height: "75%",
+            height: "82%",
             contentTemplate: function (contentElement) {
                 $("<div />")
                     .addClass("add-popup-area")
+                    .dxScrollView({
+                        height: '100%',
+                        width: '100%',
+                        showScrollbar: 'always'
+                    })
                     .appendTo(contentElement);
 
                 $("<div />").attr("id", "multiview-container")
                     .dxMultiView({
-                        height: 550,
+                        height: 800,
                         //dataSource: [ RegisterConfig.new_member_model ],
                         swipeEnabled: false,
                         selectedIndex: 0,
@@ -249,6 +254,13 @@ $(function () {
             }
         }).dxPopup("instance");
 
+        $('.scroller').slimScroll({
+            color: '#00f',
+            size: '10px',
+            height: '280px',
+            alwaysVisible: true
+        });
+
         //RegisterConfig.form_option = new $.DevDXForm({
         //    url: RegisterConfig.load_Url,
         //    key: "ACT_PK",
@@ -291,12 +303,12 @@ $(function () {
                         allowDragging: false,
                         allowResizing: false
                     },
-                    appointmentTemplate: function (itemData, itemIndex, itemElement) {
-                        if (itemData.ACT_Status === "OPEN")
-                            itemElement.append("<div style=\"background-color:orange\">" + itemData.text + "</div>");
-                        else
-                            itemElement.append("<div>" + itemData.text + "</div>");
-                    },
+                    //appointmentTemplate: function (itemData, itemIndex, itemElement) {
+                    //    //if (itemData.ACT_Status === "OPEN")
+                    //    //    itemElement.append("<div style=\"background-color:orange\">" + itemData.text + "</div>");
+                    //    //else
+                    //    //    itemElement.append("<div>" + itemData.text + "</div>");
+                    //},
                     onAppointmentFormCreated: function (data) {
                         var buttons = data.component._popup.option('buttons');
                         buttons[0].options = { text: 'Check in' };
@@ -491,6 +503,9 @@ $(function () {
                                 },
                                 {
                                     colSpan: 1,
+                                    label: {
+                                        text: "Reg Date"
+                                    },
                                     name: "RegDate",
                                     dataField: "UAC_RegDate",
                                     editorType: "dxDateBox",
@@ -502,6 +517,9 @@ $(function () {
                                 },
                                 {
                                     colSpan: 1,
+                                    label: {
+                                        text: "Att Date"
+                                    },
                                     name: "AttDate",
                                     dataField: "UAC_AttDate",
                                     editorType: "dxDateBox",

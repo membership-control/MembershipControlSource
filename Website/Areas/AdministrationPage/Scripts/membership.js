@@ -1,5 +1,7 @@
 ﻿var MemberConfig = {
-    initFormObj: { "MBR_CountryCode": "HK" },
+    initFormObj: {
+        "MBR_CountryCode": "HK", "MBR_Type": 1
+    },
     load_Url:  $("#forminit").val(),
     checkid_Url:  $("#checkid").val(),
     upload_Url: $("#photoload").val(),
@@ -248,7 +250,8 @@ $(function () {
                                             editorOptions: {
                                                 dataSource: CommonConfig.member_type,
                                                 displayExpr: "Name",
-                                                valueExpr: "ID"
+                                                valueExpr: "ID",
+                                                value: 1
                                             },
                                             validationRules: [{
                                                 type: "required",

@@ -17,5 +17,7 @@ namespace Core.Services.DTO.Administration
         public string MBR_Phone2 { get; set; }
         public string MBR_WeChatNo { get; set; }
         public System.DateTime RegDate { get; set; }
+        public System.Nullable<DateTime> AttDate { get; set; }
+        
     }
 }

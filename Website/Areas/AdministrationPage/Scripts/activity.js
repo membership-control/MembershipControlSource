@@ -1,5 +1,6 @@
 ﻿var ActivityData = {
-    initFormObj: { "ACT_Location": "HK" },
+    initFormObj: {
+        "ACT_Location": "HK", "ACT_Status": "OPEN" },
     load_Url: $("#forminit").val(),
     checkid_Url: $("#checkid").val(),
     form: null,
@@ -195,13 +196,13 @@ $(function () {
             items: [{
                 itemType: "group",
                 cssClass: "first-group",
-                colCount: 5,
+                colCount: 4,
                 items: [{
                     itemType: "group",
                     colSpan: 2,
                     items: [{
                         itemType: "group",
-                        colCount: 2,
+                        colCount: 1,
                         items: [{
                             colSpan: 1,
                             dataField: "ACT_ID",
@@ -223,14 +224,15 @@ $(function () {
                             editorOptions: {
                                 dataSource: CommonConfig.activity_status,
                                 displayExpr: "Name",
-                                valueExpr: "Name"
+                                valueExpr: "Name",
+                                value: "OPEN"
                             }
                         }]
                     }]
                 },
                 {
                     itemType: "group",
-                    colSpan: 3,
+                    colSpan: 2,
                     items: [{
                         dataField: "ACT_Type",
                         label: { text: "Type" },
