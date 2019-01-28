@@ -40,6 +40,35 @@ namespace WebMembership.Areas.Administration.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Export()
+        {
+            var results = this._IMember.ExportMembers();
+            byte[] file_bytes = (byte[])results.data;
+
+            var file = new FileContentResult(file_bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            file.FileDownloadName = results.key;
+
+            return file;
+        }
+
+        [HttpPost]
+        public ActionResult Import()
+        {
+            Core.Infrastructure.Dev.DevResponse result = null;
+
+            if (Request.Files.Count != 0)
+            {
+                BinaryReader b = new BinaryReader(Request.Files[0].InputStream);
+                byte[] binaryData = b.ReadBytes(Request.Files[0].ContentLength);
+
+                result = this._IMember.ImportMembers(binaryData, Request.Files[0].FileName,this.Log);
+            }
+
+            return new WebMembership.MVC.NewJsonResult(result, JsonRequestBehavior.DenyGet);
+        }
+
+        [HttpPost]
         public ActionResult Upload(string name)
         {
             bool result = false;

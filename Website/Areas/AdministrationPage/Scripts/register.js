@@ -9,6 +9,9 @@
         MBR_Phone1: "",
         MBR_Email: "",
         ACT_PK: null,
+        MBR_Type: 1,
+        MBR_PK: null,
+        UAC_ACT_Remarks: null,
         IsCheckin: true,
         IsEmail: true
     },
@@ -22,12 +25,12 @@
     phone_pattern: "^\\d+$",
     qr_pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
 
-    form: null,
+    appointment_form: null,
     key_pk: null,
     lookup_used: null,
-    form_option: null,
     AddPopup: null,
-    AddNewView: null
+    AddNewView: null,
+    new_member_form_disable: false
 
 };
 
@@ -39,7 +42,14 @@ var RegisterUtils = {
             let result = newform.validate();
             switch (result.isValid) {
                 case true:
-                    RegisterConfig.AddNewView.option("selectedIndex", index);
+                    /////member type requirement check
+                    let member_level = CommonUtils.json_select_by(CommonConfig.member_type, RegisterConfig.new_member_model.MBR_Type, "ID", "Level");
+                    let require_level = CommonUtils.json_select_by(CommonConfig.member_type, RegisterConfig.appointment_form.option("formData").ACT_MemberTypeReq, "ID", "Level");
+
+                    if (member_level >= require_level)
+                        RegisterConfig.AddNewView.option("selectedIndex", index);
+                    else
+                        DevExpress.ui.notify("This course requires higher level member");
                     break;
 
                 default:
@@ -50,6 +60,29 @@ var RegisterUtils = {
             RegisterConfig.AddNewView.option("selectedIndex", index);
     },
 
+    loadPic: function (data) {
+        if (data.MBR_PK !== null) {
+            let image = new Image();
+
+            let name = data.MBR_PK;
+            //alert(name.replace(/-/g, ''));
+            var pic = name.replace(/-/g, '') + ".jpg";
+            image.onload = function () {
+                $('.pic-avatar').css("background-image", "url(" + "../../Images/uploads/" + pic + ")");
+            }
+
+            image.onerror = function () {
+                $('.pic-avatar').css("background-image", "");
+            }
+
+            image.src = "../../Images/uploads/" + pic;
+        } else {
+            $('.pic-avatar').css("background-image", "");
+        }
+
+
+    },
+
     fInitNewMemberModel: function () {
         RegisterConfig.new_member_model.MBR_Name = "";
         RegisterConfig.new_member_model.MBR_Phone1 = "";
@@ -57,6 +90,9 @@ var RegisterUtils = {
         RegisterConfig.new_member_model.IsCheckin = true;
         RegisterConfig.new_member_model.IsEmail = true;
         RegisterConfig.new_member_model.ACT_PK = null;
+        RegisterConfig.new_member_model.MBR_Type = 1;
+        RegisterConfig.new_member_model.UAC_ACT_Remarks = null;
+        RegisterConfig.new_member_model.MBR_PK = null;
     },
 
     fSubmitNewMember: function () {
@@ -146,6 +182,9 @@ $(function () {
                             { template: $("#mv-form") },
                             { template: $("#mv-confirmation") }
                         ],
+                        //onItemRendered: function (obj) {
+                            
+                        //},
                         onSelectionChanged: function (e) {
                             if (e.component.option("selectedIndex") === 1) {  //second page with form
                                 let form = $("#new-member-form").dxForm({
@@ -153,64 +192,107 @@ $(function () {
                                     showValidationSummary: false,
                                     validationGroup: "NewMemberData",
                                     items: [{
-                                        dataField: "MBR_Name",
-                                        label: {
-                                            text: "Name"
-                                        },
-                                        editorType: "dxTextBox",
-                                        editorOptions: {
-                                            onChange: function (e) {
-                                                //alert(e.component.option("value"));
-                                                RegisterConfig.new_member_model.MBR_Name = e.component.option("value");
+                                        itemType: "group",
+                                        colCount: 2,
+                                        caption: "Provide all details",
+                                        items: [
+                                            {
+                                                colSpan: 1,
+                                                dataField: "MBR_Type",
+                                                label: { text: "Type" },
+                                                editorType: "dxSelectBox",
+                                                editorOptions: {
+                                                    dataSource: CommonConfig.member_type,
+                                                    displayExpr: "Name",
+                                                    valueExpr: "ID",
+                                                    //value: 1,
+                                                    disabled: RegisterConfig.new_member_form_disable,
+                                                    onSelectionChanged: function (e) {
+                                                        RegisterConfig.new_member_model.MBR_Type = e.selectedItem.ID;
+                                                    }
+                                                },
+                                                validationRules: [{
+                                                    type: "required",
+                                                    message: "Member Type is required"
+                                                }]
+                                            },
+                                            {
+                                                colSpan: 1,
+                                                dataField: "MBR_Name",
+                                                label: {
+                                                    text: "Name"
+                                                },
+                                                editorType: "dxTextBox",
+                                                editorOptions: {
+                                                    disabled: RegisterConfig.new_member_form_disable,
+                                                    onChange: function (e) {
+                                                        //alert(e.component.option("value"));
+                                                        RegisterConfig.new_member_model.MBR_Name = e.component.option("value");
+                                                    }
+                                                },
+                                                validationRules: [{
+                                                    type: "required",
+                                                    message: "Name is required"
+                                                }]
+                                            },
+                                            {
+                                                colSpan: 1,
+                                                label: {
+                                                    text: "Phone"
+                                                },
+                                                editorType: "dxTextBox",
+                                                editorOptions: {
+                                                    disabled: true,
+                                                    value: RegisterConfig.new_member_model.MBR_Phone1,
+                                                    onChange: function (e) {
+                                                        //alert(e.component.option("value"));
+                                                        RegisterConfig.new_member_model.MBR_Phone1 = e.component.option("value");
+                                                    }
+                                                },
+                                                datafield: "MBR_Phone1",
+                                                validationRules: [{
+                                                    type: "required",
+                                                    message: "Phone is required"
+                                                }, {
+                                                    type: "pattern",
+                                                    pattern: RegisterConfig.phone_pattern,
+                                                    message: "Invalid phone"
+                                                }]
+                                            },
+                                            {
+                                                colSpan: 1,
+                                                datafield: "MBR_Email",
+                                                label: {
+                                                    text: "Email Address"
+                                                },
+                                                editorType: "dxTextBox",
+                                                editorOptions: {
+                                                    disabled: RegisterConfig.new_member_form_disable,
+                                                    onChange: function (e) {
+                                                        //alert(e.component.option("value"));
+                                                        RegisterConfig.new_member_model.MBR_Email = e.component.option("value");
+                                                    }
+                                                },
+                                                validationRules: [{
+                                                    type: "required",
+                                                    message: "Email is required"
+                                                },
+                                                { type: "email", message: "Email is invalid" }]
+                                            },
+                                            {
+                                                colSpan: 2,
+                                                dataField: "UAC_ACT_Remarks",
+                                                label: { text: "Remarks" },
+                                                editorType: "dxTextArea",
+                                                editorOptions: {
+                                                    height: 80,
+                                                    onValueChanged: function (e) {
+                                                        RegisterConfig.new_member_model.UAC_ACT_Remarks = e.component.option("value");
+                                                    }
+                                                }
                                             }
-                                        },
-                                        validationRules: [{
-                                            type: "required",
-                                            message: "Name is required"
-                                        }]
-                                    },
-                                    {
-                                        label: {
-                                            text: "Phone"
-                                        },
-                                        editorType: "dxTextBox",
-                                        editorOptions: {
-                                            disabled: true,
-                                            value: RegisterConfig.new_member_model.MBR_Phone1,
-                                            onChange: function (e) {
-                                                //alert(e.component.option("value"));
-                                                RegisterConfig.new_member_model.MBR_Phone1 = e.component.option("value");
-                                            }
-                                        },
-                                        datafield: "MBR_Phone1",
-                                        validationRules: [{
-                                            type: "required",
-                                            message: "Phone is required"
-                                        }, {
-                                            type: "pattern",
-                                            pattern: RegisterConfig.phone_pattern,
-                                            message: "Invalid phone"
-                                        }]
-                                    },
-                                    {
-                                        datafield: "MBR_Email",
-                                        label: {
-                                            text: "Email Address"
-                                        },
-                                        editorType: "dxTextBox",
-                                        editorOptions: {
-                                            onChange: function (e) {
-                                                //alert(e.component.option("value"));
-                                                RegisterConfig.new_member_model.MBR_Email = e.component.option("value");
-                                            }
-                                        },
-                                        validationRules: [{
-                                            type: "required",
-                                            message: "Email is required"
-                                        },
-                                        { type: "email", message: "Email is invalid" }]
-                                    }
-                                    ]
+                                        ]
+                                    }]
                                 }).dxForm("instance");
 
                                 form.repaint();
@@ -219,6 +301,9 @@ $(function () {
                                 $("#mv-confirm-name").html(RegisterConfig.new_member_model.MBR_Name);
                                 $("#mv-confirm-phone").html(RegisterConfig.new_member_model.MBR_Phone1);
                                 $("#mv-confirm-email-text").html(RegisterConfig.new_member_model.MBR_Email);
+                                $("#mv-confirm-remarks").html(RegisterConfig.new_member_model.UAC_ACT_Remarks);
+                                let disp_type = CommonUtils.json_select_by(CommonConfig.member_type, RegisterConfig.new_member_model.MBR_Type, "ID", "Name");
+                                $("#mv-confirm-type").html(disp_type);
 
                                 $("#mv-confirm-checkin").dxCheckBox({
                                     value: RegisterConfig.new_member_model.IsCheckin,
@@ -244,6 +329,14 @@ $(function () {
             },
             onShowing: function () {
                 //Bind to model here
+                if (RegisterConfig.new_member_model.MBR_PK != null) {
+                    $("#mv-intro-dialog").html(RegisterConfig.new_member_model.MBR_Name + " has not register yet. Do it now ?");
+                    RegisterConfig.new_member_form_disable = true;
+                }
+                else {
+                    $("#mv-intro-dialog").html("Member Phone not found. Create one now?");
+                    RegisterConfig.new_member_form_disable = false;
+                }
             },
             onHiding: function () {
                 //Init the model or un-bind here
@@ -260,13 +353,6 @@ $(function () {
             height: '280px',
             alwaysVisible: true
         });
-
-        //RegisterConfig.form_option = new $.DevDXForm({
-        //    url: RegisterConfig.load_Url,
-        //    key: "ACT_PK",
-        //    onFieldDataChanged: null,
-        //    showValidationSummary: false
-        //});
 
         dctglobal.blockUI({
             target: $('#Context'),
@@ -318,6 +404,7 @@ $(function () {
                         RegisterConfig.lookup_used = RegisterConfig.input_selection.NONE;
                         RegisterConfig.key_pk = null;
                         var form = data.form;
+                        RegisterConfig.appointment_form = data.form;
                         //alert(data.appointmentData.ACT_PK);
                         form.option("items", [
                             {
@@ -354,6 +441,14 @@ $(function () {
                                                             RegisterConfig.lookup_used = RegisterConfig.input_selection.QR;
                                                             RegisterConfig.key_pk = dataItem.key;
                                                             form.option("formData", dataItem.data);
+                                                            //ACT_Fee MemberType display temporary solution
+                                                            let temp_fee = CommonUtils.json_select_by(CommonConfig.member_type, dataItem.data.MBR_Type, "ID", "Fee");
+                                                            if (temp_fee !== -1)
+                                                                form.getEditor("ACT_Fee").option("value", temp_fee);
+                                                            else
+                                                                form.getEditor("ACT_Fee").option("value", dataItem.data.ACT_Fee);
+                                                            ////
+                                                            RegisterUtils.loadPic(dataItem.data);
                                                         } else
                                                             DevExpress.ui.notify("No Course Data found, check with DBA");
                                                         dctglobal.unblockUI($('#Context'));
@@ -400,16 +495,32 @@ $(function () {
                                                     if (dataItem.haveError)
                                                         alert(dataItem.error);
                                                     else {
-                                                        if (dataItem.data != null) {
+                                                        if (dataItem.data != null && (dataItem.error == null || dataItem.error === "")) {
                                                             RegisterConfig.lookup_used = RegisterConfig.input_selection.PHONE;
                                                             RegisterConfig.key_pk = dataItem.key;
                                                             form.option("formData", dataItem.data);
+                                                            //ACT_Fee MemberType display temporary solution
+                                                            let temp_fee = CommonUtils.json_select_by(CommonConfig.member_type, dataItem.data.MBR_Type, "ID", "Fee");
+                                                            if (temp_fee !== -1)
+                                                                form.getEditor("ACT_Fee").option("value", temp_fee);
+                                                            else
+                                                                form.getEditor("ACT_Fee").option("value", dataItem.data.ACT_Fee);
+                                                            ////
+                                                            RegisterUtils.loadPic(dataItem.data);
                                                         } else {
                                                             if (dataItem.error.indexOf("Phone") !== -1) {
                                                                 RegisterConfig.new_member_model.MBR_Phone1 = key;
                                                                 RegisterConfig.new_member_model.ACT_PK = data.appointmentData.ACT_PK;
                                                                 RegisterConfig.AddPopup.show();
-                                                            } else
+                                                            } else if (dataItem.error.indexOf("UserActivity") !== -1) {
+                                                                RegisterConfig.new_member_model.ACT_PK = data.appointmentData.ACT_PK;
+                                                                RegisterConfig.new_member_model.MBR_Phone1 = key;
+                                                                RegisterConfig.new_member_model.MBR_PK = dataItem.data.MBR_PK;
+                                                                RegisterConfig.new_member_model.MBR_Name = dataItem.data.MBR_Name;
+                                                                RegisterConfig.new_member_model.MBR_Email = dataItem.data.MBR_Email;
+                                                                RegisterConfig.new_member_model.MBR_Type = dataItem.data.MBR_Type;
+                                                                RegisterConfig.AddPopup.show();
+                                                            } else 
                                                                 DevExpress.ui.notify(dataItem.error);
                                                         }
                                                         dctglobal.unblockUI($('#Context'));
@@ -472,69 +583,9 @@ $(function () {
                                     editorOptions: {
                                         disabled: true
                                     }
-                                }]
-                            },
-                            {
-                                itemType: "group",
-                                caption: "Member Details",
-                                cssClass: "second-group",
-                                colCount: 2,
-                                items: [{
-                                    colSpan: 2,
-                                    label: {
-                                        text: "Member Name"
-                                    },
-                                    editorType: "dxTextBox",
-                                    dataField: "MBR_Name",
-                                    editorOptions: {
-                                        disabled: true
-                                    }
-                                },
+                                 },
                                 {
-                                    colSpan: 2,
-                                    label: {
-                                        text: "Phone 1"
-                                    },
-                                    editorType: "dxTextBox",
-                                    dataField: "MBR_Phone1",
-                                    editorOptions: {
-                                        disabled: true
-                                    }
-                                },
-                                {
-                                    colSpan: 1,
-                                    label: {
-                                        text: "Reg Date"
-                                    },
-                                    name: "RegDate",
-                                    dataField: "UAC_RegDate",
-                                    editorType: "dxDateBox",
-                                    editorOptions: {
-                                        width: "100%",
-                                        format: "datetime",
-                                        disabled: true
-                                    }
-                                },
-                                {
-                                    colSpan: 1,
-                                    label: {
-                                        text: "Att Date"
-                                    },
-                                    name: "AttDate",
-                                    dataField: "UAC_AttDate",
-                                    editorType: "dxDateBox",
-                                    editorOptions: {
-                                        width: "100%",
-                                        format: "datetime"
-                                    }
-                                }
-                                ]
-                            },
-                            {
-                                itemType: "group",
-                                colCount: 2,
-                                items: [{
-                                    colSpan: 2,
+                                    colSpan: 4,
                                     name: "show-grid",
                                     template: function (data, $itemElement) {
                                         $("<div>").appendTo($itemElement).dxButton({
@@ -542,8 +593,109 @@ $(function () {
                                             text: "Who joined ?",
                                             width: '100%',
                                             onClick: function (e) {
-                                                var url = RegisterConfig.grid_Url.replace("%7BPARAM1%7D", form.option("formData").ACT_PK);
+                                                var url = RegisterConfig.grid_Url.replace("%7BPARAM1%7D", form.option("formData").ACT_PK)
+                                                    .replace("%7BPARAM2%7D", "member");
                                                 window.open(url);
+                                            }
+                                        });
+                                    }
+                                }]
+                            },
+                            {
+                                itemType: "group",
+                                caption: "Member Details",
+                                cssClass: "second-group",
+                                colCount: 6,
+                                items: [{
+                                    template: "<div class='pic-avatar'></div>"
+                                },
+                                    {
+                                        itemType: "group",
+                                        colSpan: 5,
+                                        items: [
+                                            {
+                                                itemType: "group",
+                                                colCount: 2,
+                                                items: [{
+                                                    colSpan: 1,
+                                                    label: {
+                                                        text: "Member Name"
+                                                    },
+                                                    editorType: "dxTextBox",
+                                                    dataField: "MBR_Name",
+                                                    editorOptions: {
+                                                        disabled: true
+                                                    }
+                                                },
+                                                    {
+                                                        colSpan: 1,
+                                                        label: {
+                                                            text: "Phone 1"
+                                                        },
+                                                        editorType: "dxTextBox",
+                                                        dataField: "MBR_Phone1",
+                                                        editorOptions: {
+                                                            disabled: true
+                                                        }
+                                                    },
+                                                    {
+                                                        colSpan: 1,
+                                                        label: {
+                                                            text: "Reg Date"
+                                                        },
+                                                        name: "RegDate",
+                                                        dataField: "UAC_RegDate",
+                                                        editorType: "dxDateBox",
+                                                        editorOptions: {
+                                                            width: "100%",
+                                                            format: "datetime",
+                                                            disabled: true
+                                                        }
+                                                    },
+                                                    {
+                                                        colSpan: 1,
+                                                        label: {
+                                                            text: "Att Date"
+                                                        },
+                                                        name: "AttDate",
+                                                        dataField: "UAC_AttDate",
+                                                        editorType: "dxDateBox",
+                                                        editorOptions: {
+                                                            width: "100%",
+                                                            format: "datetime"
+                                                        }
+                                                    },
+                                                    {
+                                                        colSpan: 2,
+                                                        dataField: "ACT_Remarks",
+                                                        label: { text: "Remarks" },
+                                                        editorType: "dxTextArea",
+                                                        editorOptions: {
+                                                            height: 80
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                            ]
+                                    }
+                                ]
+                            },
+                            {
+                                itemType: "group",
+                                colCount: 2,
+                                items: [{
+                                    colSpan: 2,
+                                    name: "show-grid-2",
+                                    template: function (data, $itemElement) {
+                                        $("<div>").appendTo($itemElement).dxButton({
+                                            icon: 'fa fa-ticket',
+                                            text: "Activities joined",
+                                            width: '100%',
+                                            onClick: function (e) {
+                                                var url = RegisterConfig.grid_Url.replace("%7BPARAM1%7D", form.option("formData").MBR_PK)
+                                                    .replace("%7BPARAM2%7D", "activity");
+                                                window.open(url);
+                                                //alert(form.option("formData").MBR_PK);
                                             }
                                         });
                                     }

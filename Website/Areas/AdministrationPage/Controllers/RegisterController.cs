@@ -57,18 +57,18 @@ namespace WebMembership.Areas.Administration.Controllers
             return new WebMembership.MVC.NewJsonResult(results);
         }
 
-        public ActionResult JoinersDetails(string id)
+        public ActionResult JoinersDetails(string id, string type)
         {
-            var results = this._iRegister.LoadDetailGrid(id);
+            var results = this._iRegister.LoadDetailGrid(id, type);
             WebMembership.Areas.AdministrationPage.Models.RegisterJoinersViewModel view_model =
                 new RegisterJoinersViewModel();
-
+            view_model.Data_Type = type;
 
             if (results.haveError)
                 return View(view_model);
             else
             {
-                view_model.Activity_Name = results.key;
+                view_model.Title_Name = results.key;
                 view_model.DataGrid = (List<RegisterActivityGridDTO>)results.data;
 
                 return View(view_model);

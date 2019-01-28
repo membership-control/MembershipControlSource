@@ -37,6 +37,17 @@
             background-color: rgba(191, 191, 191, 0.15);
         }
 
+        .pic-avatar {
+            height: 140px;
+            width: 140px;
+            margin-right: 6px;
+            border: 1px solid #d2d3d5;
+            border-radius: 50% !important;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
         .add-popup-area {
             margin-top: 20px;
         }
@@ -75,6 +86,11 @@
         .multiview-item-confirmation-items {
             font: 16px sans-serif;
             font-weight: bold;
+        }
+
+        .dx-form-group-with-caption .dx-form-group-content {
+            padding-bottom: 6px !important;
+            padding-top: 11px !important;
         }
 
         /*
@@ -135,7 +151,7 @@
 
 <script type="text/html" id="mv-dialog">
     <div class="multiview-item">
-        <h3>Member Phone not found. Create one now?</h3>
+        <h3><span id="mv-intro-dialog" class="multiview-item-confirmation-items"></span></h3>
     </div>
     <div>
         <p>
@@ -147,7 +163,6 @@
 </script>
 <script type="text/html" id="mv-form">
     <div class="multiview-item col-sm-10 scroller" data-rail-visible="1" data-rail-color="blue" data-handle-color="#a1b2bd">
-        <h4>Enter all details below</h4>
         <div>
             <p>
                 <div id="new-member-form" class="dx-form" style="margin-bottom: 10px;"></div>
@@ -168,16 +183,16 @@
         <h4>Confirm Review the details below</h4>
         <div>
             <p>
-                Name:
-                <div id="mv-confirm-name" class="multiview-item-confirmation-items"></div>
+                Name: <span id="mv-confirm-name" class="multiview-item-confirmation-items"></span>&nbsp;&nbsp;&nbsp;
+                Member Type: <span id="mv-confirm-type" class="multiview-item-confirmation-items"></span>
             </p>
             <p>
-                Phone:
-                <div id="mv-confirm-phone" class="multiview-item-confirmation-items"></div>
+                Phone: <span id="mv-confirm-phone" class="multiview-item-confirmation-items"></span>
+                &nbsp;&nbsp;&nbsp;
+                Email: <span id="mv-confirm-email-text" class="multiview-item-confirmation-items"></span>
             </p>
             <p>
-                Email:
-                <div id="mv-confirm-email-text" class="multiview-item-confirmation-items"></div>
+                Remarks: <div id="mv-confirm-remarks" class="multiview-item-confirmation-items"></div>
             </p>
         </div>
         <div>
@@ -202,10 +217,11 @@
 @Html.Hidden("initurl", Url.Action("LoadAll", "Register", new { area = "AdministrationPage" }))
 @Html.Hidden("uploadurl", Url.Action("UploadForms", "Register", new { }))
 @Html.Hidden("regurl", Url.Action("RegisterMember", "Register", new { }))
-@Html.Hidden("detailgridurl", Url.Action("JoinersDetails", "Register", new { id = "{PARAM1}" }))
+@Html.Hidden("detailgridurl", Url.Action("JoinersDetails", "Register", new { id = "{PARAM1}", type = "{PARAM2}" }))
 @section scripts{
     <script src="~/Scripts/qrcode/qrcode.min.js" type="text/javascript"></script>
     <!--<script src="~/Scripts/global/DevDXForm.js"></script>-->
+    <script src="~/Areas/AdministrationPage/Scripts/common-config.js"></script>
     <script src="~/Areas/AdministrationPage/Scripts/register.js"></script>
 
 }

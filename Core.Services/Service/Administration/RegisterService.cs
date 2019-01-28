@@ -83,6 +83,7 @@ this.UnitOfWork.CreateSet<MEM_Activity>().UseAsDataSource(this._Imapper).For<Reg
             if (convert_hanlder != null)
             {
                 convert_hanlder.UAC_AttDate = orgin.UAC_AttDate;
+                convert_hanlder.UAC_ACT_Remarks = orgin.ACT_Remarks;
                 convert_hanlder.UAC_UpdateDate = DateTime.Now;
                 convert_hanlder.UAC_UpdateUser = logmodel.Insert_User;
 
@@ -120,6 +121,7 @@ this.UnitOfWork.CreateSet<MEM_Activity>().UseAsDataSource(this._Imapper).For<Reg
             foreach(var user_activity in user_activities)
             {
                 user_activity.UAC_AttDate = orgin.UAC_AttDate;
+                user_activity.UAC_ACT_Remarks = orgin.ACT_Remarks;
                 user_activity.UAC_UpdateDate = DateTime.Now;
                 user_activity.UAC_UpdateUser = logmodel.Insert_User;
 
@@ -169,7 +171,11 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                     orgin.MBR_PK = singledata?.MBR_PK;
                     orgin.MBR_Name = singledata?.MBR_Name;
                     orgin.MBR_Phone1 = singledata?.MBR_Phone1;
+                    orgin.MBR_Type = singledata.MBR_Type;
+                    orgin.MBR_Email = singledata?.MBR_Email;
                     orgin.UAC_RegDate = uac_singledata.Max(u => u.UAC_RegDate);
+                    orgin.ACT_Remarks = uac_singledata.Max(u => u.UAC_ACT_Remarks);
+                    orgin.ACT_Fee = uac_singledata.Max(u => u.UAC_Fee); //ACT_Fee MemberType display temporary solution
                     //reset two temp fielddata for input text box
                     orgin.Flex2 = null;
                     orgin.Flex1 = null;
@@ -178,7 +184,12 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                 }
                 else
                 {
-                    response.data = null;
+                    orgin.MBR_PK = singledata.MBR_PK;
+                    orgin.MBR_Name = singledata.MBR_Name;
+                    orgin.MBR_Phone1 = singledata.MBR_Phone1;
+                    orgin.MBR_Type = singledata.MBR_Type;
+                    orgin.MBR_Email = singledata.MBR_Email;
+                    response.data = orgin; //null;
                     response.error = "No UserActivity found";
                 }
             }
@@ -214,7 +225,10 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
             orgin.MBR_PK = singledata?.MBR_PK;
             orgin.MBR_Name = singledata?.MBR_Name;
             orgin.MBR_Phone1 = singledata?.MBR_Phone1;
+            orgin.MBR_Type = singledata == null ? orgin.MBR_Type : singledata.MBR_Type;
             orgin.UAC_RegDate = singledata == null ? orgin.UAC_RegDate : uac_data.UAC_RegDate;
+            orgin.ACT_Remarks = singledata == null ? orgin.ACT_Remarks : uac_data.UAC_ACT_Remarks;
+            orgin.ACT_Fee = uac_data.UAC_Fee; //ACT_Fee MemberType display temporary solution
             //reset two temp fielddata for input text box
             orgin.Flex2 = null;
             orgin.Flex1 = null;
@@ -286,41 +300,43 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
         {
             DevRequest converted_request = new DevRequest(request);
             DevResponse response = new DevResponse();
-            RegisterActivityNewMemberDTO new_member = base.ConvertObject<RegisterActivityNewMemberDTO>(converted_request.Values);
+            RegisterActivityNewMemberDTO member = base.ConvertObject<RegisterActivityNewMemberDTO>(converted_request.Values);
+            
 
-
-            Guid new_member_pk = Guid.NewGuid();
-            MEM_Membership member_entity = new MEM_Membership()
+            Guid member_pk = member.MBR_PK.HasValue && member.MBR_PK.Value != Guid.Empty? member.MBR_PK.Value: Guid.NewGuid();
+            if (!member.MBR_PK.HasValue || member.MBR_PK.Value == Guid.Empty)
             {
-                MBR_PK = new_member_pk,
-                MBR_Type = 1,
-                MBR_Name = new_member.MBR_Name,
-                MBR_Phone1 = new_member.MBR_Phone1,
-                MBR_Agreement = true,
-                MBR_IsEnable = true,
-                MBR_Email = new_member.MBR_Email,
-                MBR_InsertDate = DateTime.Now,
-                MBR_InsertUser = logmodel.Insert_User
-            };
+                MEM_Membership member_entity = new MEM_Membership()
+                {
+                    MBR_PK = member_pk,
+                    MBR_Type = member.MBR_Type, //1,
+                    MBR_Name = member.MBR_Name,
+                    MBR_Phone1 = member.MBR_Phone1,
+                    MBR_Agreement = true,
+                    MBR_IsEnable = true,
+                    MBR_Email = member.MBR_Email,
+                    MBR_InsertDate = DateTime.Now,
+                    MBR_InsertUser = logmodel.Insert_User
+                };
 
-            this.UnitOfWork.CreateSet<MEM_Membership>().Add(member_entity);
-            if (this.UnitOfWork.Commit() < 1)
-            {
-                response.haveError = true;
-                response.error = "MSG: save fail";
+                this.UnitOfWork.CreateSet<MEM_Membership>().Add(member_entity);
+                if (this.UnitOfWork.Commit() < 1)
+                {
+                    response.haveError = true;
+                    response.error = "MSG: save fail";
+                }
+                else
+                {
+                    response.haveError = false;
+                    response.key = member_pk.ToString();
+                    //response.data = member_entity;
+                }
             }
-            else
-            {
-                response.haveError = false;
-                response.key = new_member_pk.ToString();
-                //response.data = member_entity;
-            }
 
-
-            if (!response.haveError && new_member.IsCheckin)
+            if (!response.haveError && member.IsCheckin)
             {
                 ///////////////////////
-                Guid act_pk = new_member.ACT_PK;
+                Guid act_pk = member.ACT_PK;
                 var activity = this.UnitOfWork.CreateSet<MEM_Activity>()
                         .UseAsDataSource(this._Imapper).For<ActivityDTO>()
                         .Where(x => x.ACT_PK == act_pk)
@@ -330,7 +346,7 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                 MEM_UserActivity uac_entity = new MEM_UserActivity()
                 {
                     UAC_PK = new_uac_pk,
-                    UAC_MBR_PK = new_member_pk,
+                    UAC_MBR_PK = member_pk,
                     UAC_ACT_PK = activity.ACT_PK,
                     UAC_ACT_Name = activity.ACT_Name,
                     UAC_ACT_Type = activity.ACT_Type,
@@ -340,7 +356,8 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                     UAC_AttDate = DateTime.Now,
                     UAC_Current = activity.ACT_Current,
                     UAC_Fee = activity.ACT_Fee,
-                    UAC_Remarks = new_member.MBR_Email,
+                    UAC_Remarks = member.MBR_Email,
+                    UAC_ACT_Remarks = member.UAC_ACT_Remarks,
                     UAC_InsertDate = DateTime.Now,
                     UAC_InsertUser = logmodel.Insert_User
                 };
@@ -352,12 +369,13 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
                     try
                     {
                         //Email ?
-                        if (new_member.IsEmail)
+                        if (member.IsEmail)
                         {
-                            if (emailModel == null)
+                            if (emailModel == null || String.IsNullOrEmpty(member.MBR_Email))
                             {
                                 response.haveError = true;
-                                response.error = "MSG: emailModel is empty!";
+                                response.error = "MSG: Registered but emailModel/address is empty! Email not send.";
+                                throw new Exception(response.error);
                             }
                             else
                             {
@@ -377,7 +395,7 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
 
                                         email_model.Body = email_model.Body.Replace("{COURSESTARTDATE}", activity.ACT_FromDate.Value.ToString());
                                         email_model.Subject = "Ticket to Course: " + activity.ACT_Name;
-                                        email_model.Destination = new_member.MBR_Email;
+                                        email_model.Destination = member.MBR_Email;
 
                                         //send email
                                         await this.SendFormattedHTMLEmailAsync(email_model, ms);
@@ -569,21 +587,30 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
             return response;
         }
 
-        public DevResponse LoadDetailGrid(string act_id)
+        public DevResponse LoadDetailGrid(string id, string type)
         {
             DevResponse response = new DevResponse();
-            Guid act_pk = Guid.Empty;
-            Guid.TryParse(act_id, out act_pk);
+            Guid pk = Guid.Empty;
+            Guid.TryParse(id, out pk);
 
-            IQueryable<MEM_UserActivity> uacs = base.GetFiltered(x => x.UAC_ACT_PK == act_pk);
+            IQueryable<MEM_UserActivity> uacs = 
+                base.GetFiltered(x => (type == "member" && x.UAC_ACT_PK == pk) || (type == "activity" && x.UAC_MBR_PK == pk));
             IQueryable<MEM_Membership> members = this.UnitOfWork.CreateSet<MEM_Membership>().AsQueryable();
+            IQueryable<MEM_Activity> activities = this.UnitOfWork.CreateSet<MEM_Activity>().AsQueryable();
             var result_data = from uac in uacs
                               from member in members
                                 .Where(member => member.MBR_PK == uac.UAC_MBR_PK)
+                              from act in activities
+                                .Where(activity => activity.ACT_PK == uac.UAC_ACT_PK)
                               select new RegisterActivityGridDTO
                               {
                                   ACT_PK = uac.UAC_ACT_PK,
                                   ACT_Name = uac.UAC_ACT_Name,
+                                  ACT_Type = uac.UAC_ACT_Type,
+                                  ACT_Category = act.ACT_Category,
+                                  ACT_FromDate = act.ACT_FromDate,
+                                  ACT_ToDate = act.ACT_ToDate,
+                                  ACT_Status = act.ACT_Status,
                                   Remark = uac.UAC_Remarks,
                                   MBR_Name = member.MBR_Name,
                                   MBR_ChineseName = member.MBR_ChineseName,
@@ -600,13 +627,13 @@ this.UnitOfWork.CreateSet<MEM_Membership>().UseAsDataSource(this._Imapper).For<M
             if (final_data_list.Count() > 0)
             {
                 response.haveError = false;
-                response.key = final_data_list.First().ACT_Name;
+                response.key = type == "member" ? final_data_list.First().ACT_Name : final_data_list.FirstOrDefault()?.MBR_Name;
                 response.data = final_data_list;
             }
             else
             {
                 response.haveError = true;
-                response.error = "No joiners";
+                response.error = "No data";
             }
 
             return response;

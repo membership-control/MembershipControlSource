@@ -13,6 +13,6 @@ namespace Core.Services.Interface
     {
         Task<DevResponse> UploadForm(byte[] filebinary, Core.Data.Model.LogModel logmodel, bool isEmail = true, object emailModel = null);
         Task<DevResponse> RegisterNewOrExistingMember(System.Collections.Specialized.NameValueCollection request, Core.Data.Model.LogModel logmodel, object emailModel = null);
-        DevResponse LoadDetailGrid(string act_id);
+        DevResponse LoadDetailGrid(string id, string type);
     }
 }

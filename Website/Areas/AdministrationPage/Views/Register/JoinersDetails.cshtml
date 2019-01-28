@@ -48,45 +48,81 @@
 </head>
 <body>
     <div>
-        @if (String.IsNullOrEmpty(Model.Activity_Name))
+        @if (String.IsNullOrEmpty(Model.Title_Name))
         {
             <h4>No data found</h4>
         }
         else
         {
-            <h3>@Model.Activity_Name</h3>
+            <h3>@Model.Title_Name</h3>
             <br/>
             <div>
                 <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Chinese Name</th>
-                        <th>Phone 1</th>
-                        <th>Phone 2</th>
-                        <th>Wechat No</th>
-                        <th>Register Date</th>
-                        <th>Attend Date</th>
-                        <th>Register Remarks</th>
-                    </tr>
-                    @foreach(var obj in Model.DataGrid)
+                    @if (Model.Data_Type == "member")
                     {
-                    <tr>
-                        <td>@obj.MBR_Name</td>
-                        <td>@obj.MBR_ChineseName</td>
-                        <td>@obj.MBR_Phone1</td>
-                        <td>@obj.MBR_Phone2</td>
-                        <td>@obj.MBR_WeChatNo</td>
-                        <td>@obj.RegDate.ToString()</td>
-                        @if (!obj.AttDate.HasValue)
+                        <tr>
+                            <th>Name</th>
+                            <th>Chinese Name</th>
+                            <th>Phone 1</th>
+                            <th>Phone 2</th>
+                            <th>Wechat No</th>
+                            <th>Register Date</th>
+                            <th>Attend Date</th>
+                            <th>Register Remarks</th>
+                        </tr>
+                        foreach (var obj in Model.DataGrid)
                         {
+                        <tr>
+                            <td>@obj.MBR_Name</td>
+                            <td>@obj.MBR_ChineseName</td>
+                            <td>@obj.MBR_Phone1</td>
+                            <td>@obj.MBR_Phone2</td>
+                            <td>@obj.MBR_WeChatNo</td>
+                            <td>@obj.RegDate.ToString()</td>
+                            @if (!obj.AttDate.HasValue)
+                            {
                             <td></td>
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
                             <td>@obj.AttDate.Value.ToString()</td>
+                            }
+                            <td>@obj.Remark</td>
+                        </tr>
                         }
-                        <td>@obj.Remark</td>
-                    </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <th>Activity Name</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Register Date</th>
+                            <th>Attend Date</th>
+                        </tr>
+                        foreach (var obj in Model.DataGrid)
+                        {
+                            <tr>
+                                <td>@obj.ACT_Name</td>
+                                <td>@obj.ACT_Type</td>
+                                <td>@obj.ACT_Category</td>
+                                <td>@obj.ACT_Status</td>
+                                <td>@obj.ACT_FromDate.Value.ToString()</td>
+                                <td>@obj.ACT_ToDate.Value.ToString()</td>
+                                <td>@obj.RegDate.ToString()</td>
+                                @if (!obj.AttDate.HasValue)
+                                {
+                                <td></td>
+                                }
+                                else
+                                {
+                                <td>@obj.AttDate.Value.ToString()</td>
+                                }
+                            </tr>
+                        }
                     }
                 </table>
             </div>

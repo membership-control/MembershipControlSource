@@ -17,9 +17,12 @@ namespace Core.Services.DTO.Administration
         public string ACT_Current { get; set; }
         public Nullable<decimal> ACT_Fee { get; set; }
         public string ACT_Remarks { get; set; }
+        public int ACT_MemberTypeReq { get; set; }
         public Nullable<System.Guid> MBR_PK { get; set; }
         public string MBR_Name { get; set; }
         public string MBR_Phone1 { get; set; }
+        public int MBR_Type { get; set; }
+        public string MBR_Email { get; set; }
         public System.DateTime UAC_RegDate { get; set; }
         Nullable<System.DateTime> _attdate;
         public Nullable<System.DateTime> UAC_AttDate {

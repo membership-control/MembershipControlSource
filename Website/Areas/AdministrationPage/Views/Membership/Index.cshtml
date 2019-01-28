@@ -4,27 +4,34 @@
 }
 
 @section styles{
-    <style>
-        .first-group,
-        .second-group {
-            padding: 20px;
-        }
-
-        .second-group {
-            background-color: rgba(191, 191, 191, 0.15);
-        }
-
-        .form-avatar {
-            height: 160px;
-            width: 160px;
+<style>
+    @@media only screen and (max-width: 768px) {
+        #Context {
+            margin-left: 8px;
             margin-right: 10px;
-            border: 1px solid #d2d3d5;
-            border-radius: 50% !important;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
         }
-    </style>
+    }
+
+    .first-group,
+    .second-group {
+        padding: 20px;
+    }
+
+    .second-group {
+        background-color: rgba(191, 191, 191, 0.15);
+    }
+
+    .form-avatar {
+        height: 160px;
+        width: 160px;
+        margin-right: 10px;
+        border: 1px solid #d2d3d5;
+        border-radius: 50% !important;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
 }
 
 <div class="page-bar">
@@ -43,7 +50,14 @@
                     <a href="#" onclick="MemberUtils.fnew()" class="btn default">New</a>
                 </li>
                 <li>
-                    <a href="#" id="form_submit" onclick="MemberUtils.fsubmit()" class="btn default">Submit</a>
+                    <a href="#" onclick="MemberUtils.fsubmit()" class="btn default">Submit</a>
+                </li>
+                <li class="divider">
+                <li>
+                    <a href="#" onclick="MemberUtils.exportXLS()" class="btn default">Export Members (XLSX)</a>
+                </li>
+                <li>
+                    <a data-toggle="modal" href="#importdiv" class="btn default">Import Members</a>
                 </li>
                 <li class="divider">
                 </li>
@@ -59,7 +73,7 @@
         <div id="member-id-box"></div>
     </div>
     <div class="row">
-        <div id="form" class="dx-form" style="margin-bottom: 10px;"></div>
+        <div id="form" style="margin-bottom: 10px;"></div>
     </div>
 </div>
 
@@ -80,8 +94,27 @@
         </div>
     </div>
 </div>
+<div class="modal fade bs-modal-lg" id="importdiv" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Upload Members by Excel File here</h4>
+            </div>
+            <div class="modal-body">
+                <div id="member-xls-uploader"></div>
+                <span class="note">Allowed file extensions: <span>xls/xlsx ONLY</span>.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @Html.Hidden("forminit", Url.Action("LoadData", "Membership"))
 @Html.Hidden("checkid", Url.Action("IsIDAvailable", "Membership"))
+@Html.Hidden("export", Url.Action("Export", "Membership"))
+@Html.Hidden("import", Url.Action("Import", "Membership"))
 @Html.Hidden("photoload", @Url.Action("Upload", "Membership", new { name = "{PARAM1}" }))
 @section scripts{
     <script src="~/Scripts/global/DevDXForm.js"></script>

@@ -5,6 +5,8 @@
     load_Url:  $("#forminit").val(),
     checkid_Url:  $("#checkid").val(),
     upload_Url: $("#photoload").val(),
+    export_Url: $("#export").val(),
+    import_Url: $("#import").val(),
     phone_pattern: "^\\d+$",
     form: null,
     pk: null,
@@ -170,6 +172,16 @@ var MemberUtils = {
             //do nothing
         };
 
+    },
+
+    exportXLS: function () {
+        let form = document.createElement("form");
+        form.action = MemberConfig.export_Url;
+        form.method = 'POST';
+        form.target = '_blank' || "_self";
+        form.style.display = 'none';
+        document.body.appendChild(form);
+        form.submit();
     }
 
 };
@@ -532,6 +544,14 @@ $(function () {
                 onUploadError: onUploadError,
                 onValueChanged: onValueChanged
             }).dxFileUploader("instance");
+
+            $("#member-xls-uploader").dxFileUploader({
+                accept: ".xlsx,.xls",
+                uploadMode: "useButtons",
+                uploadUrl: MemberConfig.import_Url,
+                chunkSize: 200000,
+                onUploadError: onUploadError
+            });
 
             //dctglobal.blockUI({
             //    target: $('#Context'),
